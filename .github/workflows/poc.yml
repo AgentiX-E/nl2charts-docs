@@ -44,8 +44,8 @@ jobs:
           assert d['P1_index_matches_sections'], d
           a, b = d['P2_pass_rate'].split('/')
           assert a == b, d
-          assert d['sections'] == 44, d
-          assert d['P4_assumption_rows'] == 55, d
+          assert d['sections'] == 46, d
+          assert d['P4_assumption_rows'] == 57, d
           print('POC-35 ok:', d['sections'], 'sections,', d['P2_pass_rate'], 'five-part,', d['P4_assumption_rows'], 'assumptions')
           PY
 
@@ -146,6 +146,34 @@ jobs:
           assert all(c['render_ok'] for c in d['cases']), d
           assert d['stack_flag_ignored'] is True, d
           print('POC-2 ok: 6/6 charts render; chart_spec.stack ignored')
+          PY
+
+      - name: POC-45 single package vs three packages
+        working-directory: poc/45
+        run: |
+          npm install --no-audit --no-fund
+          node run.mjs
+          python3 - <<'PY'
+          import json
+          d = json.load(open('results.json'))
+          s = d['summary']
+          assert s['identicalBytes'] is True, s
+          assert s['baselineGreen'] is True, s
+          assert s['mutationsCaught'] == s['mutationsTotal'] == 7, s
+          print('POC-45 ok: 0-byte delta between layouts; 7/7 mutations caught')
+          PY
+
+      - name: POC-46 two copies of core
+        working-directory: poc/46
+        run: |
+          node run.mjs
+          python3 - <<'PY'
+          import json
+          d = json.load(open('results.json'))
+          s = d['summary']
+          assert s['pass'] == s['total'] == 7, s
+          assert s['brandSurvives'] and s['naiveRegistrySplits'] and s['sharedRegistryWorks'], s
+          print('POC-46 ok: brand survives, naive registry splits, shared registry works')
           PY
 
       - name: POC-3 compile latency budget
