@@ -13,9 +13,11 @@
     8,
     9,
     10,
-    11
+    11,
+    12,
+    99
    ],
-   "count": 11
+   "count": 13
   },
   "FG": {
    "label": "联邦",
@@ -65,12 +67,12 @@
  "no_criterion": [],
  "no_wbs": [],
  "summary": {
-  "total_gates": 36,
+  "total_gates": 38,
   "orphans": 0,
   "no_criterion": 0,
   "no_wbs": 0,
   "no_wbs_list": [],
-  "no_layer": 30,
+  "no_layer": 32,
   "no_layer_list": [
    "DG1",
    "DG2",
@@ -83,6 +85,8 @@
    "DG9",
    "DG10",
    "DG11",
+   "DG12",
+   "DG99",
    "FG1",
    "FG8",
    "UX1",
@@ -116,6 +120,8 @@
   "DG9",
   "DG10",
   "DG11",
+  "DG12",
+  "DG99",
   "FG1",
   "FG8",
   "UX1",

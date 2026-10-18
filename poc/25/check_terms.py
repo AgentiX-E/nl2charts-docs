@@ -2,9 +2,11 @@
 # POC-25 v2: docs terminology lint against the canonical naming scheme
 import re, sys, json
 
+import os, pathlib
+ROOT = pathlib.Path(os.environ.get("NL2CHARTS_DOCS_ROOT") or pathlib.Path(__file__).resolve().parents[2])
 FILES = {
-  "whitepaper": "/workspace/text2charts-whitepaper/产品白皮书.md",
-  "tech": "/workspace/text2charts-whitepaper/技术设计方案.md",
+  "whitepaper": str(ROOT / "产品白皮书.md"),
+  "tech": str(ROOT / "技术设计方案.md"),
 }
 
 RULES = [

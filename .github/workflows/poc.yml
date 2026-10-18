@@ -1,0 +1,278 @@
+name: POC reproduction
+
+on:
+  push:
+    branches: [main]
+    paths: ['poc/**', '*.md', '.github/workflows/poc.yml']
+  pull_request:
+    paths: ['poc/**', '*.md', '.github/workflows/poc.yml']
+  workflow_dispatch:
+    inputs:
+      group:
+        description: 'Which POC group to run'
+        type: choice
+        options: [deterministic, duckdb, llm, browser, all]
+        default: deterministic
+
+permissions:
+  contents: read
+
+env:
+  NODE_VERSION: '22'
+  PYTHON_VERSION: '3.11'
+
+jobs:
+  # ---------- always-on: document invariants ----------
+  static:
+    name: docs invariants (POC-25/35/39/40)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: POC-25 terminology lint (must be zero)
+        run: python3 poc/25/check_terms.py
+
+      - name: POC-35 POC completeness
+        run: |
+          python3 poc/35/check_poc.py > /tmp/p35.json
+          python3 - <<'PY'
+          import json
+          d = json.load(open('/tmp/p35.json'))
+          assert d['P1_index_matches_sections'], d
+          a, b = d['P2_pass_rate'].split('/')
+          assert a == b, d
+          assert d['sections'] == 44, d
+          assert d['P4_assumption_rows'] == 55, d
+          print('POC-35 ok:', d['sections'], 'sections,', d['P2_pass_rate'], 'five-part,', d['P4_assumption_rows'], 'assumptions')
+          PY
+
+      - name: POC-39 eight-requirement audit
+        run: |
+          python3 poc/39/audit.py > /tmp/p39.json
+          python3 - <<'PY'
+          import json
+          d = json.load(open('/tmp/p39.json'))
+          assert d['adr']['missing_numbers'] == [], d['adr']
+          assert d['sections']['duplicates'] == [], d['sections']
+          assert d['gates']['missing_family_mapping'] == [], d['gates']
+          assert d['claims_unsourced']['sections_with_shixce_but_no_ref'] == 0, d['claims_unsourced']
+          print('POC-39 ok:', d['adr']['defined'], 'ADRs,', d['gates']['defined'], 'gates,', d['sections']['count'], 'sections')
+          PY
+
+      - name: POC-40 reproducibility fixture
+        run: |
+          python3 poc/40/poc-suite.py --check | tee /tmp/p40.txt
+          grep -q '16/16 PASS' /tmp/p40.txt
+
+  # ---------- always-on: deterministic experiments ----------
+  deterministic:
+    name: deterministic POCs (2/3/41/42/43/44)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: POC-41 single package, two runtimes
+        working-directory: poc/41
+        run: |
+          npm install --no-audit --no-fund
+          node bundle.mjs
+          python3 - <<'PY'
+          import json
+          d = json.load(open('bundle.json'))
+          assert d['browser-core-only']['ok'] is True, d
+          assert d['browser-core-only']['hasPg'] is False, d
+          assert d['browser-core-only']['hasNodeBuiltin'] is False, d
+          assert d['browser-core-plus-pg']['ok'] is False, d
+          assert d['node-core-plus-pg']['ok'] is True, d
+          print('POC-41 ok: browser root =', d['browser-core-only']['bytes'], 'B; pg from root fails as expected')
+          PY
+
+      - name: POC-42 admin handler is framework-agnostic
+        working-directory: poc/42
+        run: |
+          npm install --no-audit --no-fund
+          node run.mjs
+          python3 - <<'PY'
+          import json
+          rows = json.load(open('admin.json'))
+          assert len(rows) == 4, rows
+          for r in rows:
+              assert r['direct'] == r['hono'] == r['http'], r
+              assert r['sameBody'] is True, r
+          print('POC-42 ok: 4/4 cases identical across node:http, Hono, direct')
+          PY
+
+      - name: POC-43 tree-shaking holds
+        working-directory: poc/43
+        run: |
+          npm install --no-audit --no-fund
+          node run.mjs
+          python3 - <<'PY'
+          import json
+          d = json.load(open('shake.json'))
+          assert d['one-symbol']['bytes'] < 200, d
+          assert d['namespace']['bytes'] > 10000, d
+          print('POC-43 ok:', d['one-symbol']['bytes'], 'B vs', d['namespace']['bytes'], 'B')
+          PY
+
+      - name: POC-44 SQLite is not a first-class engine
+        working-directory: poc/44
+        run: |
+          node --experimental-sqlite run_sqlite.cjs > /tmp/p44.txt 2>/dev/null
+          grep -q '8/25' /tmp/p44.txt || (cat /tmp/p44.txt; exit 1)
+          python3 - <<'PY'
+          import json
+          d = json.load(open('sqlite.json'))
+          ok = sum(1 for r in d['results'] if r['ok'])
+          assert ok == 8, ok
+          print('POC-44 ok: SQLite executes', ok, 'of', len(d['results']), 'metric SQL forms')
+          PY
+
+      - name: POC-2 chart output renders
+        working-directory: poc/02
+        run: |
+          npm install --no-audit --no-fund
+          node main.mjs
+          python3 - <<'PY'
+          import json
+          d = json.load(open('results.json'))
+          assert len(d['cases']) == 6, d
+          assert all(c['render_ok'] for c in d['cases']), d
+          assert d['stack_flag_ignored'] is True, d
+          print('POC-2 ok: 6/6 charts render; chart_spec.stack ignored')
+          PY
+
+      - name: POC-3 compile latency budget
+        working-directory: poc/03
+        run: |
+          npm install --no-audit --no-fund
+          node main.mjs
+          python3 - <<'PY'
+          import json
+          d = json.load(open('latency.json'))
+          assert d['p95'] < 3.0, d
+          print('POC-3 ok: p50', d['p50'], 'ms, p95', d['p95'], 'ms')
+          PY
+
+  # ---------- always-on: pure-python statistics ----------
+  python-stats:
+    name: python-only POCs (27/28/36/37/38)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+      - name: run
+        run: |
+          (cd poc/27 && python3 gate_audit.py > /tmp/p27.txt)
+          (cd poc/28 && python3 main.py       > /tmp/p28.txt)
+          (cd poc/36 && python3 evalplan.py   > /tmp/p36.txt)
+          (cd poc/37 && python3 main.py       > /tmp/p37.txt)
+          (cd poc/38 && python3 main.py       > /tmp/p38.txt)
+          for p in 27 28 36 37 38; do test -s /tmp/p$p.txt || (echo "POC-$p produced no output"; exit 1); done
+
+  # ---------- manual: PostgreSQL + DuckDB native ----------
+  duckdb:
+    name: PostgreSQL backend (manual)
+    if: github.event_name == 'workflow_dispatch' && (inputs.group == 'duckdb' || inputs.group == 'all')
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_DB: analytics
+          POSTGRES_USER: t2c
+          POSTGRES_PASSWORD: t2cpass
+        ports: ['5432:5432']
+        options: >-
+          --health-cmd "pg_isready -U t2c -d analytics"
+          --health-interval 5s --health-timeout 5s --health-retries 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: seed PostgreSQL
+        env:
+          PGPASSWORD: t2cpass
+        run: |
+          psql -h 127.0.0.1 -U t2c -d analytics -v ON_ERROR_STOP=1 -c "
+          CREATE TABLE orders(id int primary key, region text, amount numeric(12,2),
+                              status text, created_at timestamptz default now());
+          INSERT INTO orders(id, region, amount, status, created_at)
+            SELECT i, (ARRAY['east','west','north'])[1 + i % 3], (i * 7 % 1000) / 10.0,
+                   CASE WHEN i % 4 = 0 THEN 'open' ELSE 'paid' END,
+                   now() - (i || ' hours')::interval
+            FROM generate_series(1, 1000) i;"
+
+      - name: POC-12 attach PostgreSQL and prove pushdown
+        working-directory: poc/12
+        run: |
+          npm install --no-audit --no-fund
+          python3 - <<'PY'
+          import sqlite3
+          c = sqlite3.connect('small.sqlite')
+          c.execute('create table if not exists region_dim(id integer, owner text)')
+          c.executemany('insert into region_dim values (?,?)', [(i, 'o%d' % i) for i in range(1, 21)])
+          c.commit(); c.close()
+          PY
+          node main.js
+
+  # ---------- manual: LLM-backed ----------
+  llm:
+    name: LLM-backed POCs (manual, needs secret)
+    if: github.event_name == 'workflow_dispatch' && (inputs.group == 'llm' || inputs.group == 'all')
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: guard - secret must be present
+        run: |
+          if [ -z "${{ secrets.DEEPSEEK_API_KEY }}" ]; then
+            echo "::error::DEEPSEEK_API_KEY is not configured; refusing to run LLM POCs"
+            exit 1
+          fi
+
+      - name: POC-7 / 8 / 9 / 18 / 30 smoke
+        env:
+          DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
+        run: |
+          pip install --quiet duckdb==1.5.6 requests numpy scipy jieba
+          for p in 7 8 9 18 30; do
+            echo "--- POC-$p"
+            (cd poc/$p && python3 main.py) || exit 1
+          done
+
+  # ---------- manual: browser / OPFS ----------
+  browser:
+    name: Browser and OPFS (manual)
+    if: github.event_name == 'workflow_dispatch' && (inputs.group == 'browser' || inputs.group == 'all')
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: install Playwright + Chromium
+        run: |
+          pip install --quiet playwright duckdb
+          python3 -m playwright install --with-deps chromium
+
+      - name: POC-6 OPFS persistence across restart
+        working-directory: poc/06
+        run: python3 opfs_test.py

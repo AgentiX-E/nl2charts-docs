@@ -1,5 +1,7 @@
 const { DuckDBInstance } = require('@duckdb/node-api');
 const fs = require('fs');
+const path = require('path');
+const HERE = __dirname;
 const t0 = () => process.hrtime.bigint();
 const ms = (a, b) => Number(b - a) / 1e6;
 
@@ -57,7 +59,7 @@ const ms = (a, b) => Number(b - a) / 1e6;
   // 5) sqlite scanner + three-way federation
   try {
     await c.run('INSTALL sqlite'); await c.run('LOAD sqlite');
-    await c.run(`ATTACH '/tmp/poc12/small.sqlite' AS sq (TYPE sqlite, READ_ONLY)`);
+    await c.run(`ATTACH '${HERE}/small.sqlite' AS sq (TYPE sqlite, READ_ONLY)`);
   } catch (e) { log('sqlite_attach_err', String(e.message).slice(0,200)); }
   log('databases', (await c.runAndReadAll('SHOW DATABASES')).getRows().map(r=>r[0]).join(','));
   const q4 = await c.runAndReadAll(`
@@ -96,5 +98,5 @@ const ms = (a, b) => Number(b - a) / 1e6;
   const q6 = await c.runAndReadAll(`SELECT count(*) FROM pg.public.orders`);
   log('pg_stat_rows', q6.getRows());
 
-  fs.writeFileSync('/tmp/poc12/out.json', JSON.stringify({ done: true }));
+  fs.writeFileSync(path.join(HERE,'out.json'), JSON.stringify({ done: true }));
 })().catch(e => { console.error('FAIL', e); process.exit(1); });

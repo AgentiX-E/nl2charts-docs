@@ -1,7 +1,9 @@
 #!/usr/bin/env python3
 """POC 记录完整性校验（P1-P4），语义签名版"""
 import re, json
-T = '/workspace/text2charts-whitepaper/技术设计方案.md'
+import os, pathlib
+ROOT = pathlib.Path(os.environ.get('NL2CHARTS_DOCS_ROOT') or pathlib.Path(__file__).resolve().parents[2])
+T = str(ROOT / '技术设计方案.md')
 s = open(T, encoding='utf-8').read()
 
 secs = [(int(m.group(1)), m.group(2), m.start())

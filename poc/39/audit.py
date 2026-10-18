@@ -2,8 +2,10 @@
 """POC-39: 八条要求终验 —— 机器可判部分的全量审计。"""
 import re, json, collections
 
-T = '/workspace/text2charts-whitepaper/技术设计方案.md'
-W = '/workspace/text2charts-whitepaper/产品白皮书.md'
+import os, pathlib
+ROOT = pathlib.Path(os.environ.get('NL2CHARTS_DOCS_ROOT') or pathlib.Path(__file__).resolve().parents[2])
+T = str(ROOT / '技术设计方案.md')
+W = str(ROOT / '产品白皮书.md')
 t = open(T, encoding='utf-8').read()
 w = open(W, encoding='utf-8').read()
 
