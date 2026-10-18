@@ -4,17 +4,18 @@
  * Exit 0 only when every gate passes; each violation is printed with its id.
  */
 import * as esbuild from 'esbuild';
-import { readFileSync, writeFileSync, existsSync, readdirSync, copyFileSync, mkdirSync, rmSync } from 'node:fs';
+import { readFileSync, existsSync, readdirSync, copyFileSync, mkdirSync, rmSync } from 'node:fs';
 import { join, dirname, resolve, basename } from 'node:path';
 import { pathToFileURL } from 'node:url';
 
-export async function runGates(pkgDir) {
-  const DRIVERS = /(^|\/)(pg|mysql2|@duckdb\/node-api|@duckdb\/duckdb-wasm|better-sqlite3)$/;
-  const NODE_BUILTIN = /node:(fs|net|tls|dns|http2|child_process|crypto|os)/;
-  const ORCHESTRATION = /\b(createAgent|askStream|createAdminHandler)\b/;
-  const violations = [];
+const args = process.argv.slice(2);
+const pkgDir = resolve(args[args.indexOf('--packages') + 1] ?? 'packages');
+const DRIVERS = /(^|\/)(pg|mysql2|@duckdb\/node-api|@duckdb\/duckdb-wasm|better-sqlite3)$/;
+const NODE_BUILTIN = /node:(fs|net|tls|dns|http2|child_process|crypto|os)/;
+const ORCHESTRATION = /\b(createAgent|askStream|createAdminHandler)\b/;
+const violations = [];
 
-  const pkgs = readdirSync(pkgDir, { withFileTypes: true })
+const pkgs = readdirSync(pkgDir, { withFileTypes: true })
   .filter((d) => d.isDirectory() && existsSync(join(pkgDir, d.name, 'package.json')))
   .map((d) => {
     const dir = join(pkgDir, d.name);
@@ -22,17 +23,17 @@ export async function runGates(pkgDir) {
     return { dir, name: d.name, pkg: pj };
   });
 
-  const corePkgs = pkgs.filter((p) => p.name === 'core');
-  const platformPkgs = pkgs.filter((p) => p.name === 'node' || p.name === 'browser');
+const corePkgs = pkgs.filter((p) => p.name === 'core');
+const platformPkgs = pkgs.filter((p) => p.name === 'node' || p.name === 'browser');
 
-  const entryOf = (p) => {
+const entryOf = (p) => {
   const e = p.pkg.exports?.['.'];
   const path = typeof e === 'string' ? e : e?.default ?? e?.import;
   return path ? join(p.dir, path) : null;
-  };
+};
 
-  // ---- PLT1/PLT2: what a browser build of the root entry actually pulls in ----
-  async function bundleForBrowser(entry) {
+// ---- PLT1/PLT2: what a browser build of the root entry actually pulls in ----
+async function bundleForBrowser(entry) {
   try {
     const out = await esbuild.build({
       entryPoints: [entry], bundle: true, write: false, platform: 'browser',
@@ -45,9 +46,9 @@ export async function runGates(pkgDir) {
   } catch (e) {
     return { ok: false, error: String(e.message).split('\n').slice(0, 2).join(' | ') };
   }
-  }
+}
 
-  for (const p of corePkgs) {
+for (const p of corePkgs) {
   const entry = entryOf(p);
   const r = entry ? await bundleForBrowser(entry) : { ok: false, error: 'no "." export' };
   if (!r.ok) {
@@ -58,23 +59,22 @@ export async function runGates(pkgDir) {
   if (builtin) violations.push(['PLT1', p.name, `browser bundle contains ${builtin[0]}`]);
   const bad = r.imports.filter((i) => DRIVERS.test(i));
   for (const b of bad) violations.push(['PLT2', p.name, `root entry imports platform-only module "${b}"`]);
-  }
+}
 
-  // ---- PLT3: public type surface must not name a platform-only module ----
-  const typeFilesOf = (p) => {
+// ---- PLT3: public type surface must not name a platform-only module ----
+const typeFilesOf = (p) => {
   const out = [];
   for (const [sub, val] of Object.entries(p.pkg.exports ?? {})) {
     const types = typeof val === 'object' ? val.types : null;
     if (types) out.push({ sub, file: join(p.dir, types) });
   }
   return out;
-  };
-  const NODE_ONLY_SUB = /duckdb-node|connectors\/(pg|mysql|s3|file)|node/;
-  const isNodePkg = (name) => name === 'node' || /-node$/.test(name);
-  for (const p of pkgs) {
+};
+const NODE_ONLY_SUB = /duckdb-node|connectors\/(pg|mysql|s3|file)|node/;
+for (const p of pkgs) {
   for (const t of typeFilesOf(p)) {
     if (!existsSync(t.file)) continue;
-    if (isNodePkg(p.name) || NODE_ONLY_SUB.test(t.sub)) continue;   // node-only surface may name node types
+    if (NODE_ONLY_SUB.test(t.sub)) continue;          // node-only subpaths may import node types
     const src = readFileSync(t.file, 'utf8');
     for (const m of src.matchAll(/from\s+['"]([^'"]+)['"]/g)) {
       const spec = m[1];
@@ -83,10 +83,10 @@ export async function runGates(pkgDir) {
       }
     }
   }
-  }
+}
 
-  // ---- PLT4: dependency direction ----
-  for (const p of pkgs) {
+// ---- PLT4: dependency direction ----
+for (const p of pkgs) {
   const deps = { ...(p.pkg.dependencies ?? {}), ...(p.pkg.peerDependencies ?? {}) };
   const targets = Object.keys(deps).filter((k) => k.includes('nl2charts-'));
   if (p.name === 'core') {
@@ -98,23 +98,23 @@ export async function runGates(pkgDir) {
     violations.push(['PLT4', p.name, 'node must not depend on browser package']);
   if (p.name === 'browser' && targets.some((t) => /-node$/.test(t)))
     violations.push(['PLT4', p.name, 'browser must not depend on node package']);
-  }
+}
 
-  // ---- PLT5: platform packages carry bindings only, never orchestration ----
-  for (const p of platformPkgs) {
+// ---- PLT5: platform packages carry bindings only, never orchestration ----
+for (const p of platformPkgs) {
   const entry = entryOf(p);
   if (!entry || !existsSync(entry)) continue;
   const src = readFileSync(entry, 'utf8');
   const hit = src.match(ORCHESTRATION);
   if (hit) violations.push(['PLT5', p.name, `platform package exports orchestration symbol "${hit[0]}"`]);
-  }
+}
 
-  // ---- PLT6: cross-copy identity must survive (brand + registry) ----
-  const tmp = join(pkgDir, '..', '.plt6');
+// ---- PLT6: cross-copy identity must survive (brand + registry) ----
+const tmp = join(pkgDir, '..', '.plt6');
 
-  // driver modules are irrelevant to identity checks; stub them so the probe
-  // does not depend on whether the host happens to have installed a driver
-  const stubDrivers = {
+// driver modules are irrelevant to identity checks; stub them so the probe
+// does not depend on whether the host happens to have installed a driver
+const stubDrivers = {
   name: 'stub-drivers',
   setup(build) {
     build.onResolve({ filter: /^(pg|mysql2|better-sqlite3|@duckdb\/.*)$/ }, (a) => ({ path: a.path, namespace: 'stub' }));
@@ -123,20 +123,19 @@ export async function runGates(pkgDir) {
       loader: 'js',
     }));
   },
-  };
+};
 
-  async function buildCopy(entry, outfile) {
+async function buildCopy(entry, outfile) {
+  mkdirSync(dirname(outfile), { recursive: true });
   const r = await esbuild.build({
-    entryPoints: [entry], bundle: true, write: false,
+    entryPoints: [entry], bundle: true, write: true, outfile,
     platform: 'node', format: 'esm', logLevel: 'silent', target: 'node20',
     external: ['zod', 'ai'], plugins: [stubDrivers],
   });
-  mkdirSync(dirname(outfile), { recursive: true });
-  writeFileSync(outfile, r.outputFiles[0].text);
-  return outfile;
-  }
+  return r;
+}
 
-  if (corePkgs.length === 1) {
+if (corePkgs.length === 1) {
   const core = corePkgs[0];
   const entry = entryOf(core);
   const abs = entry ? resolve(core.dir, entry) : null;
@@ -147,11 +146,8 @@ export async function runGates(pkgDir) {
       const B = join(tmp, 'b', 'core.mjs');
       await buildCopy(abs, A);
       await buildCopy(abs, B);
-      // unique query per invocation: a constant string would hit the ESM cache
-      globalThis.__plt6Seq = (globalThis.__plt6Seq ?? 0) + 1;
-      const seq = globalThis.__plt6Seq;
-      const modA = await import(`${pathToFileURL(A).href}?probe=${seq}a`);
-      const modB = await import(`${pathToFileURL(B).href}?probe=${seq}b`);
+      const modA = await import(pathToFileURL(A).href + '?v=a');
+      const modB = await import(pathToFileURL(B).href + '?v=b');
 
       // (1) brand carried by a foreign copy must be recognised by both
       if (typeof modA.isEngine === 'function') {
@@ -173,22 +169,13 @@ export async function runGates(pkgDir) {
       violations.push(['PLT6', core.name, `dual-copy check failed: ${String(e.message).slice(0, 90)}`]);
     }
   }
-  }
-
-  const report = {
-    packages: pkgs.map((p) => p.name),
-    gates: ['PLT1', 'PLT2', 'PLT3', 'PLT4', 'PLT5', 'PLT6'],
-    violations: violations.map(([id, pkg, msg]) => ({ id, pkg, msg })),
-  };
-  return report;
 }
 
-// CLI: node check-platform.mjs --packages <dir>
-if (process.argv[1] && process.argv[1].endsWith('check-platform.mjs')) {
-  const args = process.argv.slice(2);
-  const dir = resolve(args[args.indexOf('--packages') + 1] ?? 'packages');
-  const r = await runGates(dir);
-  console.log(JSON.stringify(r, null, 1));
-  if (r.violations.length) { console.error(`FAIL: ${r.violations.length} violation(s)`); process.exit(1); }
-  console.error('PASS: all platform gates green');
-}
+const report = {
+  packages: pkgs.map((p) => p.name),
+  gates: ['PLT1', 'PLT2', 'PLT3', 'PLT4', 'PLT5', 'PLT6'],
+  violations: violations.map(([id, pkg, msg]) => ({ id, pkg, msg })),
+};
+console.log(JSON.stringify(report, null, 1));
+if (violations.length) { console.error(`FAIL: ${violations.length} violation(s)`); process.exit(1); }
+console.error('PASS: all platform gates green');

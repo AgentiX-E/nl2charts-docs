@@ -1,0 +1,2 @@
+{"name":"host","type":"module","main":"index.js",
+ "dependencies":{"@agentix-e/nl2charts-core":"file:../core-a","@agentix-e/nl2charts-node":"file:../pkg-node"}}

@@ -1,0 +1,52 @@
+{
+ "name": "@agentix-e/nl2charts-core",
+ "version": "1.0.0",
+ "type": "module",
+ "sideEffects": false,
+ "exports": {
+  ".": {
+   "types": "./dist/index.d.ts",
+   "default": "./src/index.ts"
+  },
+  "./duckdb-node": {
+   "types": "./dist/engine/node.d.ts",
+   "default": "./src/engine/node.ts"
+  },
+  "./duckdb-wasm": {
+   "types": "./dist/engine/wasm.d.ts",
+   "default": "./src/engine/wasm.ts"
+  },
+  "./connectors/pg": {
+   "types": "./dist/connectors/pg.d.ts",
+   "default": "./src/connectors/pg.ts"
+  }
+ },
+ "peerDependencies": {
+  "zod": "^3.23 || ^4",
+  "ai": "^7",
+  "@duckdb/node-api": "1.5.6-r.1",
+  "@duckdb/duckdb-wasm": "1.33.1-dev65.0",
+  "pg": "^8",
+  "mysql2": "^3"
+ },
+ "peerDependenciesMeta": {
+  "zod": {
+   "optional": false
+  },
+  "ai": {
+   "optional": false
+  },
+  "@duckdb/node-api": {
+   "optional": true
+  },
+  "@duckdb/duckdb-wasm": {
+   "optional": true
+  },
+  "pg": {
+   "optional": true
+  },
+  "mysql2": {
+   "optional": true
+  }
+ }
+}

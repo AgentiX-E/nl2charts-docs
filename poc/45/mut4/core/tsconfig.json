@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "declaration": true,
+    "emitDeclarationOnly": true,
+    "outDir": "dist",
+    "rootDir": "src",
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "target": "es2022",
+    "types": ["node"],
+    "typeRoots": ["/tmp/poc45/node_modules/@types"],
+    "skipLibCheck": true,
+    "strict": true
+  },
+  "include": ["src/**/*.ts"]
+}

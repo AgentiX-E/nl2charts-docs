@@ -1,1 +1,1 @@
-{"name":"poc45","private":true,"type":"module","dependencies":{"esbuild":"0.28.2"}}
+{"name":"poc45","private":true,"type":"module","dependencies":{"@types/node":"^22.20.5","esbuild":"^0.28.2","typescript":"^5.9.3"}}

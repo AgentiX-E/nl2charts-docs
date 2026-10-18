@@ -1,0 +1,1 @@
+{"name":"poc41","private":true,"type":"module","dependencies":{"esbuild":"^0.28.2","pg":"^8.11.5","hono":"^4.6.0"}}

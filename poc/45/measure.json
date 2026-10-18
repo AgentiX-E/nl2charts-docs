@@ -1,0 +1,56 @@
+[
+ {
+  "case": "L1 browser (root + subpath)",
+  "platform": "browser",
+  "ok": true,
+  "bytes": 245,
+  "hasPg": false,
+  "hasNodeBuiltin": false,
+  "nodeBuiltinsSeen": []
+ },
+ {
+  "case": "L1 node (root + subpath)",
+  "platform": "node",
+  "ok": true,
+  "bytes": 422,
+  "hasPg": false,
+  "hasNodeBuiltin": true,
+  "nodeBuiltinsSeen": [
+   "node:fs/promises",
+   "node:net"
+  ]
+ },
+ {
+  "case": "L1 browser misuse (pg)",
+  "platform": "browser",
+  "ok": false,
+  "error": "Build failed with 1 error: | L1/core/src/connectors/pg.ts:1:24: ERROR: Could not resolve \"node:net\""
+ },
+ {
+  "case": "L2 browser (core + browser)",
+  "platform": "browser",
+  "ok": true,
+  "bytes": 245,
+  "hasPg": false,
+  "hasNodeBuiltin": false,
+  "nodeBuiltinsSeen": []
+ },
+ {
+  "case": "L2 node (core + node)",
+  "platform": "node",
+  "ok": true,
+  "bytes": 422,
+  "hasPg": false,
+  "hasNodeBuiltin": true,
+  "nodeBuiltinsSeen": [
+   "node:fs/promises",
+   "node:net"
+  ]
+ },
+ {
+  "case": "L2 browser misuse (node pkg)",
+  "platform": "browser",
+  "ok": false,
+  "error": "Build failed with 1 error: | L2/node/src/index.ts:1:25: ERROR: Could not resolve \"node:fs/promises\""
+ }
+]

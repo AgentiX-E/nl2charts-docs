@@ -1,0 +1,77 @@
+{
+  "generatedAt": "2026-10-18T16:14:46.859Z",
+  "manifestBytes": {
+    "1000": 11073,
+    "10000": 110073,
+    "100000": 1100073
+  },
+  "core": {
+    "lines": 24,
+    "unchangedDuringOnboarding": true,
+    "registeredKinds": [
+      "http-json",
+      "csv-file"
+    ]
+  },
+  "surface": {
+    "requiredMethods": [
+      "describe",
+      "fetch"
+    ],
+    "connector1Methods": 2,
+    "connector2Methods": 2
+  },
+  "incremental": {
+    "remoteRows": 1000,
+    "localRows": 900,
+    "missingRows": 100,
+    "full": {
+      "rows": 1000,
+      "bytes": 52212,
+      "ms": 18
+    },
+    "incremental": {
+      "rows": 100,
+      "bytes": 12612,
+      "ms": 3
+    },
+    "byteRatio": 0.242,
+    "savedPct": 75.8,
+    "noop": {
+      "rows": 0,
+      "bytes": 8073
+    }
+  },
+  "csvConnector": {
+    "keys": 900,
+    "sample": 3,
+    "snapshot": "5c195ae0d8c5"
+  },
+  "failureModes": [
+    "CONNECTOR_NOT_REGISTERED",
+    "CONNECTOR_DUPLICATE",
+    "TIER_SNAPSHOT_MISMATCH"
+  ],
+  "snapshotGuard": "TIER_SNAPSHOT_MISMATCH on stale snapshot",
+  "keyReconciliation": {
+    "rows": 1000000,
+    "missing": 1000,
+    "naiveManifestBytes": 12000001,
+    "bucketDigest": {
+      "buckets": 4096,
+      "digestBytes": 130624,
+      "keyBytes": 11000000,
+      "totalBytes": 11130624,
+      "ratio": 0.928
+    },
+    "merkleBinary": {
+      "levels": 21,
+      "visitedNodes": 11069,
+      "hashBytes": 644160,
+      "keyBytes": 11000,
+      "totalBytes": 655160,
+      "ratio": 0.0546,
+      "speedup": 18.3
+    }
+  }
+}

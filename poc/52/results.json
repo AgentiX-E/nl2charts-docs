@@ -1,0 +1,297 @@
+{
+  "generatedAt": "2026-10-18T16:14:42.753Z",
+  "scenarios": {
+    "total": 12,
+    "drift": 6,
+    "chain": 6,
+    "appendOnly": {
+      "correct": 6
+    },
+    "intentState": {
+      "correct": 12
+    },
+    "failures": [],
+    "driftFailuresAppendOnly": [
+      "DR1",
+      "DR2",
+      "DR3",
+      "DR4",
+      "DR5",
+      "DR6"
+    ]
+  },
+  "resume": {
+    "ok": 12,
+    "total": 12
+  },
+  "illegalTransitions": [
+    {
+      "name": "retract-uncommitted",
+      "rejected": true,
+      "code": "ILLEGAL_RETRACT_UNCOMMITTED"
+    },
+    {
+      "name": "answer-unknown-slot",
+      "rejected": true,
+      "code": "ILLEGAL_SLOT"
+    },
+    {
+      "name": "double-clarify-one-turn",
+      "rejected": true,
+      "code": "HITL_MAX_ONE_QUESTION_PER_TURN"
+    },
+    {
+      "name": "clarify-after-answer-without-commit",
+      "rejected": true,
+      "code": "HITL_CLARIFY_BEFORE_COMMIT"
+    }
+  ],
+  "ordering": {
+    "fixed": {
+      "asked": 27,
+      "wasted": 5,
+      "wasteRate": 0.185
+    },
+    "dependency": {
+      "asked": 22,
+      "wasted": 0,
+      "wasteRate": 0
+    }
+  },
+  "detail": [
+    {
+      "id": "DR1",
+      "kind": "drift",
+      "appendOnlyCorrect": false,
+      "intentStateCorrect": true,
+      "appendOnlyGot": {
+        "metric": "revenue",
+        "timeRange": "last_quarter",
+        "grain": "region",
+        "filters": {}
+      },
+      "intentStateGot": {
+        "metric": "revenue",
+        "timeRange": "last_quarter",
+        "grain": "total",
+        "filters": {}
+      }
+    },
+    {
+      "id": "DR2",
+      "kind": "drift",
+      "appendOnlyCorrect": false,
+      "intentStateCorrect": true,
+      "appendOnlyGot": {
+        "metric": "orders",
+        "timeRange": "last_month",
+        "grain": "day",
+        "filters": {}
+      },
+      "intentStateGot": {
+        "metric": "orders",
+        "timeRange": "last_quarter",
+        "grain": "day",
+        "filters": {}
+      }
+    },
+    {
+      "id": "DR3",
+      "kind": "drift",
+      "appendOnlyCorrect": false,
+      "intentStateCorrect": true,
+      "appendOnlyGot": {
+        "metric": "revenue",
+        "timeRange": "none",
+        "grain": "total",
+        "filters": {
+          "status": "completed"
+        }
+      },
+      "intentStateGot": {
+        "metric": "revenue",
+        "timeRange": "none",
+        "grain": "total",
+        "filters": {
+          "status": "shipped"
+        }
+      }
+    },
+    {
+      "id": "DR4",
+      "kind": "drift",
+      "appendOnlyCorrect": false,
+      "intentStateCorrect": true,
+      "appendOnlyGot": {
+        "metric": "aov",
+        "timeRange": "none",
+        "grain": "channel",
+        "filters": {
+          "region": "emea"
+        }
+      },
+      "intentStateGot": {
+        "metric": "aov",
+        "timeRange": "none",
+        "grain": "channel",
+        "filters": {}
+      }
+    },
+    {
+      "id": "DR5",
+      "kind": "drift",
+      "appendOnlyCorrect": false,
+      "intentStateCorrect": true,
+      "appendOnlyGot": {
+        "metric": "revenue",
+        "timeRange": "last_year",
+        "grain": "total",
+        "filters": {}
+      },
+      "intentStateGot": {
+        "metric": "revenue",
+        "timeRange": "none",
+        "grain": "total",
+        "filters": {}
+      }
+    },
+    {
+      "id": "DR6",
+      "kind": "drift",
+      "appendOnlyCorrect": false,
+      "intentStateCorrect": true,
+      "appendOnlyGot": {
+        "metric": "orders",
+        "timeRange": "none",
+        "grain": "region",
+        "filters": {
+          "region": "apac"
+        }
+      },
+      "intentStateGot": {
+        "metric": "orders",
+        "timeRange": "none",
+        "grain": "region",
+        "filters": {
+          "region": "emea"
+        }
+      }
+    },
+    {
+      "id": "CH1",
+      "kind": "chain",
+      "appendOnlyCorrect": true,
+      "intentStateCorrect": true,
+      "appendOnlyGot": {
+        "metric": "profit",
+        "timeRange": "last_quarter",
+        "grain": "total",
+        "filters": {},
+        "profitBasis": "gross"
+      },
+      "intentStateGot": {
+        "metric": "profit",
+        "timeRange": "last_quarter",
+        "grain": "total",
+        "filters": {},
+        "profitBasis": "gross"
+      }
+    },
+    {
+      "id": "CH2",
+      "kind": "chain",
+      "appendOnlyCorrect": true,
+      "intentStateCorrect": true,
+      "appendOnlyGot": {
+        "metric": "profit",
+        "timeRange": "none",
+        "grain": "total",
+        "filters": {},
+        "profitBasis": "net",
+        "taxBasis": "inclusive"
+      },
+      "intentStateGot": {
+        "metric": "profit",
+        "timeRange": "none",
+        "grain": "total",
+        "filters": {},
+        "profitBasis": "net",
+        "taxBasis": "inclusive"
+      }
+    },
+    {
+      "id": "CH3",
+      "kind": "chain",
+      "appendOnlyCorrect": true,
+      "intentStateCorrect": true,
+      "appendOnlyGot": {
+        "metric": "orders",
+        "timeRange": "none",
+        "grain": "region",
+        "filters": {}
+      },
+      "intentStateGot": {
+        "metric": "orders",
+        "timeRange": "none",
+        "grain": "region",
+        "filters": {}
+      }
+    },
+    {
+      "id": "CH4",
+      "kind": "chain",
+      "appendOnlyCorrect": true,
+      "intentStateCorrect": true,
+      "appendOnlyGot": {
+        "metric": "margin",
+        "timeRange": "none",
+        "grain": "channel",
+        "filters": {}
+      },
+      "intentStateGot": {
+        "metric": "margin",
+        "timeRange": "none",
+        "grain": "channel",
+        "filters": {}
+      }
+    },
+    {
+      "id": "CH5",
+      "kind": "chain",
+      "appendOnlyCorrect": true,
+      "intentStateCorrect": true,
+      "appendOnlyGot": {
+        "metric": "revenue",
+        "timeRange": "none",
+        "grain": "month",
+        "filters": {},
+        "growthBasis": "yoy"
+      },
+      "intentStateGot": {
+        "metric": "revenue",
+        "timeRange": "none",
+        "grain": "month",
+        "filters": {},
+        "growthBasis": "yoy"
+      }
+    },
+    {
+      "id": "CH6",
+      "kind": "chain",
+      "appendOnlyCorrect": true,
+      "intentStateCorrect": true,
+      "appendOnlyGot": {
+        "metric": "revenue",
+        "timeRange": "none",
+        "grain": "total",
+        "filters": {}
+      },
+      "intentStateGot": {
+        "metric": "revenue",
+        "timeRange": "none",
+        "grain": "total",
+        "filters": {}
+      }
+    }
+  ]
+}

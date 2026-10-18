@@ -1,0 +1,1 @@
+{ "name": "browser-consumer", "private": true, "type": "module", "dependencies": { "@agentix-e/nl2charts-core": "1.0.0" } }

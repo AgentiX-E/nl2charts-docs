@@ -1,0 +1,96 @@
+{
+  "generatedAt": "2026-10-18T16:14:55.949Z",
+  "replay": [
+    {
+      "id": "bar-cat",
+      "replayIdentical": true
+    },
+    {
+      "id": "line-time",
+      "replayIdentical": true
+    },
+    {
+      "id": "pie-cat",
+      "replayIdentical": true
+    },
+    {
+      "id": "scatter-num",
+      "replayIdentical": true
+    },
+    {
+      "id": "table-any",
+      "replayIdentical": true
+    }
+  ],
+  "rendered": [
+    {
+      "id": "bar-cat",
+      "bytes": 359,
+      "hash": "083d8d824d96f086",
+      "replayIdentical": true
+    },
+    {
+      "id": "line-time",
+      "bytes": 412,
+      "hash": "0c9f7ecf777164df",
+      "replayIdentical": true
+    },
+    {
+      "id": "pie-cat",
+      "bytes": 393,
+      "hash": "3a652cdbb9ddf41d",
+      "replayIdentical": true
+    },
+    {
+      "id": "scatter-num",
+      "bytes": 306,
+      "hash": "2ae8addb84d0e74c",
+      "replayIdentical": true
+    },
+    {
+      "id": "table-any",
+      "bytes": 315,
+      "hash": "5252ae6b0fe38915",
+      "replayIdentical": true
+    }
+  ],
+  "rejected": [
+    {
+      "id": "pie-two-measures",
+      "rejected": true,
+      "code": "CHART_DIMENSION_REQUIRED"
+    },
+    {
+      "id": "line-on-categorical",
+      "rejected": true,
+      "code": "CHART_X_TYPE"
+    },
+    {
+      "id": "bar-y-not-numeric",
+      "rejected": true,
+      "code": "CHART_Y_NOT_MEASURE"
+    },
+    {
+      "id": "scatter-x-not-numeric",
+      "rejected": true,
+      "code": "CHART_X_TYPE"
+    },
+    {
+      "id": "unknown-column",
+      "rejected": true,
+      "code": "CHART_X_NOT_IN_RESULT"
+    },
+    {
+      "id": "empty-result",
+      "rejected": true,
+      "code": "CHART_EMPTY_RESULT"
+    }
+  ],
+  "summary": {
+    "rendered": "5/5",
+    "jsonReplay": "5/5",
+    "rejected": "6/6",
+    "llmCalls": 0,
+    "networkCalls": 0
+  }
+}
