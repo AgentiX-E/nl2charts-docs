@@ -44,8 +44,8 @@ jobs:
           assert d['P1_index_matches_sections'], d
           a, b = d['P2_pass_rate'].split('/')
           assert a == b, d
-          assert d['sections'] == 47, d
-          assert d['P4_assumption_rows'] == 59, d
+          assert d['sections'] == 48, d
+          assert d['P4_assumption_rows'] == 61, d
           print('POC-35 ok:', d['sections'], 'sections,', d['P2_pass_rate'], 'five-part,', d['P4_assumption_rows'], 'assumptions')
           PY
 
@@ -195,6 +195,22 @@ jobs:
           assert v['connectorOnlyHypothesisHolds'] is False, v
           print('POC-47 ok:', s['browserBundleBytes'], 'B browser tier,',
                 '5 node-only modules in', len(v['classes']), 'classes')
+          PY
+
+      - name: POC-48 split only the Node side
+        working-directory: poc/48
+        run: |
+          npm install --no-audit --no-fund
+          node run.mjs
+          python3 - <<'PY'
+          import json
+          d = json.load(open('results.json'))['summary']
+          assert d['coreSurfaceCleanA'] > 0, d
+          assert d['coreSurfaceCleanB'] == 0, d
+          assert d['structuralGuarantee'] is True, d
+          assert d['peerDriversInCore']['A'] == 4 and d['peerDriversInCore']['B'] == 1, d
+          assert d['extraInstallsForBrowser'] == 0, d
+          print('POC-48 ok: core unusable surface', d['coreSurfaceCleanA'], '->', d['coreSurfaceCleanB'])
           PY
 
       - name: POC-3 compile latency budget
