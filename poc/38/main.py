@@ -1,10 +1,11 @@
 #!/usr/bin/env python3
 """POC-38: POC-30 两臂的真实配对检验 + eval-plan 生成器（把定门槛变成计算）。"""
-import json, math
+import json, math, pathlib
+HERE = pathlib.Path(__file__).resolve().parent
 from math import comb
 
-A = json.load(open('/tmp/poc30_results.json'))
-B = json.load(open('/tmp/poc30b_results.json'))
+A = json.load(open(HERE.parent / '30' / 'results.json', encoding='utf-8'))
+B = json.load(open(HERE.parent / '30' / 'b_results.json', encoding='utf-8'))
 ADJ_A = {'q09','q16','q23','q26','q27','q28'}          # POC-30 已裁定的 R1–R4
 ADJ_B = {'q08','q13','q14','q16','q23','q24'}          # 同上口径（B 臂裁定）
 

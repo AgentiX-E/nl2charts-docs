@@ -10,7 +10,9 @@ from math import sqrt
 rng = np.random.default_rng(20261018)
 
 # ---------- A. 真实观测 ----------
-d = json.load(open('/tmp/poc9_results.json'))
+import pathlib
+HERE = pathlib.Path(__file__).resolve().parent
+d = json.load(open(HERE.parent / '09' / 'results.json', encoding='utf-8'))
 b = d['partB']
 n = len(b)
 strict_ok = sum(1 for x in b if x['ok'])
