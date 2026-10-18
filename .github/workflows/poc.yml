@@ -44,8 +44,8 @@ jobs:
           assert d['P1_index_matches_sections'], d
           a, b = d['P2_pass_rate'].split('/')
           assert a == b, d
-          assert d['sections'] == 50, d
-          assert d['P4_assumption_rows'] == 64, d
+          assert d['sections'] == 51, d
+          assert d['P4_assumption_rows'] == 66, d
           print('POC-35 ok:', d['sections'], 'sections,', d['P2_pass_rate'], 'five-part,', d['P4_assumption_rows'], 'assumptions')
           PY
 
@@ -242,6 +242,22 @@ jobs:
           assert s['degradesWithoutCrash'] is True, s
           assert s['providersTested'] == ['local', 'api', 'none'], s
           print('POC-50 ok:', len(s['providersTested']), 'providers, degradation holds')
+          PY
+
+      - name: POC-51 LLM and embedding share one provider model
+        working-directory: poc/51
+        run: |
+          node run.mjs
+          python3 - <<'PY'
+          import json
+          d = json.load(open('results.json'))
+          s = d['summary']
+          assert s['pass'] == s['total'] == 17, s
+          assert s['programmatic'] is True, s
+          assert s['singleMethodContract'] == ['complete'], s
+          assert len(s['llmProviders']) == 4, s
+          print('POC-51 ok:', len(s['llmProviders']), 'llm providers,',
+                len(s['embeddingProviders']), 'embedding providers')
           PY
 
       - name: POC-3 compile latency budget

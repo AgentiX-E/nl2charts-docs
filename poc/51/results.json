@@ -1,0 +1,143 @@
+{
+ "rows": [
+  {
+   "check": "http provider returns text",
+   "value": "string",
+   "expected": "string",
+   "pass": true,
+   "note": ""
+  },
+  {
+   "check": "http provider reports usage",
+   "value": 12,
+   "expected": 12,
+   "pass": true,
+   "note": ""
+  },
+  {
+   "check": "custom provider needs only complete()",
+   "value": "function",
+   "expected": "function",
+   "pass": true,
+   "note": ""
+  },
+  {
+   "check": "custom provider is invoked",
+   "value": 1,
+   "expected": 1,
+   "pass": true,
+   "note": ""
+  },
+  {
+   "check": "custom provider returns text",
+   "value": "select count(*) from orders",
+   "expected": "select count(*) from orders",
+   "pass": true,
+   "note": ""
+  },
+  {
+   "check": "custom provider keeps its id",
+   "value": "internal-gateway",
+   "expected": "internal-gateway",
+   "pass": true,
+   "note": ""
+  },
+  {
+   "check": "custom provider without stream is accepted",
+   "value": false,
+   "expected": false,
+   "pass": true,
+   "note": ""
+  },
+  {
+   "check": "ai-sdk adapter maps text",
+   "value": "select 1",
+   "expected": "select 1",
+   "pass": true,
+   "note": ""
+  },
+  {
+   "check": "ai-sdk adapter maps usage",
+   "value": 20,
+   "expected": 20,
+   "pass": true,
+   "note": ""
+  },
+  {
+   "check": "ai-sdk adapter keeps model id",
+   "value": "ai-sdk:gpt-x",
+   "expected": "ai-sdk:gpt-x",
+   "pass": true,
+   "note": ""
+  },
+  {
+   "check": "429 is retried then succeeds",
+   "value": true,
+   "expected": true,
+   "pass": true,
+   "note": ""
+  },
+  {
+   "check": "retry actually hit twice",
+   "value": 2,
+   "expected": 2,
+   "pass": true,
+   "note": ""
+  },
+  {
+   "check": "exhausted retries surface a code",
+   "value": "LLM_HTTP_503",
+   "expected": "LLM_HTTP_503",
+   "pass": true,
+   "note": ""
+  },
+  {
+   "check": "schema-less provider is still usable",
+   "value": "select 2",
+   "expected": "select 2",
+   "pass": true,
+   "note": ""
+  },
+  {
+   "check": "embedding: built-in factory works",
+   "value": 384,
+   "expected": 384,
+   "pass": true,
+   "note": ""
+  },
+  {
+   "check": "embedding: programmatic object works",
+   "value": 1024,
+   "expected": 1024,
+   "pass": true,
+   "note": ""
+  },
+  {
+   "check": "both providers share the factory+object pattern",
+   "value": true,
+   "expected": true,
+   "pass": true,
+   "note": "createX(kind, opts) or createX({ id, ...methods })"
+  }
+ ],
+ "summary": {
+  "total": 17,
+  "pass": 17,
+  "llmProviders": [
+   "http",
+   "custom",
+   "ai-sdk",
+   "mock"
+  ],
+  "embeddingProviders": [
+   "local",
+   "api",
+   "custom",
+   "none"
+  ],
+  "programmatic": true,
+  "singleMethodContract": [
+   "complete"
+  ]
+ }
+}
