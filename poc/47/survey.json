@@ -1,0 +1,136 @@
+{
+ "rows": [
+  {
+   "module": "orchestration",
+   "browserBundle": true,
+   "nodeImports": [],
+   "bytes": 72,
+   "missing": null
+  },
+  {
+   "module": "semantic",
+   "browserBundle": true,
+   "nodeImports": [],
+   "bytes": 41,
+   "missing": null
+  },
+  {
+   "module": "guard",
+   "browserBundle": true,
+   "nodeImports": [],
+   "bytes": 40,
+   "missing": null
+  },
+  {
+   "module": "admin",
+   "browserBundle": true,
+   "nodeImports": [],
+   "bytes": 71,
+   "missing": null
+  },
+  {
+   "module": "tiering",
+   "browserBundle": true,
+   "nodeImports": [],
+   "bytes": 55,
+   "missing": null
+  },
+  {
+   "module": "connectors-http",
+   "browserBundle": true,
+   "nodeImports": [],
+   "bytes": 65,
+   "missing": null
+  },
+  {
+   "module": "connectors-s3",
+   "browserBundle": true,
+   "nodeImports": [],
+   "bytes": 71,
+   "missing": null
+  },
+  {
+   "module": "engine-wasm",
+   "browserBundle": true,
+   "nodeImports": [],
+   "bytes": 69,
+   "missing": null
+  },
+  {
+   "module": "cache-opfs",
+   "browserBundle": true,
+   "nodeImports": [],
+   "bytes": 56,
+   "missing": null
+  },
+  {
+   "module": "connectors-pg",
+   "browserBundle": false,
+   "nodeImports": [
+    "node:net"
+   ],
+   "bytes": null,
+   "missing": "node:net"
+  },
+  {
+   "module": "connectors-mysql",
+   "browserBundle": false,
+   "nodeImports": [
+    "node:net"
+   ],
+   "bytes": null,
+   "missing": "node:net"
+  },
+  {
+   "module": "connectors-file",
+   "browserBundle": false,
+   "nodeImports": [
+    "node:fs/promises"
+   ],
+   "bytes": null,
+   "missing": "node:fs/promises"
+  },
+  {
+   "module": "engine-node",
+   "browserBundle": false,
+   "nodeImports": [
+    "node:fs"
+   ],
+   "bytes": null,
+   "missing": "node:fs"
+  },
+  {
+   "module": "cache-file",
+   "browserBundle": false,
+   "nodeImports": [
+    "node:fs"
+   ],
+   "bytes": null,
+   "missing": "node:fs"
+  }
+ ],
+ "summary": {
+  "total": 14,
+  "portable": 9,
+  "nodeOnly": 5,
+  "nodeOnlyByClass": {
+   "engine": [
+    "engine-node"
+   ],
+   "connectors": [
+    "connectors-pg",
+    "connectors-mysql",
+    "connectors-file"
+   ],
+   "persistence": [
+    "cache-file"
+   ]
+  },
+  "classes": [
+   "engine",
+   "connectors",
+   "persistence"
+  ],
+  "connectorOnlyHypothesisHolds": false
+ }
+}

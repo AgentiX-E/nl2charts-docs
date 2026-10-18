@@ -44,8 +44,8 @@ jobs:
           assert d['P1_index_matches_sections'], d
           a, b = d['P2_pass_rate'].split('/')
           assert a == b, d
-          assert d['sections'] == 46, d
-          assert d['P4_assumption_rows'] == 57, d
+          assert d['sections'] == 47, d
+          assert d['P4_assumption_rows'] == 59, d
           print('POC-35 ok:', d['sections'], 'sections,', d['P2_pass_rate'], 'five-part,', d['P4_assumption_rows'], 'assumptions')
           PY
 
@@ -174,6 +174,27 @@ jobs:
           assert s['pass'] == s['total'] == 7, s
           assert s['brandSurvives'] and s['naiveRegistrySplits'] and s['sharedRegistryWorks'], s
           print('POC-46 ok: brand survives, naive registry splits, shared registry works')
+          PY
+
+      - name: POC-47 browser tiering over plain HTTP
+        working-directory: poc/47
+        run: |
+          npm install --no-audit --no-fund
+          node run.mjs
+          node survey.mjs
+          python3 - <<'PY'
+          import json
+          d = json.load(open('results.json'))
+          s = d['summary']
+          assert s['pass'] == s['total'] == 14, s
+          assert s['zeroNodeDeps'] is True, s
+          assert s['endToEnd'] and s['guardHolds'], s
+          assert s['browserImports'] == [], s
+          v = json.load(open('survey.json'))['summary']
+          assert v['portable'] == 9 and v['nodeOnly'] == 5, v
+          assert v['connectorOnlyHypothesisHolds'] is False, v
+          print('POC-47 ok:', s['browserBundleBytes'], 'B browser tier,',
+                '5 node-only modules in', len(v['classes']), 'classes')
           PY
 
       - name: POC-3 compile latency budget
