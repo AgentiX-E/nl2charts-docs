@@ -1,7 +1,7 @@
 {
  "adr": {
-  "defined": 106,
-  "max": 106,
+  "defined": 107,
+  "max": 107,
   "missing_numbers": [],
   "dup_mentions": []
  },
@@ -37,8 +37,8 @@
  },
  "power_clauses": 8,
  "consistency": {
-  "version_tech": "v4.37",
-  "version_wp": "v4.37",
+  "version_tech": "v4.38",
+  "version_wp": "v4.38",
   "poc_sections": 40,
   "assumption_rows": 51,
   "wp_mentions_poc_max": 40,

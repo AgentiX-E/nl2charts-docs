@@ -1,0 +1,93 @@
+{
+ "version": "1.3.2",
+ "SELECT * FROM cat.sch.t": {
+  "keys": [
+   "alias",
+   "at_clause",
+   "catalog_name",
+   "column_name_alias",
+   "query_location",
+   "sample",
+   "schema_name",
+   "table_name",
+   "type"
+  ],
+  "vals": {
+   "catalog_name": "cat",
+   "schema_name": "sch",
+   "table_name": "t"
+  }
+ },
+ "SELECT * FROM sch.t": {
+  "keys": [
+   "alias",
+   "at_clause",
+   "catalog_name",
+   "column_name_alias",
+   "query_location",
+   "sample",
+   "schema_name",
+   "table_name",
+   "type"
+  ],
+  "vals": {
+   "catalog_name": "",
+   "schema_name": "sch",
+   "table_name": "t"
+  }
+ },
+ "SELECT CAST(a AS my_type) FROM t": {
+  "type_info_keys": [
+   [
+    "alias",
+    "catalog",
+    "extension_info",
+    "schema",
+    "type",
+    "user_type_modifiers",
+    "user_type_name"
+   ]
+  ],
+  "type_info": [
+   {
+    "type": "USER_TYPE_INFO",
+    "alias": "",
+    "extension_info": null,
+    "user_type_name": "my_type",
+    "catalog": "",
+    "schema": "",
+    "user_type_modifiers": []
+   }
+  ]
+ },
+ "SELECT CAST(a AS ENUM('x','y')) FROM t": {
+  "type_info_keys": [
+   [
+    "alias",
+    "extension_info",
+    "type",
+    "values",
+    "values_count"
+   ]
+  ],
+  "type_info": [
+   {
+    "type": "ENUM_TYPE_INFO",
+    "alias": "",
+    "extension_info": null,
+    "values_count": 2,
+    "values": [
+     "x",
+     "y"
+    ]
+   }
+  ]
+ },
+ "nested_union": {
+  "setop_nodes": 2,
+  "has_children": [
+   true,
+   true
+  ]
+ }
+}

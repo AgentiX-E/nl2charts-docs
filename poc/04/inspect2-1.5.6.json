@@ -1,0 +1,111 @@
+{
+ "version": "1.5.6",
+ "SELECT * FROM cat.sch.t": {
+  "keys": [
+   "alias",
+   "at_clause",
+   "catalog_name",
+   "column_name_alias",
+   "query_location",
+   "sample",
+   "schema_name",
+   "table_name",
+   "type"
+  ],
+  "vals": {
+   "catalog_name": "cat",
+   "schema_name": "sch",
+   "table_name": "t"
+  }
+ },
+ "SELECT * FROM sch.t": {
+  "keys": [
+   "alias",
+   "at_clause",
+   "catalog_name",
+   "column_name_alias",
+   "query_location",
+   "sample",
+   "schema_name",
+   "table_name",
+   "type"
+  ],
+  "vals": {
+   "catalog_name": "",
+   "schema_name": "sch",
+   "table_name": "t"
+  }
+ },
+ "SELECT CAST(a AS my_type) FROM t": {
+  "type_info_keys": [
+   [
+    "alias",
+    "catalog",
+    "extension_info",
+    "name",
+    "schema",
+    "type",
+    "user_type_modifiers"
+   ]
+  ],
+  "type_info": [
+   {
+    "type": "UNBOUND_TYPE_INFO",
+    "alias": "",
+    "extension_info": null,
+    "name": "my_type",
+    "catalog": "",
+    "schema": "",
+    "user_type_modifiers": []
+   }
+  ]
+ },
+ "SELECT CAST(a AS ENUM('x','y')) FROM t": {
+  "type_info_keys": [
+   [
+    "alias",
+    "catalog",
+    "extension_info",
+    "name",
+    "schema",
+    "type",
+    "user_type_modifiers"
+   ]
+  ],
+  "type_info": [
+   {
+    "type": "UNBOUND_TYPE_INFO",
+    "alias": "",
+    "extension_info": null,
+    "name": "ENUM",
+    "catalog": "",
+    "schema": "",
+    "user_type_modifiers": [
+     {
+      "type": {
+       "id": "VARCHAR",
+       "type_info": null
+      },
+      "is_null": false,
+      "value": "x"
+     },
+     {
+      "type": {
+       "id": "VARCHAR",
+       "type_info": null
+      },
+      "is_null": false,
+      "value": "y"
+     }
+    ]
+   }
+  ]
+ },
+ "nested_union": {
+  "setop_nodes": 2,
+  "has_children": [
+   false,
+   false
+  ]
+ }
+}

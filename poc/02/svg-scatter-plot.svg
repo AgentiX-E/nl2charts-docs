@@ -1,0 +1,54 @@
+<svg width="579" height="433" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" baseProfile="full" viewBox="0 0 579 433">
+<rect width="579" height="433" x="0" y="0" fill="none"></rect>
+<path d="M86 372.5L467 372.5" fill="none" pointer-events="visible" stroke="#dbdee4" class="zr5-cls-140"></path>
+<path d="M86 354.5L467 354.5" fill="none" pointer-events="visible" stroke="#dbdee4" class="zr5-cls-140"></path>
+<path d="M86 299.5L467 299.5" fill="none" pointer-events="visible" stroke="#dbdee4" class="zr5-cls-140"></path>
+<path d="M86 245.5L467 245.5" fill="none" pointer-events="visible" stroke="#dbdee4" class="zr5-cls-140"></path>
+<path d="M86 191.5L467 191.5" fill="none" pointer-events="visible" stroke="#dbdee4" class="zr5-cls-140"></path>
+<path d="M86 137.5L467 137.5" fill="none" pointer-events="visible" stroke="#dbdee4" class="zr5-cls-140"></path>
+<path d="M86 83.5L467 83.5" fill="none" pointer-events="visible" stroke="#dbdee4" class="zr5-cls-140"></path>
+<path d="M86 36.5L467 36.5" fill="none" pointer-events="visible" stroke="#dbdee4" class="zr5-cls-140"></path>
+<text dominant-baseline="central" text-anchor="middle" style="font-size:12px;font-family:sans-serif;" y="-6" transform="matrix(0,-1,1,0,26.78,204)" fill="#54555a">revenue</text>
+<path d="M86.5 372L86.5 36" fill="none" pointer-events="visible" stroke="#54555a" stroke-linecap="round" class="zr5-cls-140"></path>
+<text dominant-baseline="central" text-anchor="middle" style="font-size:12px;font-family:sans-serif;" y="6" transform="translate(276.5 402)" fill="#54555a">month</text>
+<path d="M86 372.5L467 372.5" fill="none" pointer-events="visible" stroke="#54555a" stroke-linecap="round" class="zr5-cls-140"></path>
+<path d="M86 372.5L81 372.5" fill="none" pointer-events="visible" stroke="#54555a" class="zr5-cls-140"></path>
+<path d="M86 354.5L81 354.5" fill="none" pointer-events="visible" stroke="#54555a" class="zr5-cls-140"></path>
+<path d="M86 299.5L81 299.5" fill="none" pointer-events="visible" stroke="#54555a" class="zr5-cls-140"></path>
+<path d="M86 245.5L81 245.5" fill="none" pointer-events="visible" stroke="#54555a" class="zr5-cls-140"></path>
+<path d="M86 191.5L81 191.5" fill="none" pointer-events="visible" stroke="#54555a" class="zr5-cls-140"></path>
+<path d="M86 137.5L81 137.5" fill="none" pointer-events="visible" stroke="#54555a" class="zr5-cls-140"></path>
+<path d="M86 83.5L81 83.5" fill="none" pointer-events="visible" stroke="#54555a" class="zr5-cls-140"></path>
+<path d="M86 36.5L81 36.5" fill="none" pointer-events="visible" stroke="#54555a" class="zr5-cls-140"></path>
+<text dominant-baseline="central" text-anchor="end" style="font-size:12px;font-family:sans-serif;" transform="translate(78 372)" fill="#54555a">532.5</text>
+<text dominant-baseline="central" text-anchor="end" style="font-size:12px;font-family:sans-serif;" transform="translate(78 353.7538)" fill="#54555a">600</text>
+<text dominant-baseline="central" text-anchor="end" style="font-size:12px;font-family:sans-serif;" transform="translate(78 299.6911)" fill="#54555a">800</text>
+<text dominant-baseline="central" text-anchor="end" style="font-size:12px;font-family:sans-serif;" transform="translate(78 245.6283)" fill="#54555a">1,000</text>
+<text dominant-baseline="central" text-anchor="end" style="font-size:12px;font-family:sans-serif;" transform="translate(78 191.5656)" fill="#54555a">1,200</text>
+<text dominant-baseline="central" text-anchor="end" style="font-size:12px;font-family:sans-serif;" transform="translate(78 137.5028)" fill="#54555a">1,400</text>
+<text dominant-baseline="central" text-anchor="end" style="font-size:12px;font-family:sans-serif;" transform="translate(78 83.4401)" fill="#54555a">1,600</text>
+<text dominant-baseline="central" text-anchor="end" style="font-size:12px;font-family:sans-serif;" transform="translate(78 36)" fill="#54555a">1,775.5</text>
+<path d="M-5 -5l61.5 0l0 68l-61.4 0Z" transform="translate(472 25)" fill="rgb(0,0,0)" fill-opacity="0" stroke="#b7b9be" stroke-width="0" class="zr5-cls-140"></path>
+<path d="M19.5 7A7 7 0 1 1 19.5 6.3A7 7 0 0 1 19.5 7" transform="translate(466.5 25)" fill="#5470c6" ecmeta_series_index="0" ecmeta_data_index="0" ecmeta_ssr_type="legend" ecmeta_silent="true" class="zr5-cls-140"></path>
+<text dominant-baseline="central" text-anchor="start" style="font-size:11px;font-family:sans-serif;" x="30" y="7" transform="translate(466.5 25)" fill="#54555a">East</text>
+<path d="M5.5 0l46.6 0l0 14l-46.6 0Z" transform="translate(466.5 25)" fill="none" pointer-events="visible" ecmeta_series_index="0" ecmeta_data_index="0" ecmeta_ssr_type="legend" class="zr5-cls-141"></path>
+<path d="M19.5 7A7 7 0 1 1 19.5 6.3A7 7 0 0 1 19.5 7" transform="translate(466.5 47)" fill="#91cc75" ecmeta_series_index="1" ecmeta_data_index="1" ecmeta_ssr_type="legend" ecmeta_silent="true" class="zr5-cls-140"></path>
+<text dominant-baseline="central" text-anchor="start" style="font-size:11px;font-family:sans-serif;" x="30" y="7" transform="translate(466.5 47)" fill="#54555a">West</text>
+<path d="M5.5 0l49.6 0l0 14l-49.6 0Z" transform="translate(466.5 47)" fill="none" pointer-events="visible" ecmeta_series_index="1" ecmeta_data_index="1" ecmeta_ssr_type="legend" class="zr5-cls-141"></path>
+<path d="M19.5 7A7 7 0 1 1 19.5 6.3A7 7 0 0 1 19.5 7" transform="translate(466.5 69)" fill="#fac858" ecmeta_series_index="2" ecmeta_data_index="2" ecmeta_ssr_type="legend" ecmeta_silent="true" class="zr5-cls-140"></path>
+<text dominant-baseline="central" text-anchor="start" style="font-size:11px;font-family:sans-serif;" x="30" y="7" transform="translate(466.5 69)" fill="#54555a">North</text>
+<path d="M5.5 0l51.5 0l0 14l-51.4 0Z" transform="translate(466.5 69)" fill="none" pointer-events="visible" ecmeta_series_index="2" ecmeta_data_index="2" ecmeta_ssr_type="legend" class="zr5-cls-141"></path>
+<text dominant-baseline="central" text-anchor="start" style="font-size:11px;font-family:sans-serif;font-weight:bold;" y="5.5" transform="translate(467 4)" fill="#333">region</text>
+<style ><![CDATA[
+.zr5-cls-140:hover {
+pointer-events:none;
+}
+.zr5-cls-141:hover {
+cursor:pointer;
+fill:rgba(0,0,0,0);
+}
+
+]]>
+
+</style>
+</svg>

@@ -1,0 +1,16 @@
+{
+  "meta": {
+    "flint": "0.5.1",
+    "node": "v22.13.1",
+    "n": 200,
+    "warmup": 5,
+    "percentile": "nearest-rank"
+  },
+  "p50": 0.54,
+  "p95": 0.91,
+  "p99": 1.19,
+  "max": 1.5,
+  "mean": 0.56,
+  "min": 0.3,
+  "frame_budget_pct": 5.5
+}
