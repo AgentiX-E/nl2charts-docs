@@ -1,0 +1,156 @@
+{
+ "engine": "duckdb",
+ "version": "1.5.6",
+ "results": [
+  {
+   "id": 1,
+   "cat": "baseline",
+   "ok": true,
+   "err": null
+  },
+  {
+   "id": 2,
+   "cat": "date_trunc",
+   "ok": true,
+   "err": null
+  },
+  {
+   "id": 3,
+   "cat": "cast_colon",
+   "ok": true,
+   "err": null
+  },
+  {
+   "id": 4,
+   "cat": "window",
+   "ok": true,
+   "err": null
+  },
+  {
+   "id": 5,
+   "cat": "cte",
+   "ok": true,
+   "err": null
+  },
+  {
+   "id": 6,
+   "cat": "qualify",
+   "ok": true,
+   "err": null
+  },
+  {
+   "id": 7,
+   "cat": "filter_agg",
+   "ok": true,
+   "err": null
+  },
+  {
+   "id": 8,
+   "cat": "ilike",
+   "ok": true,
+   "err": null
+  },
+  {
+   "id": 9,
+   "cat": "interval",
+   "ok": true,
+   "err": null
+  },
+  {
+   "id": 10,
+   "cat": "group_by_all",
+   "ok": true,
+   "err": null
+  },
+  {
+   "id": 11,
+   "cat": "distinct_on",
+   "ok": true,
+   "err": null
+  },
+  {
+   "id": 12,
+   "cat": "semi_join",
+   "ok": true,
+   "err": null
+  },
+  {
+   "id": 13,
+   "cat": "median",
+   "ok": true,
+   "err": null
+  },
+  {
+   "id": 14,
+   "cat": "percentile",
+   "ok": true,
+   "err": null
+  },
+  {
+   "id": 15,
+   "cat": "string_agg",
+   "ok": true,
+   "err": null
+  },
+  {
+   "id": 16,
+   "cat": "array_fn",
+   "ok": true,
+   "err": null
+  },
+  {
+   "id": 17,
+   "cat": "parquet",
+   "ok": false,
+   "err": "IO Error: No files found that match the pattern \"/nonexistent.parquet\"\n\nLINE 1: select * f"
+  },
+  {
+   "id": 18,
+   "cat": "generate_series",
+   "ok": true,
+   "err": null
+  },
+  {
+   "id": 19,
+   "cat": "pivot",
+   "ok": true,
+   "err": null
+  },
+  {
+   "id": 20,
+   "cat": "nulls_last",
+   "ok": true,
+   "err": null
+  },
+  {
+   "id": 21,
+   "cat": "lateral",
+   "ok": true,
+   "err": null
+  },
+  {
+   "id": 22,
+   "cat": "struct_access",
+   "ok": true,
+   "err": null
+  },
+  {
+   "id": 23,
+   "cat": "json_extract",
+   "ok": true,
+   "err": null
+  },
+  {
+   "id": 24,
+   "cat": "approx_quantile",
+   "ok": true,
+   "err": null
+  },
+  {
+   "id": 25,
+   "cat": "window_frame",
+   "ok": true,
+   "err": null
+  }
+ ]
+}

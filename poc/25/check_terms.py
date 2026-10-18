@@ -42,7 +42,7 @@ def scan():
         if re.search(r'`[^`]*(L[0-3]|D[1-9]|F[1-8]|C[1-6])[^`]*`', line): continue
         if re.match(r'^\|\s*(缓存层级用|方言门禁用|联邦门禁用|连接器门禁用|任务层用|评测矩阵行用|Fill 扩展点用|HITL 用|表格裸)', line): continue
         # 豁免：文档中"故意写错的反例"与"修正旧表述"的历史引用
-        if rid == "PKG_BARE_SCOPE" and re.search(r'必须红|反例|撞名|判红|违反的症状|startsWith\(`?@agentix-e/nl2charts-', line): continue
+        if rid == "PKG_BARE_SCOPE" and re.search(r'必须红|反例|撞名|判红|违反的症状|startsWith\(`?@agentix-e/nl2charts-|@agentix-e/\*', line): continue
         if rid == "PKG_NL2SQL_PKG" and re.search(r'判红|不得再作为包名|反例', line): continue
         if rid == "OLD_IDENT" and re.search(r'旧表述|修正 v4|废弃', line): continue
         if rx.search(line):

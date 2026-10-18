@@ -1,0 +1,18 @@
+{
+ "browser-core-only": {
+  "ok": true,
+  "bytes": 72,
+  "hasPg": false,
+  "hasNodeBuiltin": false
+ },
+ "browser-core-plus-pg": {
+  "ok": false,
+  "error": "Build failed with 24 errors: | node_modules/pg-connection-string/index.js:88:77: ERROR: Could not resolve \"fs\" | node_modules/pg-pool/index.js:2:29: ERROR: Could not resolve \"events\""
+ },
+ "node-core-plus-pg": {
+  "ok": true,
+  "bytes": 86466,
+  "hasPg": false,
+  "hasNodeBuiltin": false
+ }
+}

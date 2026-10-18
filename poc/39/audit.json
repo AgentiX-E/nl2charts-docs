@@ -1,12 +1,12 @@
 {
  "adr": {
-  "defined": 107,
-  "max": 107,
+  "defined": 111,
+  "max": 111,
   "missing_numbers": [],
   "dup_mentions": []
  },
  "sections": {
-  "count": 198,
+  "count": 206,
   "duplicates": []
  },
  "decisions": {
@@ -15,33 +15,33 @@
   "missing": []
  },
  "poc": {
-  "sections": 40,
-  "index_rows": 40,
+  "sections": 44,
+  "index_rows": 44,
   "sections_eq_index": true,
-  "max": 40
+  "max": 44
  },
  "claims_unsourced": {
   "sections_with_shixce_but_no_ref": 0,
   "samples": []
  },
  "gates": {
-  "defined": 38,
+  "defined": 39,
   "families": {
    "DG": 11,
    "FG": 8,
    "UX": 6,
    "P": 10,
-   "PKG": 3
+   "PKG": 4
   },
   "missing_family_mapping": []
  },
  "power_clauses": 8,
  "consistency": {
-  "version_tech": "v4.38",
-  "version_wp": "v4.38",
-  "poc_sections": 40,
-  "assumption_rows": 51,
-  "wp_mentions_poc_max": 40,
-  "tech_mentions_poc_max": 40
+  "version_tech": "v5.0",
+  "version_wp": "v5.0",
+  "poc_sections": 44,
+  "assumption_rows": 55,
+  "wp_mentions_poc_max": 44,
+  "tech_mentions_poc_max": 44
  }
 }
