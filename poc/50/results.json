@@ -1,0 +1,138 @@
+{
+ "rows": [
+  {
+   "check": "local provider builds an index",
+   "value": "vector",
+   "expected": "vector",
+   "pass": true,
+   "note": ""
+  },
+  {
+   "check": "local provider does not use the network",
+   "value": false,
+   "expected": false,
+   "pass": true,
+   "note": ""
+  },
+  {
+   "check": "local topK returns k items",
+   "value": 3,
+   "expected": 3,
+   "pass": true,
+   "note": ""
+  },
+  {
+   "check": "local retrieval is vector",
+   "value": "vector",
+   "expected": "vector",
+   "pass": true,
+   "note": ""
+  },
+  {
+   "check": "api provider builds an index",
+   "value": "vector",
+   "expected": "vector",
+   "pass": true,
+   "note": ""
+  },
+  {
+   "check": "api index dimension follows the provider",
+   "value": 2048,
+   "expected": 2048,
+   "pass": true,
+   "note": ""
+  },
+  {
+   "check": "api topK returns k items",
+   "value": 3,
+   "expected": 3,
+   "pass": true,
+   "note": ""
+  },
+  {
+   "check": "swapping provider needs no caller change",
+   "value": "function",
+   "expected": "function",
+   "pass": true,
+   "note": ""
+  },
+  {
+   "check": "dimension mismatch is rejected",
+   "value": "EMBEDDING_DIM_MISMATCH",
+   "expected": "EMBEDDING_DIM_MISMATCH",
+   "pass": true,
+   "note": ""
+  },
+  {
+   "check": "build-time outage degrades, not crashes",
+   "value": "lexical-fallback",
+   "expected": "lexical-fallback",
+   "pass": true,
+   "note": ""
+  },
+  {
+   "check": "build-time outage reason is kept",
+   "value": "EMBED_HTTP_429",
+   "expected": "EMBED_HTTP_429",
+   "pass": true,
+   "note": ""
+  },
+  {
+   "check": "null provider falls back to lexical",
+   "value": "lexical-fallback",
+   "expected": "lexical-fallback",
+   "pass": true,
+   "note": ""
+  },
+  {
+   "check": "lexical fallback still returns results",
+   "value": 3,
+   "expected": 3,
+   "pass": true,
+   "note": ""
+  },
+  {
+   "check": "fallback is labelled, not silent",
+   "value": "lexical-fallback",
+   "expected": "lexical-fallback",
+   "pass": true,
+   "note": ""
+  },
+  {
+   "check": "outage degrades instead of throwing",
+   "value": "lexical-fallback",
+   "expected": "lexical-fallback",
+   "pass": true,
+   "note": ""
+  },
+  {
+   "check": "outage reason is reported",
+   "value": "EMBED_HTTP_429",
+   "expected": "EMBED_HTTP_429",
+   "pass": true,
+   "note": ""
+  },
+  {
+   "check": "degraded call still returns results",
+   "value": 3,
+   "expected": 3,
+   "pass": true,
+   "note": ""
+  }
+ ],
+ "summary": {
+  "total": 17,
+  "pass": 17,
+  "providerAgnostic": true,
+  "providersTested": [
+   "local",
+   "api",
+   "none"
+  ],
+  "dimensionsSeen": [
+   384,
+   2048
+  ],
+  "degradesWithoutCrash": true
+ }
+}

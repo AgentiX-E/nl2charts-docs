@@ -1,0 +1,126 @@
+{
+ "meta": {
+  "node": "v22.13.1"
+ },
+ "rows": [
+  {
+   "check": "core bundles for a browser",
+   "value": true,
+   "expected": true,
+   "pass": true,
+   "note": ""
+  },
+  {
+   "check": "core imports no AI package",
+   "value": false,
+   "expected": false,
+   "pass": true,
+   "note": ""
+  },
+  {
+   "check": "core bundle mentions no model SDK",
+   "value": false,
+   "expected": false,
+   "pass": true,
+   "note": ""
+  },
+  {
+   "check": "core declares no AI peer",
+   "value": false,
+   "expected": false,
+   "pass": true,
+   "note": ""
+  },
+  {
+   "check": "core peer count",
+   "value": 2,
+   "expected": 2,
+   "pass": true,
+   "note": ""
+  },
+  {
+   "check": "sql-first executes without any model",
+   "value": 100,
+   "expected": 100,
+   "pass": true,
+   "note": ""
+  },
+  {
+   "check": "provenance says sql",
+   "value": "sql",
+   "expected": "sql",
+   "pass": true,
+   "note": ""
+  },
+  {
+   "check": "guard blocks a write",
+   "value": "STATEMENT_NOT_ALLOWED",
+   "expected": "STATEMENT_NOT_ALLOWED",
+   "pass": true,
+   "note": ""
+  },
+  {
+   "check": "guard blocks attach",
+   "value": "STATEMENT_NOT_ALLOWED",
+   "expected": "STATEMENT_NOT_ALLOWED",
+   "pass": true,
+   "note": ""
+  },
+  {
+   "check": "chart recommendation is deterministic",
+   "value": true,
+   "expected": true,
+   "pass": true,
+   "note": ""
+  },
+  {
+   "check": "chart type picked from data shape",
+   "value": "bar",
+   "expected": "bar",
+   "pass": true,
+   "note": ""
+  },
+  {
+   "check": "compile returns an option object",
+   "value": "object",
+   "expected": "object",
+   "pass": true,
+   "note": ""
+  },
+  {
+   "check": "ai path returns the same result shape",
+   "value": 200,
+   "expected": 200,
+   "pass": true,
+   "note": ""
+  },
+  {
+   "check": "ai path is marked nl",
+   "value": "nl",
+   "expected": "nl",
+   "pass": true,
+   "note": ""
+  },
+  {
+   "check": "ai depends on core",
+   "value": true,
+   "expected": true,
+   "pass": true,
+   "note": ""
+  },
+  {
+   "check": "core does not depend on ai",
+   "value": false,
+   "expected": false,
+   "pass": true,
+   "note": ""
+  }
+ ],
+ "summary": {
+  "total": 16,
+  "pass": 16,
+  "sqlOnlyNeedsAI": false,
+  "coreBytes": 843,
+  "coreImports": []
+ }
+}

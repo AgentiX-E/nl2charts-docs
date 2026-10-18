@@ -1,12 +1,12 @@
 {
  "adr": {
-  "defined": 114,
-  "max": 114,
+  "defined": 116,
+  "max": 116,
   "missing_numbers": [],
   "dup_mentions": []
  },
  "sections": {
-  "count": 212,
+  "count": 216,
   "duplicates": []
  },
  "decisions": {
@@ -15,10 +15,10 @@
   "missing": []
  },
  "poc": {
-  "sections": 48,
-  "index_rows": 48,
+  "sections": 50,
+  "index_rows": 50,
   "sections_eq_index": true,
-  "max": 48
+  "max": 50
  },
  "claims_unsourced": {
   "sections_with_shixce_but_no_ref": 0,
@@ -37,11 +37,11 @@
  },
  "power_clauses": 8,
  "consistency": {
-  "version_tech": "v5.3",
-  "version_wp": "v5.3",
-  "poc_sections": 48,
-  "assumption_rows": 61,
-  "wp_mentions_poc_max": 48,
-  "tech_mentions_poc_max": 48
+  "version_tech": "v5.4",
+  "version_wp": "v5.4",
+  "poc_sections": 50,
+  "assumption_rows": 64,
+  "wp_mentions_poc_max": 49,
+  "tech_mentions_poc_max": 50
  }
 }
