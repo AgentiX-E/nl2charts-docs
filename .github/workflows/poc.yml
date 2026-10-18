@@ -44,8 +44,8 @@ jobs:
           assert d['P1_index_matches_sections'], d
           a, b = d['P2_pass_rate'].split('/')
           assert a == b, d
-          assert d['sections'] == 51, d
-          assert d['P4_assumption_rows'] == 66, d
+          assert d['sections'] == 55, d
+          assert d['P4_assumption_rows'] == 74, d
           print('POC-35 ok:', d['sections'], 'sections,', d['P2_pass_rate'], 'five-part,', d['P4_assumption_rows'], 'assumptions')
           PY
 
@@ -69,7 +69,7 @@ jobs:
 
   # ---------- always-on: deterministic experiments ----------
   deterministic:
-    name: deterministic POCs (2/3/41/42/43/44)
+    name: deterministic POCs (2/3/41-55)
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -258,6 +258,85 @@ jobs:
           assert len(s['llmProviders']) == 4, s
           print('POC-51 ok:', len(s['llmProviders']), 'llm providers,',
                 len(s['embeddingProviders']), 'embedding providers')
+          PY
+
+      - name: POC-52 HITL session state
+        working-directory: poc/52
+        run: |
+          node run.mjs
+          python3 - <<'PY'
+          import json
+          d = json.load(open('results.json'))
+          sc = d['scenarios']
+          assert sc['appendOnly']['correct'] == 6, d
+          assert sc['intentState']['correct'] == 12, d
+          assert len(sc['driftFailuresAppendOnly']) == 6, d
+          assert d['resume']['ok'] == d['resume']['total'] == 12, d
+          assert sum(1 for r in d['illegalTransitions'] if r['rejected']) == 4, d
+          assert d['ordering']['fixed']['wasted'] == 5, d
+          assert d['ordering']['dependency']['wasted'] == 0, d
+          print('POC-52 ok: intent', sc['intentState']['correct'], '/', sc['total'],
+                'append-only', sc['appendOnly']['correct'], '/', sc['total'])
+          PY
+
+      - name: POC-53 observability contract
+        working-directory: poc/53
+        run: |
+          node run.mjs
+          python3 - <<'PY'
+          import json
+          d = json.load(open('results.json'))
+          sv = d['schemaSurvival']
+          assert sv['v1.30 (2025-04)']['valid'] == 4, sv
+          assert sv['v1.40 (2026-02)']['valid'] == 8, sv
+          assert sv['v1.43+ (2026-07, genai repo)']['valid'] == 12, sv
+          for k, v in d['dashboards']['oldDashboards_on_ourTable'].items():
+              assert v == '0/1', (k, v)
+          for k, v in d['dashboards']['ourDashboards_on_oldTable'].items():
+              assert v == '0/1', (k, v)
+          assert d['pii']['raw_leaks'] == 3, d['pii']
+          assert d['pii']['hash_leaks'] == 0, d['pii']
+          assert d['traceCompleteness']['identical'] is True, d['traceCompleteness']
+          print('POC-53 ok: survival 4/8/12, pii 3->0, trace identical')
+          PY
+
+      - name: POC-54 connector SPI and key reconciliation
+        working-directory: poc/54
+        run: |
+          node run.mjs
+          python3 - <<'PY'
+          import json
+          d = json.load(open('results.json'))
+          assert d['core']['unchangedDuringOnboarding'] is True, d['core']
+          assert len(d['surface']['requiredMethods']) == 2, d['surface']
+          inc = d['incremental']
+          assert inc['missingRows'] == 100 and inc['incremental']['rows'] == 100, inc
+          assert inc['byteRatio'] < 0.30, inc
+          kr = d['keyReconciliation']
+          assert kr['merkleBinary']['ratio'] < 0.06, kr
+          assert kr['bucketDigest']['ratio'] > 0.90, kr
+          assert len(d['failureModes']) == 3, d['failureModes']
+          print('POC-54 ok: incremental', inc['byteRatio'], 'of full bytes; merkle',
+                kr['merkleBinary']['ratio'], 'of manifest')
+          PY
+
+      - name: POC-55 explicit chart spec without a model
+        working-directory: poc/55
+        run: |
+          npm install --no-audit --no-fund
+          node spec.mjs > /dev/null
+          node bundle.mjs
+          python3 - <<'PY'
+          import json
+          d = json.load(open('results.json'))
+          assert d['summary']['rendered'] == '5/5', d['summary']
+          assert d['summary']['jsonReplay'] == '5/5', d['summary']
+          assert d['summary']['rejected'] == '6/6', d['summary']
+          b = json.load(open('bundle.json'))
+          assert b['gzip'] < 4000, b
+          assert b['importsCore'] == [], b
+          assert b['hasAiSdk'] is False and b['hasNodeBuiltin'] is False, b
+          print('POC-55 ok:', b['gzip'], 'B gzip, 0 core/ai imports')
           PY
 
       - name: POC-3 compile latency budget

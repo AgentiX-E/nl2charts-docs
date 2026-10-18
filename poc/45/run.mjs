@@ -4,7 +4,17 @@ import * as esbuild from 'esbuild';
 import { mkdirSync, writeFileSync, rmSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { runGates } from './check-platform.mjs';
+import { spawnSync } from 'node:child_process';
+// check-platform.mjs is a CLI (--packages <dir>); call it as a child process so
+// both the gate report and its exit code stay authoritative.
+function runGates(dir) {
+  const r = spawnSync(process.execPath, ['check-platform.mjs', '--packages', dir], { cwd: HERE, encoding: 'utf8' });
+  const text = r.stdout || '';
+  const i = text.indexOf('{');
+  if (i < 0) return { violations: [{ id: 'PLT0', pkg: '-', msg: (r.stderr || 'no output').slice(0, 120) }] };
+  try { return JSON.parse(text.slice(i)); }
+  catch { return { violations: [{ id: 'PLT0', pkg: '-', msg: 'unparsable report' }] }; }
+}
 
 const HERE = dirname(fileURLToPath(import.meta.url));
 const WORK = join(HERE, '.work');

@@ -1,45 +1,7 @@
 {
-  "generatedAt": "2026-10-18T16:21:44.961Z",
+  "generatedAt": "2026-10-18T23:51:10.320Z",
   "llm": {
-    "status": [
-      200,
-      200
-    ],
-    "requestModel": "deepseek-chat",
-    "responseModel": "deepseek-flash",
-    "usage": {
-      "first": {
-        "prompt_tokens": 1003,
-        "completion_tokens": 120,
-        "total_tokens": 1123,
-        "prompt_tokens_details": {
-          "cached_tokens": 768
-        },
-        "prompt_cache_hit_tokens": 768,
-        "prompt_cache_miss_tokens": 235
-      },
-      "second": {
-        "prompt_tokens": 1003,
-        "completion_tokens": 120,
-        "total_tokens": 1123,
-        "prompt_tokens_details": {
-          "cached_tokens": 768
-        },
-        "prompt_cache_hit_tokens": 768,
-        "prompt_cache_miss_tokens": 235
-      }
-    },
-    "cache": {
-      "hit1": 768,
-      "hit2": 768,
-      "miss1": 235,
-      "miss2": 235
-    },
-    "latencyMs": [
-      1000,
-      736
-    ],
-    "sql": "SELECT region, SUM(amount) AS total_amount\nFROM (\n    SELECT region, amount, status FROM t0\n    UNION ALL SELECT region,"
+    "skipped": true
   },
   "schemaSurvival": {
     "v1.30 (2025-04)": {
@@ -105,13 +67,6 @@
     }
   },
   "cost": {
-    "prompt_tokens": 1003,
-    "cache_hit": 768,
-    "cache_miss": 235,
-    "cache_hit_ratio": 0.7657,
-    "naive_units": 1003,
-    "cache_aware_units": 311.8,
-    "overcharge_ratio": 3.22,
-    "error_pct": 221.7
+    "skipped": true
   }
 }

@@ -1,0 +1,19 @@
+{
+ "name": "@agentix-e/nl2charts-core",
+ "version": "1.0.0",
+ "type": "module",
+ "sideEffects": false,
+ "exports": {
+  ".": {
+   "types": "./dist/index.d.ts",
+   "default": "./src/index.ts"
+  }
+ },
+ "peerDependencies": {
+  "zod": "^3.23 || ^4",
+  "ai": "^7"
+ },
+ "dependencies": {
+  "@agentix-e/nl2charts-node": "workspace:^"
+ }
+}

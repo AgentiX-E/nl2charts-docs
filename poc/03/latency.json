@@ -6,11 +6,11 @@
     "warmup": 5,
     "percentile": "nearest-rank"
   },
-  "p50": 0.54,
-  "p95": 0.91,
-  "p99": 1.19,
-  "max": 1.5,
-  "mean": 0.56,
-  "min": 0.3,
-  "frame_budget_pct": 5.5
+  "p50": 0.42,
+  "p95": 0.81,
+  "p99": 1.02,
+  "max": 1.17,
+  "mean": 0.46,
+  "min": 0.29,
+  "frame_budget_pct": 4.8
 }

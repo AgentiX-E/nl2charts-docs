@@ -117,7 +117,7 @@ const core = await import('data:text/javascript,' + encodeURIComponent(CORE_SRC)
 core.registerConnector('http-json', (o) => httpJsonConnector(o));
 core.registerConnector('csv-file', (o) => csvFileConnector(o));
 
-const localFile = '/tmp/poc54/local.csv';
+const localFile = new URL('./local.csv', import.meta.url).pathname;
 const localKeys = REMOTE_ROWS.slice(0, 900).map(r => r.id);
 fs.writeFileSync(localFile,
   'id,region,amount\n' + REMOTE_ROWS.slice(0, 900).map(r => `${r.id},${r.region},${r.amount}`).join('\n') + '\n');

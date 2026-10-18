@@ -1,0 +1,1 @@
+export const createTiering = (cfg) => ({ tiers: cfg.tiers });

@@ -1,0 +1,1 @@
+export const createTiering = (c) => ({ tiers: c.tiers });

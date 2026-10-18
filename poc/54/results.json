@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-18T16:14:46.859Z",
+  "generatedAt": "2026-10-18T23:51:10.423Z",
   "manifestBytes": {
     "1000": 11073,
     "10000": 110073,
@@ -33,7 +33,7 @@
     "incremental": {
       "rows": 100,
       "bytes": 12612,
-      "ms": 3
+      "ms": 4
     },
     "byteRatio": 0.242,
     "savedPct": 75.8,
@@ -55,7 +55,7 @@
   "snapshotGuard": "TIER_SNAPSHOT_MISMATCH on stale snapshot",
   "keyReconciliation": {
     "rows": 1000000,
-    "missing": 1000,
+    "missing": 999,
     "naiveManifestBytes": 12000001,
     "bucketDigest": {
       "buckets": 4096,
@@ -66,10 +66,10 @@
     },
     "merkleBinary": {
       "levels": 21,
-      "visitedNodes": 11069,
-      "hashBytes": 644160,
-      "keyBytes": 11000,
-      "totalBytes": 655160,
+      "visitedNodes": 11076,
+      "hashBytes": 644672,
+      "keyBytes": 10989,
+      "totalBytes": 655661,
       "ratio": 0.0546,
       "speedup": 18.3
     }

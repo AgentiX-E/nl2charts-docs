@@ -1,0 +1,1 @@
+export const createAdminHandler = () => async (req) => new Response('ok');

@@ -8,8 +8,10 @@
 """
 import re, json, sys
 
-TECH = '/workspace/text2charts-whitepaper/技术设计方案.md'
-WP = '/workspace/text2charts-whitepaper/产品白皮书.md'
+import pathlib
+ROOT = pathlib.Path(__file__).resolve().parents[2]
+TECH = str(ROOT / '技术设计方案.md')
+WP = str(ROOT / '产品白皮书.md')
 
 def load(p):
     return open(p, encoding='utf-8').read()
@@ -77,4 +79,4 @@ report['summary'] = {
     'no_layer_list': report.get('no_layer', []),
 }
 print(json.dumps(report, ensure_ascii=False, indent=1))
-json.dump(report, open('/tmp/poc27_report.json','w'), ensure_ascii=False, indent=1)
+json.dump(report, open(str(pathlib.Path(__file__).with_name('report.json')),'w'), ensure_ascii=False, indent=1)

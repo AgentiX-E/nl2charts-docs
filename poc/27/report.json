@@ -15,9 +15,10 @@
     10,
     11,
     12,
+    13,
     99
    ],
-   "count": 13
+   "count": 14
   },
   "FG": {
    "label": "联邦",
@@ -63,16 +64,25 @@
    "count": 11
   }
  },
- "orphans": [],
+ "orphans": [
+  {
+   "gate": "DG13",
+   "defs": 0,
+   "criterion": false,
+   "wbs": true,
+   "whitepaper": false,
+   "sections": []
+  }
+ ],
  "no_criterion": [],
  "no_wbs": [],
  "summary": {
-  "total_gates": 38,
-  "orphans": 0,
+  "total_gates": 39,
+  "orphans": 1,
   "no_criterion": 0,
   "no_wbs": 0,
   "no_wbs_list": [],
-  "no_layer": 32,
+  "no_layer": 30,
   "no_layer_list": [
    "DG1",
    "DG2",
@@ -96,8 +106,6 @@
    "UX5",
    "UX6",
    "P0",
-   "P1",
-   "P2",
    "P3",
    "P4",
    "P5",
@@ -131,8 +139,6 @@
   "UX5",
   "UX6",
   "P0",
-  "P1",
-  "P2",
   "P3",
   "P4",
   "P5",

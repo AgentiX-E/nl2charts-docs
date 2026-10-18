@@ -1,0 +1,1 @@
+export const createDuckDbWasm = async () => ({ kind: 'wasm' });

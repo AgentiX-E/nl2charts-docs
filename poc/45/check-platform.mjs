@@ -72,6 +72,10 @@ const typeFilesOf = (p) => {
 };
 const NODE_ONLY_SUB = /duckdb-node|connectors\/(pg|mysql|s3|file)|node/;
 for (const p of pkgs) {
+  // A package literally named "node" exists to carry Node bindings; its type
+  // surface is supposed to mention node:*. PLT3 protects platform-neutral
+  // packages (core/spec), not the binding package itself.
+  if (p.name === 'node') continue;
   for (const t of typeFilesOf(p)) {
     if (!existsSync(t.file)) continue;
     if (NODE_ONLY_SUB.test(t.sub)) continue;          // node-only subpaths may import node types

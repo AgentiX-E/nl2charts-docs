@@ -1,7 +1,10 @@
 import * as esbuild from 'esbuild';
 import { statSync, writeFileSync } from 'node:fs';
-const alias = { '@agentix-e/nl2charts-core': '/tmp/poc41/pkg/src/index.js',
-                '@agentix-e/nl2charts-core/pg': '/tmp/poc41/pkg/src/connectors/pg.js' };
+import { fileURLToPath } from 'node:url';
+import path from 'node:path';
+const here = path.dirname(fileURLToPath(import.meta.url));
+const alias = { '@agentix-e/nl2charts-core': path.join(here, 'pkg/src/index.js'),
+                '@agentix-e/nl2charts-core/pg': path.join(here, 'pkg/src/connectors/pg.js') };
 const cases = [
   ['browser-core-only', 'entry-a.js', 'browser'],
   ['browser-core-plus-pg', 'entry-b.js', 'browser'],

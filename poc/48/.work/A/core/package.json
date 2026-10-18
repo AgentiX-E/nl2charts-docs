@@ -1,0 +1,30 @@
+{
+ "name": "@agentix-e/nl2charts-core",
+ "version": "1.0.0",
+ "type": "module",
+ "sideEffects": false,
+ "exports": {
+  "./orchestration": "./src/orchestration.mjs",
+  "./semantic": "./src/semantic.mjs",
+  "./guard": "./src/guard.mjs",
+  "./admin": "./src/admin.mjs",
+  "./tiering": "./src/tiering.mjs",
+  "./http": "./src/http.mjs",
+  "./s3": "./src/s3.mjs",
+  "./duckdb-wasm": "./src/duckdb-wasm.mjs",
+  "./opfs": "./src/opfs.mjs",
+  "./duckdb-node": "./src/duckdb-node.mjs",
+  "./pg": "./src/pg.mjs",
+  "./mysql": "./src/mysql.mjs",
+  "./file": "./src/file.mjs",
+  "./cache-file": "./src/cache-file.mjs"
+ },
+ "peerDependencies": {
+  "zod": "^3",
+  "ai": "^7",
+  "@duckdb/node-api": "1.5.6-r.1",
+  "@duckdb/duckdb-wasm": "1.33",
+  "pg": "^8",
+  "mysql2": "^3"
+ }
+}

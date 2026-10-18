@@ -2,7 +2,8 @@
 """POC-36: 门禁注册表抽取 + G1-G5 校验 + 变异自测。"""
 import re, json
 
-T = '/workspace/text2charts-whitepaper/技术设计方案.md'
+import pathlib
+T = str(pathlib.Path(__file__).resolve().parents[2] / '技术设计方案.md')
 s = open(T, encoding='utf-8').read()
 lines = s.split('\n')
 
@@ -119,6 +120,6 @@ summary = {
     'mutation': mutation,
     'titles_needed': len(ids) * 2,
 }
-json.dump({'summary': summary, 'gates': gates}, open('/tmp/poc36_gates.json', 'w'),
+json.dump({'summary': summary, 'gates': gates}, open(str(pathlib.Path(__file__).with_name('gates.json')), 'w'),
           ensure_ascii=False, indent=1)
 print(json.dumps(summary, ensure_ascii=False, indent=1))

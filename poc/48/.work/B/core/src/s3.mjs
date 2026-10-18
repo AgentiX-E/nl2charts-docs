@@ -1,0 +1,1 @@
+export const createS3Connector = (c) => ({ kind: 's3', c });
