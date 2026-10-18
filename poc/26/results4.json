@@ -1,0 +1,36 @@
+{
+ "env": {
+  "nodeVersion": "v1.5.6"
+ },
+ "sentinel": {
+  "naiveRoundtrip": true,
+  "fixedRoundtrip": true,
+  "valueInAst": "18446744073709551615",
+  "valueAfterJsParse": "0",
+  "precisionLoss": {
+   "raw": "18446744073709551615",
+   "viaJs": "18446744073709552000"
+  }
+ },
+ "rewrite": {
+  "nodeDeOk": true,
+  "sql": "SELECT strftime(CAST('2026-01-01 00:00:00+00' AS TIMESTAMP WITH TIME ZONE), '%Y-%m') AS m",
+  "nodeExec": "ERR:A string was expected"
+ },
+ "wasm": {
+  "version": "v1.5.4",
+  "originalOnWasm": {
+   "ok": true,
+   "rows": 1
+  },
+  "rewrittenOnWasm": {
+   "ok": true,
+   "rows": 0,
+   "val": ""
+  },
+  "hasDeserialize": {
+   "ok": false,
+   "err": "Parser Error: Error parsing json: no statements"
+  }
+ }
+}

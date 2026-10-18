@@ -1,0 +1,102 @@
+{
+ "n": 30,
+ "strict": {
+  "accA": 63.3,
+  "accB": 76.7,
+  "delta_pp": 13.3,
+  "b_Awrong_Bright": 8,
+  "c_Aright_Bwrong": 4,
+  "discordance": 0.4,
+  "mcnemar_p": 0.3877,
+  "significant": false
+ },
+ "adjudicated": {
+  "accA": 83.3,
+  "accB": 96.7,
+  "delta_pp": 13.3,
+  "b_Awrong_Bright": 4,
+  "c_Aright_Bwrong": 0,
+  "discordance": 0.133,
+  "mcnemar_p": 0.125,
+  "significant": false
+ },
+ "observed_discordance_max": 0.4,
+ "min_detectable_delta_at_n30": 31.1,
+ "n_required_for_observed_delta": {
+  "strict": 176,
+  "adjudicated": 57
+ },
+ "selfcheck_poc17": {
+  "10pp@40%": 312,
+  "5pp@40%": 1254,
+  "2pp@40%": 7847
+ },
+ "generator_demo": {
+  "input_pilot": {
+   "n": 30,
+   "discordance": 0.4,
+   "accA": 63.3,
+   "accB": 76.7
+  },
+  "for_5pp": {
+   "design": "paired",
+   "observed_discordance": 0.4,
+   "target_delta_pp": 5.0,
+   "n_required": 1254,
+   "cost": {
+    "paired": {
+     "questions": 1254,
+     "inference_runs": 2508
+    },
+    "absolute": {
+     "questions": 2122,
+     "inference_runs": 2122,
+     "baseline_n": 868
+    },
+    "questions_saved_by_paired": 868,
+    "runs_delta": 386
+   },
+   "yaml": "  - id: PRIVATE\n    design: paired\n    comparison_baseline: \"v4.25 / strict 63.3% / n=30\"\n    metric: ex\n    evidence: \"off\"\n    grader: own\n    target_delta: 0.05\n    discordance_observed: 0.4     # 来自 pilot 30 题实测 b+c\n    alpha: 0.05\n    power: 0.8\n    n_required: 1254\n    gates_ref: [EV1, EV2, EV3, EV4, EV5, EV6]\n"
+  },
+  "for_10pp": {
+   "design": "paired",
+   "observed_discordance": 0.4,
+   "target_delta_pp": 10.0,
+   "n_required": 312,
+   "cost": {
+    "paired": {
+     "questions": 312,
+     "inference_runs": 624
+    },
+    "absolute": {
+     "questions": 529,
+     "inference_runs": 529,
+     "baseline_n": 217
+    },
+    "questions_saved_by_paired": 217,
+    "runs_delta": 95
+   },
+   "yaml": "  - id: PRIVATE\n    design: paired\n    comparison_baseline: \"v4.25 / strict 63.3% / n=30\"\n    metric: ex\n    evidence: \"off\"\n    grader: own\n    target_delta: 0.1\n    discordance_observed: 0.4     # 来自 pilot 30 题实测 b+c\n    alpha: 0.05\n    power: 0.8\n    n_required: 312\n    gates_ref: [EV1, EV2, EV3, EV4, EV5, EV6]\n"
+  },
+  "for_observed_13_3pp": {
+   "design": "paired",
+   "observed_discordance": 0.4,
+   "target_delta_pp": 13.3,
+   "n_required": 176,
+   "cost": {
+    "paired": {
+     "questions": 176,
+     "inference_runs": 352
+    },
+    "absolute": {
+     "questions": 299,
+     "inference_runs": 299,
+     "baseline_n": 123
+    },
+    "questions_saved_by_paired": 123,
+    "runs_delta": 53
+   },
+   "yaml": "  - id: PRIVATE\n    design: paired\n    comparison_baseline: \"v4.25 / strict 63.3% / n=30\"\n    metric: ex\n    evidence: \"off\"\n    grader: own\n    target_delta: 0.133\n    discordance_observed: 0.4     # 来自 pilot 30 题实测 b+c\n    alpha: 0.05\n    power: 0.8\n    n_required: 176\n    gates_ref: [EV1, EV2, EV3, EV4, EV5, EV6]\n"
+  }
+ }
+}

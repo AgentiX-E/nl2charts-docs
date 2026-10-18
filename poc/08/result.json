@@ -1,0 +1,1082 @@
+{
+ "A": {
+  "level": "A",
+  "n_cols": 101,
+  "full_recall_at5": 15,
+  "full_recall_at10": 16,
+  "avg_recall_at5": 0.8166666666666667,
+  "avg_recall_at10": 0.9083333333333333,
+  "group": {
+   "transparent": [
+    22,
+    26,
+    0.8461538461538461
+   ],
+   "opaque": [
+    12,
+    12,
+    1.0
+   ]
+  },
+  "per_q": [
+   {
+    "q": "上月各区域净收入",
+    "cat": "metric",
+    "gold": [
+     "orders.total_amt",
+     "regions.region_name",
+     "orders.order_dt"
+    ],
+    "top5": [
+     "payments.zffs2",
+     "regions.prov_code",
+     "regions.region_id",
+     "regions.region_name",
+     "sessions.sb"
+    ],
+    "rec5": 0.3333333333333333,
+    "rec10": 0.6666666666666666
+   },
+   {
+    "q": "各渠道订单数量",
+    "cat": "dimension",
+    "gold": [
+     "channels.chan_name",
+     "orders.order_id"
+    ],
+    "top5": [
+     "orders.status",
+     "orders.chan_id",
+     "orders.xse",
+     "orders.djzt",
+     "orders.total_amt"
+    ],
+    "rec5": 0.0,
+    "rec10": 0.5
+   },
+   {
+    "q": "退款金额最高的品类",
+    "cat": "metric",
+    "gold": [
+     "refunds.refund_amt",
+     "categories.cat_name"
+    ],
+    "top5": [
+     "refunds.tkly",
+     "refunds.refund_amt",
+     "refunds.order_id",
+     "refunds.reason_code",
+     "refunds.refund_id"
+    ],
+    "rec5": 0.5,
+    "rec10": 0.5
+   },
+   {
+    "q": "客户分层等级分布",
+    "cat": "opaque",
+    "gold": [
+     "customers.seg_lvl"
+    ],
+    "top5": [
+     "customers.seg_lvl",
+     "customers.hylx",
+     "orders.status",
+     "customers.reg_dt",
+     "customers.cust_id"
+    ],
+    "rec5": 1.0,
+    "rec10": 1.0
+   },
+   {
+    "q": "上月支付方式占比",
+    "cat": "dimension",
+    "gold": [
+     "payments.pay_method",
+     "payments.paid_amt"
+    ],
+    "top5": [
+     "payments.pay_method",
+     "payments.zffs2",
+     "payments.pay_id",
+     "payments.paid_amt",
+     "payments.paid_at"
+    ],
+    "rec5": 1.0,
+    "rec10": 1.0
+   },
+   {
+    "q": "各仓库可用库存为零的商品",
+    "cat": "opaque",
+    "gold": [
+     "inventory.stock_qty",
+     "warehouses.wh_name"
+    ],
+    "top5": [
+     "inventory.stock_qty",
+     "warehouses.wh_id",
+     "inventory.aqkc",
+     "inventory.wh_id",
+     "warehouses.wh_name"
+    ],
+    "rec5": 1.0,
+    "rec10": 1.0
+   },
+   {
+    "q": "发货后平均几天签收",
+    "cat": "metric",
+    "gold": [
+     "shipments.ship_dt",
+     "shipments.dlv_dt"
+    ],
+    "top5": [
+     "shipments.fhzt",
+     "shipments.carrier",
+     "shipments.dlv_dt",
+     "shipments.ship_dt",
+     "orders.status"
+    ],
+    "rec5": 1.0,
+    "rec10": 1.0
+   },
+   {
+    "q": "活动曝光到转化的比例",
+    "cat": "metric",
+    "gold": [
+     "camp_events.imp_cnt",
+     "camp_events.conv_cnt"
+    ],
+    "top5": [
+     "camp_events.conv_cnt",
+     "orders.status",
+     "customers.hylx",
+     "camp_events.imp_cnt",
+     "sessions.sb"
+    ],
+    "rec5": 1.0,
+    "rec10": 1.0
+   },
+   {
+    "q": "各设备类型的会话平均时长",
+    "cat": "metric",
+    "gold": [
+     "sessions.dev_type",
+     "sessions.dur_sec"
+    ],
+    "top5": [
+     "sessions.dur_sec",
+     "sessions.dev_type",
+     "sessions.sb",
+     "sessions.start_at",
+     "sessions.sess_id"
+    ],
+    "rec5": 1.0,
+    "rec10": 1.0
+   },
+   {
+    "q": "订单来源是 app 的有多少",
+    "cat": "opaque",
+    "gold": [
+     "orders.src_type"
+    ],
+    "top5": [
+     "orders.xse",
+     "orders.src_type",
+     "orders.status",
+     "orders.djzt",
+     "orders.chan_id"
+    ],
+    "rec5": 1.0,
+    "rec10": 1.0
+   },
+   {
+    "q": "各品牌的标价与成本差",
+    "cat": "metric",
+    "gold": [
+     "brands.brand_name",
+     "products.list_price",
+     "products.cost_amt"
+    ],
+    "top5": [
+     "products.list_price",
+     "products.cost_amt",
+     "products.cpdj",
+     "brands.brand_name",
+     "customers.hylx"
+    ],
+    "rec5": 1.0,
+    "rec10": 1.0
+   },
+   {
+    "q": "退款原因为质量问题的订单",
+    "cat": "opaque",
+    "gold": [
+     "refunds.reason_code",
+     "refunds.order_id"
+    ],
+    "top5": [
+     "refunds.order_id",
+     "refunds.reason_code",
+     "refunds.tkly",
+     "refunds.refund_id",
+     "refunds.refund_amt"
+    ],
+    "rec5": 1.0,
+    "rec10": 1.0
+   },
+   {
+    "q": "采购单价最高的供应商",
+    "cat": "metric",
+    "gold": [
+     "purchase_orders.unit_cost",
+     "suppliers.sup_name"
+    ],
+    "top5": [
+     "suppliers.sup_name",
+     "suppliers.sup_id",
+     "suppliers.contact_name",
+     "products.list_price",
+     "purchase_orders.unit_cost"
+    ],
+    "rec5": 1.0,
+    "rec10": 1.0
+   },
+   {
+    "q": "各门店开业时间",
+    "cat": "simple",
+    "gold": [
+     "stores.store_name",
+     "stores.open_dt"
+    ],
+    "top5": [
+     "stores.open_dt",
+     "sessions.start_at",
+     "sessions.sb",
+     "customers.hylx",
+     "stores.store_name"
+    ],
+    "rec5": 1.0,
+    "rec10": 1.0
+   },
+   {
+    "q": "商品等级为 1 的销量",
+    "cat": "opaque",
+    "gold": [
+     "products.cpdj",
+     "order_items.qty"
+    ],
+    "top5": [
+     "products.list_price",
+     "customers.seg_lvl",
+     "products.sku_id",
+     "order_items.qty",
+     "inventory.stock_qty"
+    ],
+    "rec5": 0.5,
+    "rec10": 1.0
+   },
+   {
+    "q": "承运商是顺丰的发货量",
+    "cat": "opaque",
+    "gold": [
+     "shipments.carrier"
+    ],
+    "top5": [
+     "shipments.carrier",
+     "shipments.fhzt",
+     "shipments.dlv_dt",
+     "shipments.ship_id",
+     "shipments.order_id"
+    ],
+    "rec5": 1.0,
+    "rec10": 1.0
+   },
+   {
+    "q": "会员类型 A 的客户数",
+    "cat": "opaque",
+    "gold": [
+     "customers.hylx"
+    ],
+    "top5": [
+     "customers.hylx",
+     "customers.seg_lvl",
+     "customers.cust_id",
+     "customers.reg_dt",
+     "sessions.cust_id"
+    ],
+    "rec5": 1.0,
+    "rec10": 1.0
+   },
+   {
+    "q": "各活动预算执行率",
+    "cat": "metric",
+    "gold": [
+     "campaigns.budget_amt",
+     "camp_events.spend_amt"
+    ],
+    "top5": [
+     "campaigns.budget_amt",
+     "orders.status",
+     "camp_events.spend_amt",
+     "camp_events.imp_cnt",
+     "sessions.sb"
+    ],
+    "rec5": 1.0,
+    "rec10": 1.0
+   },
+   {
+    "q": "页面浏览到下单的转化",
+    "cat": "metric",
+    "gold": [
+     "page_views.view_id",
+     "orders.order_id"
+    ],
+    "top5": [
+     "orders.status",
+     "customers.hylx",
+     "orders.xse",
+     "page_views.page_url",
+     "page_views.sess_id"
+    ],
+    "rec5": 0.0,
+    "rec10": 0.5
+   },
+   {
+    "q": "安全库存警戒的商品",
+    "cat": "opaque",
+    "gold": [
+     "inventory.aqkc",
+     "inventory.sku_id"
+    ],
+    "top5": [
+     "inventory.stock_qty",
+     "inventory.wh_id",
+     "inventory.aqkc",
+     "inventory.sku_id",
+     "warehouses.wh_id"
+    ],
+    "rec5": 1.0,
+    "rec10": 1.0
+   }
+  ]
+ },
+ "B": {
+  "level": "B",
+  "n_cols": 101,
+  "full_recall_at5": 14,
+  "full_recall_at10": 16,
+  "avg_recall_at5": 0.825,
+  "avg_recall_at10": 0.8666666666666667,
+  "group": {
+   "transparent": [
+    20,
+    26,
+    0.7692307692307693
+   ],
+   "opaque": [
+    12,
+    12,
+    1.0
+   ]
+  },
+  "per_q": [
+   {
+    "q": "上月各区域净收入",
+    "cat": "metric",
+    "gold": [
+     "orders.total_amt",
+     "regions.region_name",
+     "orders.order_dt"
+    ],
+    "top5": [
+     "orders.xse",
+     "regions.region_name",
+     "regions.region_id",
+     "products.cpdj",
+     "refunds.tkly"
+    ],
+    "rec5": 0.3333333333333333,
+    "rec10": 0.3333333333333333
+   },
+   {
+    "q": "各渠道订单数量",
+    "cat": "dimension",
+    "gold": [
+     "channels.chan_name",
+     "orders.order_id"
+    ],
+    "top5": [
+     "orders.chan_id",
+     "shipments.order_id",
+     "orders.xse",
+     "orders.status",
+     "orders.djzt"
+    ],
+    "rec5": 0.0,
+    "rec10": 0.0
+   },
+   {
+    "q": "退款金额最高的品类",
+    "cat": "metric",
+    "gold": [
+     "refunds.refund_amt",
+     "categories.cat_name"
+    ],
+    "top5": [
+     "refunds.refund_amt",
+     "refunds.order_id",
+     "refunds.tkly",
+     "refunds.reason_code",
+     "refunds.refund_dt"
+    ],
+    "rec5": 0.5,
+    "rec10": 0.5
+   },
+   {
+    "q": "客户分层等级分布",
+    "cat": "opaque",
+    "gold": [
+     "customers.seg_lvl"
+    ],
+    "top5": [
+     "customers.seg_lvl",
+     "products.cpdj",
+     "customers.hylx",
+     "customers.home_region_id",
+     "sessions.cust_id"
+    ],
+    "rec5": 1.0,
+    "rec10": 1.0
+   },
+   {
+    "q": "上月支付方式占比",
+    "cat": "dimension",
+    "gold": [
+     "payments.pay_method",
+     "payments.paid_amt"
+    ],
+    "top5": [
+     "payments.pay_method",
+     "payments.zffs2",
+     "payments.paid_amt",
+     "payments.paid_at",
+     "payments.order_id"
+    ],
+    "rec5": 1.0,
+    "rec10": 1.0
+   },
+   {
+    "q": "各仓库可用库存为零的商品",
+    "cat": "opaque",
+    "gold": [
+     "inventory.stock_qty",
+     "warehouses.wh_name"
+    ],
+    "top5": [
+     "inventory.aqkc",
+     "inventory.stock_qty",
+     "inventory.wh_id",
+     "warehouses.wh_name",
+     "warehouses.wh_id"
+    ],
+    "rec5": 1.0,
+    "rec10": 1.0
+   },
+   {
+    "q": "发货后平均几天签收",
+    "cat": "metric",
+    "gold": [
+     "shipments.ship_dt",
+     "shipments.dlv_dt"
+    ],
+    "top5": [
+     "shipments.dlv_dt",
+     "shipments.ship_dt",
+     "shipments.order_id",
+     "shipments.fhzt",
+     "shipments.ship_id"
+    ],
+    "rec5": 1.0,
+    "rec10": 1.0
+   },
+   {
+    "q": "活动曝光到转化的比例",
+    "cat": "metric",
+    "gold": [
+     "camp_events.imp_cnt",
+     "camp_events.conv_cnt"
+    ],
+    "top5": [
+     "camp_events.imp_cnt",
+     "camp_events.clk_cnt",
+     "camp_events.conv_cnt",
+     "campaigns.camp_id",
+     "campaigns.budget_amt"
+    ],
+    "rec5": 1.0,
+    "rec10": 1.0
+   },
+   {
+    "q": "各设备类型的会话平均时长",
+    "cat": "metric",
+    "gold": [
+     "sessions.dev_type",
+     "sessions.dur_sec"
+    ],
+    "top5": [
+     "sessions.dur_sec",
+     "sessions.dev_type",
+     "sessions.sb",
+     "sessions.start_at",
+     "page_views.sess_id"
+    ],
+    "rec5": 1.0,
+    "rec10": 1.0
+   },
+   {
+    "q": "订单来源是 app 的有多少",
+    "cat": "opaque",
+    "gold": [
+     "orders.src_type"
+    ],
+    "top5": [
+     "orders.src_type",
+     "payments.order_id",
+     "shipments.order_id",
+     "orders.chan_id",
+     "orders.xse"
+    ],
+    "rec5": 1.0,
+    "rec10": 1.0
+   },
+   {
+    "q": "各品牌的标价与成本差",
+    "cat": "metric",
+    "gold": [
+     "brands.brand_name",
+     "products.list_price",
+     "products.cost_amt"
+    ],
+    "top5": [
+     "products.list_price",
+     "order_items.cbl",
+     "products.cpdj",
+     "products.cost_amt",
+     "brands.brand_id"
+    ],
+    "rec5": 0.6666666666666666,
+    "rec10": 1.0
+   },
+   {
+    "q": "退款原因为质量问题的订单",
+    "cat": "opaque",
+    "gold": [
+     "refunds.reason_code",
+     "refunds.order_id"
+    ],
+    "top5": [
+     "refunds.reason_code",
+     "refunds.order_id",
+     "refunds.tkly",
+     "refunds.refund_dt",
+     "refunds.refund_amt"
+    ],
+    "rec5": 1.0,
+    "rec10": 1.0
+   },
+   {
+    "q": "采购单价最高的供应商",
+    "cat": "metric",
+    "gold": [
+     "purchase_orders.unit_cost",
+     "suppliers.sup_name"
+    ],
+    "top5": [
+     "purchase_orders.sup_id",
+     "suppliers.sup_id",
+     "purchase_orders.unit_cost",
+     "products.list_price",
+     "suppliers.sup_name"
+    ],
+    "rec5": 1.0,
+    "rec10": 1.0
+   },
+   {
+    "q": "各门店开业时间",
+    "cat": "simple",
+    "gold": [
+     "stores.store_name",
+     "stores.open_dt"
+    ],
+    "top5": [
+     "stores.open_dt",
+     "stores.store_name",
+     "stores.store_id",
+     "sessions.start_at",
+     "sessions.sb"
+    ],
+    "rec5": 1.0,
+    "rec10": 1.0
+   },
+   {
+    "q": "商品等级为 1 的销量",
+    "cat": "opaque",
+    "gold": [
+     "products.cpdj",
+     "order_items.qty"
+    ],
+    "top5": [
+     "products.cpdj",
+     "products.list_price",
+     "orders.xse",
+     "order_items.cbl",
+     "products.cat_id"
+    ],
+    "rec5": 0.5,
+    "rec10": 1.0
+   },
+   {
+    "q": "承运商是顺丰的发货量",
+    "cat": "opaque",
+    "gold": [
+     "shipments.carrier"
+    ],
+    "top5": [
+     "shipments.carrier",
+     "shipments.order_id",
+     "shipments.dlv_dt",
+     "shipments.ship_dt",
+     "shipments.fhzt"
+    ],
+    "rec5": 1.0,
+    "rec10": 1.0
+   },
+   {
+    "q": "会员类型 A 的客户数",
+    "cat": "opaque",
+    "gold": [
+     "customers.hylx"
+    ],
+    "top5": [
+     "customers.hylx",
+     "sessions.cust_id",
+     "customers.cust_id",
+     "customers.seg_lvl",
+     "customers.reg_dt"
+    ],
+    "rec5": 1.0,
+    "rec10": 1.0
+   },
+   {
+    "q": "各活动预算执行率",
+    "cat": "metric",
+    "gold": [
+     "campaigns.budget_amt",
+     "camp_events.spend_amt"
+    ],
+    "top5": [
+     "campaigns.budget_amt",
+     "camp_events.imp_cnt",
+     "order_items.cbl",
+     "camp_events.spend_amt",
+     "camp_events.clk_cnt"
+    ],
+    "rec5": 1.0,
+    "rec10": 1.0
+   },
+   {
+    "q": "页面浏览到下单的转化",
+    "cat": "metric",
+    "gold": [
+     "page_views.view_id",
+     "orders.order_id"
+    ],
+    "top5": [
+     "page_views.sess_id",
+     "payments.order_id",
+     "shipments.order_id",
+     "page_views.view_id",
+     "page_views.viewed_at"
+    ],
+    "rec5": 0.5,
+    "rec10": 0.5
+   },
+   {
+    "q": "安全库存警戒的商品",
+    "cat": "opaque",
+    "gold": [
+     "inventory.aqkc",
+     "inventory.sku_id"
+    ],
+    "top5": [
+     "inventory.aqkc",
+     "inventory.stock_qty",
+     "inventory.wh_id",
+     "products.cpdj",
+     "inventory.sku_id"
+    ],
+    "rec5": 1.0,
+    "rec10": 1.0
+   }
+  ]
+ },
+ "C": {
+  "level": "C",
+  "n_cols": 101,
+  "full_recall_at5": 14,
+  "full_recall_at10": 15,
+  "avg_recall_at5": 0.825,
+  "avg_recall_at10": 0.8916666666666666,
+  "group": {
+   "transparent": [
+    21,
+    26,
+    0.8076923076923077
+   ],
+   "opaque": [
+    12,
+    12,
+    1.0
+   ]
+  },
+  "per_q": [
+   {
+    "q": "上月各区域净收入",
+    "cat": "metric",
+    "gold": [
+     "orders.total_amt",
+     "regions.region_name",
+     "orders.order_dt"
+    ],
+    "top5": [
+     "regions.region_id",
+     "payments.paid_amt",
+     "refunds.order_id",
+     "payments.order_id",
+     "regions.region_name"
+    ],
+    "rec5": 0.3333333333333333,
+    "rec10": 0.6666666666666666
+   },
+   {
+    "q": "各渠道订单数量",
+    "cat": "dimension",
+    "gold": [
+     "channels.chan_name",
+     "orders.order_id"
+    ],
+    "top5": [
+     "shipments.order_id",
+     "payments.order_id",
+     "refunds.order_id",
+     "orders.chan_id",
+     "order_items.order_id"
+    ],
+    "rec5": 0.0,
+    "rec10": 0.5
+   },
+   {
+    "q": "退款金额最高的品类",
+    "cat": "metric",
+    "gold": [
+     "refunds.refund_amt",
+     "categories.cat_name"
+    ],
+    "top5": [
+     "refunds.order_id",
+     "refunds.refund_amt",
+     "refunds.refund_id",
+     "refunds.tkly",
+     "orders.total_amt"
+    ],
+    "rec5": 0.5,
+    "rec10": 0.5
+   },
+   {
+    "q": "客户分层等级分布",
+    "cat": "opaque",
+    "gold": [
+     "customers.seg_lvl"
+    ],
+    "top5": [
+     "customers.seg_lvl",
+     "customers.hylx",
+     "customers.cust_id",
+     "products.cpdj",
+     "sessions.cust_id"
+    ],
+    "rec5": 1.0,
+    "rec10": 1.0
+   },
+   {
+    "q": "上月支付方式占比",
+    "cat": "dimension",
+    "gold": [
+     "payments.pay_method",
+     "payments.paid_amt"
+    ],
+    "top5": [
+     "payments.paid_amt",
+     "payments.pay_method",
+     "payments.order_id",
+     "payments.zffs2",
+     "payments.paid_at"
+    ],
+    "rec5": 1.0,
+    "rec10": 1.0
+   },
+   {
+    "q": "各仓库可用库存为零的商品",
+    "cat": "opaque",
+    "gold": [
+     "inventory.stock_qty",
+     "warehouses.wh_name"
+    ],
+    "top5": [
+     "inventory.aqkc",
+     "warehouses.wh_name",
+     "inventory.stock_qty",
+     "inventory.sku_id",
+     "inventory.wh_id"
+    ],
+    "rec5": 1.0,
+    "rec10": 1.0
+   },
+   {
+    "q": "发货后平均几天签收",
+    "cat": "metric",
+    "gold": [
+     "shipments.ship_dt",
+     "shipments.dlv_dt"
+    ],
+    "top5": [
+     "shipments.order_id",
+     "shipments.dlv_dt",
+     "shipments.ship_dt",
+     "shipments.ship_id",
+     "shipments.fhzt"
+    ],
+    "rec5": 1.0,
+    "rec10": 1.0
+   },
+   {
+    "q": "活动曝光到转化的比例",
+    "cat": "metric",
+    "gold": [
+     "camp_events.imp_cnt",
+     "camp_events.conv_cnt"
+    ],
+    "top5": [
+     "camp_events.conv_cnt",
+     "page_views.sess_id",
+     "camp_events.imp_cnt",
+     "page_views.view_id",
+     "shipments.order_id"
+    ],
+    "rec5": 1.0,
+    "rec10": 1.0
+   },
+   {
+    "q": "各设备类型的会话平均时长",
+    "cat": "metric",
+    "gold": [
+     "sessions.dev_type",
+     "sessions.dur_sec"
+    ],
+    "top5": [
+     "sessions.dur_sec",
+     "sessions.dev_type",
+     "sessions.sb",
+     "page_views.sess_id",
+     "sessions.sess_id"
+    ],
+    "rec5": 1.0,
+    "rec10": 1.0
+   },
+   {
+    "q": "订单来源是 app 的有多少",
+    "cat": "opaque",
+    "gold": [
+     "orders.src_type"
+    ],
+    "top5": [
+     "orders.src_type",
+     "payments.order_id",
+     "shipments.order_id",
+     "refunds.order_id",
+     "order_items.order_id"
+    ],
+    "rec5": 1.0,
+    "rec10": 1.0
+   },
+   {
+    "q": "各品牌的标价与成本差",
+    "cat": "metric",
+    "gold": [
+     "brands.brand_name",
+     "products.list_price",
+     "products.cost_amt"
+    ],
+    "top5": [
+     "products.list_price",
+     "products.cost_amt",
+     "order_items.unit_price",
+     "purchase_orders.unit_cost",
+     "brands.brand_id"
+    ],
+    "rec5": 0.6666666666666666,
+    "rec10": 0.6666666666666666
+   },
+   {
+    "q": "退款原因为质量问题的订单",
+    "cat": "opaque",
+    "gold": [
+     "refunds.reason_code",
+     "refunds.order_id"
+    ],
+    "top5": [
+     "refunds.order_id",
+     "refunds.reason_code",
+     "refunds.refund_id",
+     "refunds.tkly",
+     "shipments.order_id"
+    ],
+    "rec5": 1.0,
+    "rec10": 1.0
+   },
+   {
+    "q": "采购单价最高的供应商",
+    "cat": "metric",
+    "gold": [
+     "purchase_orders.unit_cost",
+     "suppliers.sup_name"
+    ],
+    "top5": [
+     "purchase_orders.unit_cost",
+     "suppliers.sup_id",
+     "purchase_orders.po_id",
+     "shipments.order_id",
+     "payments.order_id"
+    ],
+    "rec5": 0.5,
+    "rec10": 1.0
+   },
+   {
+    "q": "各门店开业时间",
+    "cat": "simple",
+    "gold": [
+     "stores.store_name",
+     "stores.open_dt"
+    ],
+    "top5": [
+     "stores.open_dt",
+     "stores.store_name",
+     "stores.store_id",
+     "sessions.start_at",
+     "customers.reg_dt"
+    ],
+    "rec5": 1.0,
+    "rec10": 1.0
+   },
+   {
+    "q": "商品等级为 1 的销量",
+    "cat": "opaque",
+    "gold": [
+     "products.cpdj",
+     "order_items.qty"
+    ],
+    "top5": [
+     "products.cpdj",
+     "products.list_price",
+     "order_items.qty",
+     "order_items.unit_price",
+     "shipments.order_id"
+    ],
+    "rec5": 1.0,
+    "rec10": 1.0
+   },
+   {
+    "q": "承运商是顺丰的发货量",
+    "cat": "opaque",
+    "gold": [
+     "shipments.carrier"
+    ],
+    "top5": [
+     "shipments.carrier",
+     "shipments.order_id",
+     "shipments.ship_id",
+     "shipments.fhzt",
+     "refunds.order_id"
+    ],
+    "rec5": 1.0,
+    "rec10": 1.0
+   },
+   {
+    "q": "会员类型 A 的客户数",
+    "cat": "opaque",
+    "gold": [
+     "customers.hylx"
+    ],
+    "top5": [
+     "customers.hylx",
+     "sessions.cust_id",
+     "customers.seg_lvl",
+     "customers.cust_id",
+     "page_views.sess_id"
+    ],
+    "rec5": 1.0,
+    "rec10": 1.0
+   },
+   {
+    "q": "各活动预算执行率",
+    "cat": "metric",
+    "gold": [
+     "campaigns.budget_amt",
+     "camp_events.spend_amt"
+    ],
+    "top5": [
+     "campaigns.budget_amt",
+     "camp_events.spend_amt",
+     "camp_events.imp_cnt",
+     "payments.paid_amt",
+     "campaigns.camp_id"
+    ],
+    "rec5": 1.0,
+    "rec10": 1.0
+   },
+   {
+    "q": "页面浏览到下单的转化",
+    "cat": "metric",
+    "gold": [
+     "page_views.view_id",
+     "orders.order_id"
+    ],
+    "top5": [
+     "page_views.sess_id",
+     "payments.order_id",
+     "shipments.order_id",
+     "page_views.view_id",
+     "refunds.order_id"
+    ],
+    "rec5": 0.5,
+    "rec10": 0.5
+   },
+   {
+    "q": "安全库存警戒的商品",
+    "cat": "opaque",
+    "gold": [
+     "inventory.aqkc",
+     "inventory.sku_id"
+    ],
+    "top5": [
+     "inventory.aqkc",
+     "shipments.order_id",
+     "inventory.sku_id",
+     "products.tstp",
+     "inventory.stock_qty"
+    ],
+    "rec5": 1.0,
+    "rec10": 1.0
+   }
+  ]
+ }
+}

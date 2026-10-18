@@ -1,0 +1,350 @@
+{
+  "nv": "v1.5.6",
+  "wv": "v1.5.4",
+  "probes": [
+    {
+      "name": "lambda_arrow",
+      "node": "ok",
+      "wasm": "ok",
+      "same": true
+    },
+    {
+      "name": "lambda_python",
+      "node": "ok",
+      "wasm": "ok",
+      "same": true
+    },
+    {
+      "name": "variant_type",
+      "node": "Catalog Error: Scalar Function with name variant_type does not exist!",
+      "wasm": "Catalog Error: Scalar Function with name variant_type does not exist!",
+      "same": true
+    },
+    {
+      "name": "json_serialize_sql",
+      "node": "ok",
+      "wasm": "ok",
+      "same": true
+    },
+    {
+      "name": "decimal38",
+      "node": "ok",
+      "wasm": "ok",
+      "same": true
+    },
+    {
+      "name": "timestamptz",
+      "node": "ok",
+      "wasm": "ok",
+      "same": true
+    },
+    {
+      "name": "qualify",
+      "node": "ok",
+      "wasm": "ok",
+      "same": true
+    },
+    {
+      "name": "pivot",
+      "node": "ok",
+      "wasm": "ok",
+      "same": true
+    },
+    {
+      "name": "grouping_sets",
+      "node": "ok",
+      "wasm": "ok",
+      "same": true
+    },
+    {
+      "name": "union_by_name",
+      "node": "ok",
+      "wasm": "ok",
+      "same": true
+    },
+    {
+      "name": "summarize",
+      "node": "ok",
+      "wasm": "ok",
+      "same": true
+    },
+    {
+      "name": "string_agg_order",
+      "node": "ok",
+      "wasm": "ok",
+      "same": true
+    },
+    {
+      "name": "list_comprehension",
+      "node": "ok",
+      "wasm": "ok",
+      "same": true
+    },
+    {
+      "name": "struct_access",
+      "node": "ok",
+      "wasm": "ok",
+      "same": true
+    },
+    {
+      "name": "map_type",
+      "node": "ok",
+      "wasm": "ok",
+      "same": true
+    },
+    {
+      "name": "filter_clause",
+      "node": "ok",
+      "wasm": "ok",
+      "same": true
+    },
+    {
+      "name": "window_clause",
+      "node": "ok",
+      "wasm": "ok",
+      "same": true
+    },
+    {
+      "name": "asof_join",
+      "node": "ok",
+      "wasm": "ok",
+      "same": true
+    },
+    {
+      "name": "json_type_fn",
+      "node": "ok",
+      "wasm": "ok",
+      "same": true
+    },
+    {
+      "name": "read_parquet_fn",
+      "node": "ok",
+      "wasm": "ok",
+      "same": true
+    },
+    {
+      "name": "read_csv_fn",
+      "node": "ok",
+      "wasm": "ok",
+      "same": true
+    },
+    {
+      "name": "unnest",
+      "node": "ok",
+      "wasm": "ok",
+      "same": true
+    },
+    {
+      "name": "range_fn",
+      "node": "ok",
+      "wasm": "ok",
+      "same": true
+    },
+    {
+      "name": "pivot_longer",
+      "node": "ok",
+      "wasm": "ok",
+      "same": true
+    },
+    {
+      "name": "secret_syntax",
+      "node": "ok",
+      "wasm": "Extension Autoloading Error: An error occurred while trying to automatically install the r",
+      "same": false
+    }
+  ],
+  "diffs": [
+    {
+      "name": "agg",
+      "same": true,
+      "ea": null,
+      "eb": null,
+      "node": "[[\"paid\",\"3\",\"800.80\"],[\"pending\",\"1\",\"400.40\"],[\"refunded\",\"1\",\"300.30\"]]",
+      "wasm": "[[\"paid\",\"3\",\"800.80\"],[\"pending\",\"1\",\"400.40\"],[\"refunded\",\"1\",\"300.30\"]]"
+    },
+    {
+      "name": "decimal_precision",
+      "same": true,
+      "ea": null,
+      "eb": null,
+      "node": "[[\"1501.50\"]]",
+      "wasm": "[[\"1501.50\"]]"
+    },
+    {
+      "name": "tz_bucket",
+      "same": false,
+      "ea": null,
+      "eb": "Binder Error: No function matches the given name and argument types 'strftime(TIMESTAMP WI",
+      "node": "[[\"2026-09\",\"2\"],[\"2026-10\",\"3\"]]",
+      "wasm": "[]"
+    },
+    {
+      "name": "json_field",
+      "same": true,
+      "ea": null,
+      "eb": null,
+      "node": "[[\"app\",\"2\"],[\"store\",\"1\"],[\"web\",\"2\"]]",
+      "wasm": "[[\"app\",\"2\"],[\"store\",\"1\"],[\"web\",\"2\"]]"
+    },
+    {
+      "name": "json_type",
+      "same": true,
+      "ea": null,
+      "eb": null,
+      "node": "[[\"OBJECT\",\"5\"]]",
+      "wasm": "[[\"OBJECT\",\"5\"]]"
+    },
+    {
+      "name": "array_len",
+      "same": true,
+      "ea": null,
+      "eb": null,
+      "node": "[[\"9\"]]",
+      "wasm": "[[\"9\"]]"
+    },
+    {
+      "name": "array_unnest",
+      "same": true,
+      "ea": null,
+      "eb": null,
+      "node": "[[\"9\"]]",
+      "wasm": "[[\"9\"]]"
+    },
+    {
+      "name": "window_rank",
+      "same": true,
+      "ea": null,
+      "eb": null,
+      "node": "[[\"5\"]]",
+      "wasm": "[[\"5\"]]"
+    },
+    {
+      "name": "cte",
+      "same": true,
+      "ea": null,
+      "eb": null,
+      "node": "[[\"paid\",\"3\"],[\"pending\",\"1\"],[\"refunded\",\"1\"]]",
+      "wasm": "[[\"paid\",\"3\"],[\"pending\",\"1\"],[\"refunded\",\"1\"]]"
+    },
+    {
+      "name": "union",
+      "same": true,
+      "ea": null,
+      "eb": null,
+      "node": "[[\"5\"]]",
+      "wasm": "[[\"5\"]]"
+    },
+    {
+      "name": "case_when",
+      "same": true,
+      "ea": null,
+      "eb": null,
+      "node": "[[\"1\"]]",
+      "wasm": "[[\"1\"]]"
+    },
+    {
+      "name": "coalesce",
+      "same": true,
+      "ea": null,
+      "eb": null,
+      "node": "[[\"0\"]]",
+      "wasm": "[[\"0\"]]"
+    },
+    {
+      "name": "nullif",
+      "same": true,
+      "ea": null,
+      "eb": null,
+      "node": "[[\"3\"]]",
+      "wasm": "[[\"3\"]]"
+    },
+    {
+      "name": "round",
+      "same": true,
+      "ea": null,
+      "eb": null,
+      "node": "[[\"300.3\"]]",
+      "wasm": "[[\"300.3\"]]"
+    },
+    {
+      "name": "having",
+      "same": true,
+      "ea": null,
+      "eb": null,
+      "node": "[[\"1\"]]",
+      "wasm": "[[\"1\"]]"
+    },
+    {
+      "name": "listagg",
+      "same": true,
+      "ea": null,
+      "eb": null,
+      "node": "[[\"paid,pending,refunded\"]]",
+      "wasm": "[[\"paid,pending,refunded\"]]"
+    },
+    {
+      "name": "date_diff",
+      "same": true,
+      "ea": null,
+      "eb": null,
+      "node": "[[\"113\"]]",
+      "wasm": "[[\"113\"]]"
+    },
+    {
+      "name": "qualify2",
+      "same": true,
+      "ea": null,
+      "eb": null,
+      "node": "[[\"3\"]]",
+      "wasm": "[[\"3\"]]"
+    },
+    {
+      "name": "interval_arith",
+      "same": true,
+      "ea": null,
+      "eb": null,
+      "node": "[[\"3\"]]",
+      "wasm": "[[\"3\"]]"
+    },
+    {
+      "name": "lateral",
+      "same": true,
+      "ea": null,
+      "eb": null,
+      "node": "[[\"5\"]]",
+      "wasm": "[[\"5\"]]"
+    },
+    {
+      "name": "except_all",
+      "same": true,
+      "ea": null,
+      "eb": null,
+      "node": "[[\"0\"]]",
+      "wasm": "[[\"0\"]]"
+    },
+    {
+      "name": "intersect",
+      "same": true,
+      "ea": null,
+      "eb": null,
+      "node": "[[\"3\"]]",
+      "wasm": "[[\"3\"]]"
+    },
+    {
+      "name": "grouping_fn",
+      "same": false,
+      "ea": null,
+      "eb": null,
+      "node": "[[\"0\",\"1\"],[\"0\",\"1\"],[\"0\",\"3\"],[\"1\",\"5\"]]",
+      "wasm": "[[\"0\",\"3\"],[\"0\",\"1\"],[\"0\",\"1\"],[\"1\",\"5\"]]"
+    },
+    {
+      "name": "filter_push",
+      "same": true,
+      "ea": null,
+      "eb": null,
+      "node": "[[\"2\"]]",
+      "wasm": "[[\"2\"]]"
+    }
+  ]
+}

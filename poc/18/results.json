@@ -1,0 +1,208 @@
+{
+ "A": [
+  {
+   "case": "typo_column",
+   "cls": "unknown_column",
+   "attempt0": "error",
+   "healed": true,
+   "attempts": 1,
+   "tokens": 154
+  },
+  {
+   "case": "unknown_table",
+   "cls": "unknown_table",
+   "attempt0": "error",
+   "healed": true,
+   "attempts": 2,
+   "tokens": 233
+  },
+  {
+   "case": "type_mismatch",
+   "cls": "type_mismatch",
+   "attempt0": "error",
+   "healed": true,
+   "attempts": 1,
+   "tokens": 113
+  },
+  {
+   "case": "wrong_agg",
+   "cls": "wrong_aggregation",
+   "attempt0": "error",
+   "healed": false,
+   "attempts": 2,
+   "tokens": 382
+  },
+  {
+   "case": "missing_group",
+   "cls": "missing_group_by",
+   "attempt0": "error",
+   "healed": true,
+   "attempts": 1,
+   "tokens": 99
+  },
+  {
+   "case": "bad_join",
+   "cls": "wrong_join_key",
+   "attempt0": "runs",
+   "correct": false,
+   "healed": null,
+   "attempts": 0,
+   "tokens": 0
+  },
+  {
+   "case": "syntax",
+   "cls": "syntax_error",
+   "attempt0": "error",
+   "healed": true,
+   "attempts": 1,
+   "tokens": 92
+  },
+  {
+   "case": "func_missing",
+   "cls": "function_not_found",
+   "attempt0": "error",
+   "healed": true,
+   "attempts": 1,
+   "tokens": 125
+  },
+  {
+   "case": "date_literal",
+   "cls": "date_format_error",
+   "attempt0": "runs",
+   "correct": true,
+   "healed": null,
+   "attempts": 0,
+   "tokens": 0
+  },
+  {
+   "case": "ambiguous",
+   "cls": "ambiguous_column",
+   "attempt0": "runs",
+   "correct": true,
+   "healed": null,
+   "attempts": 0,
+   "tokens": 0
+  },
+  {
+   "case": "silent_missing_filter",
+   "cls": "silent_wrong",
+   "attempt0": "runs",
+   "correct": false,
+   "healed": null,
+   "attempts": 0,
+   "tokens": 0
+  },
+  {
+   "case": "silent_wrong_grain",
+   "cls": "silent_wrong",
+   "attempt0": "runs",
+   "correct": false,
+   "healed": null,
+   "attempts": 0,
+   "tokens": 0
+  }
+ ],
+ "B": [
+  {
+   "case": "typo_column",
+   "cls": "unknown_column",
+   "attempt0": "error",
+   "healed": true,
+   "attempts": 1,
+   "tokens": 298
+  },
+  {
+   "case": "unknown_table",
+   "cls": "unknown_table",
+   "attempt0": "error",
+   "healed": true,
+   "attempts": 1,
+   "tokens": 255
+  },
+  {
+   "case": "type_mismatch",
+   "cls": "type_mismatch",
+   "attempt0": "error",
+   "healed": true,
+   "attempts": 1,
+   "tokens": 259
+  },
+  {
+   "case": "wrong_agg",
+   "cls": "wrong_aggregation",
+   "attempt0": "error",
+   "healed": true,
+   "attempts": 1,
+   "tokens": 308
+  },
+  {
+   "case": "missing_group",
+   "cls": "missing_group_by",
+   "attempt0": "error",
+   "healed": true,
+   "attempts": 1,
+   "tokens": 251
+  },
+  {
+   "case": "bad_join",
+   "cls": "wrong_join_key",
+   "attempt0": "runs",
+   "correct": false,
+   "healed": null,
+   "attempts": 0,
+   "tokens": 0
+  },
+  {
+   "case": "syntax",
+   "cls": "syntax_error",
+   "attempt0": "error",
+   "healed": true,
+   "attempts": 1,
+   "tokens": 239
+  },
+  {
+   "case": "func_missing",
+   "cls": "function_not_found",
+   "attempt0": "error",
+   "healed": true,
+   "attempts": 1,
+   "tokens": 272
+  },
+  {
+   "case": "date_literal",
+   "cls": "date_format_error",
+   "attempt0": "runs",
+   "correct": true,
+   "healed": null,
+   "attempts": 0,
+   "tokens": 0
+  },
+  {
+   "case": "ambiguous",
+   "cls": "ambiguous_column",
+   "attempt0": "runs",
+   "correct": true,
+   "healed": null,
+   "attempts": 0,
+   "tokens": 0
+  },
+  {
+   "case": "silent_missing_filter",
+   "cls": "silent_wrong",
+   "attempt0": "runs",
+   "correct": false,
+   "healed": null,
+   "attempts": 0,
+   "tokens": 0
+  },
+  {
+   "case": "silent_wrong_grain",
+   "cls": "silent_wrong",
+   "attempt0": "runs",
+   "correct": false,
+   "healed": null,
+   "attempts": 0,
+   "tokens": 0
+  }
+ ]
+}

@@ -1,0 +1,192 @@
+{
+ "cases": [
+  {
+   "name": "num_round_half",
+   "same": false,
+   "node": "[{\"a\":{\"width\":2,\"scale\":0,\"value\":\"3\"},\"b\":{\"width\":2,\"scale\":0,\"value\":\"4\"},\"c\":{\"width\":2,\"scale\":0,\"value\":\"-3\"},\"d\":{\"width\":2,\"scale\":0,\"value\":\"-4\"}}]",
+   "wasm": "[{\"a\":\"\\\"3\\\"\",\"b\":\"\\\"4\\\"\",\"c\":\"\\\"-3\\\"\",\"d\":\"\\\"-4\\\"\"}]"
+  },
+  {
+   "name": "num_int_div",
+   "same": true,
+   "node": "[{\"a\":2.5,\"b\":2}]",
+   "wasm": "[{\"a\":2.5,\"b\":2}]"
+  },
+  {
+   "name": "num_decimal_div",
+   "same": true,
+   "node": "[{\"a\":\"0.3333333333333333\"}]",
+   "wasm": "[{\"a\":\"0.3333333333333333\"}]"
+  },
+  {
+   "name": "num_float",
+   "same": true,
+   "node": "[{\"a\":\"0.30000000000000004\"}]",
+   "wasm": "[{\"a\":\"0.30000000000000004\"}]"
+  },
+  {
+   "name": "num_overflow",
+   "same": true,
+   "node": "Conversion Error: Type DOUBLE with value 1e+19 can't be cast because the value is out of range for the destina",
+   "wasm": "Conversion Error: Type DOUBLE with value 1e+19 can't be cast because the value is out of range for the destina"
+  },
+  {
+   "name": "num_sum_type",
+   "same": true,
+   "node": "[{\"t\":\"HUGEINT\",\"s\":\"3\"}]",
+   "wasm": "[{\"t\":\"HUGEINT\",\"s\":\"3\"}]"
+  },
+  {
+   "name": "dt_week_start",
+   "same": true,
+   "node": "[{\"a\":\"2026-10-12 (Mon)\"}]",
+   "wasm": "[{\"a\":\"2026-10-12 (Mon)\"}]"
+  },
+  {
+   "name": "dt_dow",
+   "same": false,
+   "node": "[{\"a\":\"0\",\"b\":\"7\"}]",
+   "wasm": "Do not know how to serialize a BigInt"
+  },
+  {
+   "name": "dt_month_end",
+   "same": true,
+   "node": "[{\"a\":\"2026-02-28 00:00:00\"}]",
+   "wasm": "[{\"a\":\"2026-02-28 00:00:00\"}]"
+  },
+  {
+   "name": "dt_diff_boundary",
+   "same": false,
+   "node": "[{\"a\":\"1\"}]",
+   "wasm": "Do not know how to serialize a BigInt"
+  },
+  {
+   "name": "dt_month_name",
+   "same": true,
+   "node": "[{\"a\":\"October\"}]",
+   "wasm": "[{\"a\":\"October\"}]"
+  },
+  {
+   "name": "dt_timezone_set",
+   "same": true,
+   "node": "[]",
+   "wasm": "[]"
+  },
+  {
+   "name": "dt_current",
+   "same": true,
+   "node": "[{\"d\":\"2026-10-18\",\"n\":\"2026-10-18T09:18:25+08\"}]",
+   "wasm": "[{\"d\":\"2026-10-18\",\"n\":\"2026-10-18T09:18:25+08\"}]"
+  },
+  {
+   "name": "dt_dst",
+   "same": true,
+   "node": "[{\"a\":\"2026-03-08 01:59 \"}]",
+   "wasm": "[{\"a\":\"2026-03-08 01:59 \"}]"
+  },
+  {
+   "name": "str_emoji_len",
+   "same": true,
+   "node": "Binder Error: Could not choose a best candidate function for the function call \"octet_length(STRING_LITERAL)\".",
+   "wasm": "Binder Error: Could not choose a best candidate function for the function call \"octet_length(STRING_LITERAL)\"."
+  },
+  {
+   "name": "str_upper",
+   "same": true,
+   "node": "[{\"a\":\"ẞ\",\"b\":\"i\"}]",
+   "wasm": "[{\"a\":\"ẞ\",\"b\":\"i\"}]"
+  },
+  {
+   "name": "str_substr",
+   "same": true,
+   "node": "[{\"a\":\"😀\",\"b\":\"文测\"}]",
+   "wasm": "[{\"a\":\"😀\",\"b\":\"文测\"}]"
+  },
+  {
+   "name": "str_like_escape",
+   "same": true,
+   "node": "[{\"a\":true}]",
+   "wasm": "[{\"a\":true}]"
+  },
+  {
+   "name": "str_collate",
+   "same": true,
+   "node": "[{\"s\":\"a,A,b\"}]",
+   "wasm": "[{\"s\":\"a,A,b\"}]"
+  },
+  {
+   "name": "str_cn_sort",
+   "same": true,
+   "node": "[{\"s\":\"上海,北京,广州\"}]",
+   "wasm": "[{\"s\":\"上海,北京,广州\"}]"
+  },
+  {
+   "name": "json_key_order",
+   "same": true,
+   "node": "[{\"a\":\"{\\\"b\\\":2,\\\"a\\\":1}\"}]",
+   "wasm": "[{\"a\":\"{\\\"b\\\":2,\\\"a\\\":1}\"}]"
+  },
+  {
+   "name": "json_dup_keys",
+   "same": true,
+   "node": "[{\"a\":\"{\\\"a\\\":1,\\\"a\\\":2}\"}]",
+   "wasm": "[{\"a\":\"{\\\"a\\\":1,\\\"a\\\":2}\"}]"
+  },
+  {
+   "name": "json_big_int",
+   "same": true,
+   "node": "[{\"a\":\"{\\\"n\\\":9007199254740993}\",\"b\":\"9007199254740993\"}]",
+   "wasm": "[{\"a\":\"{\\\"n\\\":9007199254740993}\",\"b\":\"9007199254740993\"}]"
+  },
+  {
+   "name": "json_unicode",
+   "same": true,
+   "node": "[{\"a\":\"{\\\"k\\\":\\\"中文😀\\\"}\"}]",
+   "wasm": "[{\"a\":\"{\\\"k\\\":\\\"中文😀\\\"}\"}]"
+  },
+  {
+   "name": "hash_text",
+   "same": false,
+   "node": "[{\"a\":\"1924864467101078684\",\"b\":\"3412241639431793400\"}]",
+   "wasm": "Do not know how to serialize a BigInt"
+  },
+  {
+   "name": "hash_num",
+   "same": false,
+   "node": "[{\"a\":\"18117611586692784791\",\"b\":\"15094371078363997769\"}]",
+   "wasm": "Do not know how to serialize a BigInt"
+  },
+  {
+   "name": "random_fn",
+   "same": false,
+   "node": "[{\"a\":0.3224216122281824}]",
+   "wasm": "[{\"a\":0.2706377704293298}]"
+  },
+  {
+   "name": "uuid_fn",
+   "same": false,
+   "node": "[{\"a\":{\"hugeint\":\"84677900808099548531295477542458664432\"}}]",
+   "wasm": "[{\"a\":\"324dc514-ffb0-41bc-9e19-44157686b6c3\"}]"
+  },
+  {
+   "name": "order_no_orderby",
+   "same": true,
+   "node": "[{\"x\":1},{\"x\":2},{\"x\":3}]",
+   "wasm": "[{\"x\":1},{\"x\":2},{\"x\":3}]"
+  },
+  {
+   "name": "agg_list_order",
+   "same": false,
+   "node": "[{\"a\":{\"items\":[3,1,2]}}]",
+   "wasm": "[{\"a\":[3,1,2]}]"
+  },
+  {
+   "name": "first_last",
+   "same": true,
+   "node": "[{\"a\":3,\"b\":2}]",
+   "wasm": "[{\"a\":3,\"b\":2}]"
+  }
+ ],
+ "parquet": "ERR Do not know how to serialize a BigInt",
+ "duckdbFile": "[{\"x\":42}]"
+}

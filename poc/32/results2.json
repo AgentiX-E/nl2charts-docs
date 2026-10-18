@@ -1,0 +1,193 @@
+{
+ "eh_fresh": [
+  {
+   "module_start": 132.8,
+   "bundle_selected": 133.1,
+   "wasm_instantiated": 1146.8,
+   "fetch_ms": 13.2,
+   "parquet_bytes": 269517,
+   "parquet_fetched": 1160,
+   "registered": 1213,
+   "query_ms": 3253.8,
+   "result_rows": 600,
+   "query_done": 4467.1,
+   "chart_compile_ms": 27.7,
+   "svg_ready": 4495.7,
+   "dom_inserted": 4496.3,
+   "painted": 4498.2,
+   "domContentLoaded": 133.4,
+   "fcp": null,
+   "resource_count": 5,
+   "engine": "eh"
+  },
+  {
+   "module_start": 42.5,
+   "bundle_selected": 43,
+   "wasm_instantiated": 556.5,
+   "fetch_ms": 7.7,
+   "parquet_bytes": 269517,
+   "parquet_fetched": 564.2,
+   "registered": 618,
+   "query_ms": 223.9,
+   "result_rows": 600,
+   "query_done": 842.4,
+   "chart_compile_ms": 25.4,
+   "svg_ready": 868.8,
+   "dom_inserted": 869.4,
+   "painted": 871,
+   "domContentLoaded": 43.4,
+   "fcp": null,
+   "resource_count": 4,
+   "engine": "eh"
+  },
+  {
+   "module_start": 17.7,
+   "bundle_selected": 18,
+   "wasm_instantiated": 563.6,
+   "fetch_ms": 7.6,
+   "parquet_bytes": 269517,
+   "parquet_fetched": 571.3,
+   "registered": 624.9,
+   "query_ms": 222.7,
+   "result_rows": 600,
+   "query_done": 848.1,
+   "chart_compile_ms": 24.2,
+   "svg_ready": 873.6,
+   "dom_inserted": 874.2,
+   "painted": 875.7,
+   "domContentLoaded": 18.3,
+   "fcp": null,
+   "resource_count": 4,
+   "engine": "eh"
+  }
+ ],
+ "mvp_fresh": [
+  {
+   "module_start": 129.1,
+   "bundle_selected": 129.5,
+   "wasm_instantiated": 1444.1,
+   "fetch_ms": 14,
+   "parquet_bytes": 269517,
+   "parquet_fetched": 1458.1,
+   "registered": 1572.2,
+   "query_ms": 3217.8,
+   "result_rows": 600,
+   "query_done": 4790.4,
+   "chart_compile_ms": 30.3,
+   "svg_ready": 4821.6,
+   "dom_inserted": 4822.3,
+   "painted": 4824.6,
+   "domContentLoaded": 129.8,
+   "fcp": null,
+   "resource_count": 5,
+   "engine": "mvp"
+  },
+  {
+   "module_start": 40.2,
+   "bundle_selected": 40.6,
+   "wasm_instantiated": 573.1,
+   "fetch_ms": 7.7,
+   "parquet_bytes": 269517,
+   "parquet_fetched": 580.8,
+   "registered": 697.5,
+   "query_ms": 226.4,
+   "result_rows": 600,
+   "query_done": 924.3,
+   "chart_compile_ms": 24.9,
+   "svg_ready": 950.3,
+   "dom_inserted": 950.8,
+   "painted": 952.6,
+   "domContentLoaded": 40.8,
+   "fcp": null,
+   "resource_count": 4,
+   "engine": "mvp"
+  },
+  {
+   "module_start": 19.6,
+   "bundle_selected": 20,
+   "wasm_instantiated": 606.6,
+   "fetch_ms": 8,
+   "parquet_bytes": 269517,
+   "parquet_fetched": 614.8,
+   "registered": 736.6,
+   "query_ms": 240.7,
+   "result_rows": 600,
+   "query_done": 978,
+   "chart_compile_ms": 24.1,
+   "svg_ready": 1003,
+   "dom_inserted": 1003.4,
+   "painted": 1005.2,
+   "domContentLoaded": 20.4,
+   "fcp": null,
+   "resource_count": 4,
+   "engine": "mvp"
+  }
+ ],
+ "nowasm_fresh": [
+  {
+   "module_start": 132.1,
+   "bundle_selected": 132.6,
+   "agg_fetch_ms": 10.8,
+   "chart_compile_ms": 33.9,
+   "dom_inserted": 178.4,
+   "painted": 187,
+   "engine": "nowasm"
+  },
+  {
+   "module_start": 39.2,
+   "bundle_selected": 39.6,
+   "agg_fetch_ms": 8.7,
+   "chart_compile_ms": 26.8,
+   "dom_inserted": 76.1,
+   "painted": 83.8,
+   "engine": "nowasm"
+  },
+  {
+   "module_start": 19.1,
+   "bundle_selected": 19.4,
+   "agg_fetch_ms": 7.4,
+   "chart_compile_ms": 27,
+   "dom_inserted": 54.6,
+   "painted": 62.8,
+   "engine": "nowasm"
+  }
+ ],
+ "nowasm_warm": [
+  {
+   "module_start": 136.8,
+   "bundle_selected": 137.3,
+   "agg_fetch_ms": 9.5,
+   "chart_compile_ms": 34.2,
+   "dom_inserted": 182.1,
+   "painted": 190.9,
+   "engine": "nowasm"
+  },
+  {
+   "module_start": 43.6,
+   "bundle_selected": 44,
+   "agg_fetch_ms": 8.5,
+   "chart_compile_ms": 27.5,
+   "dom_inserted": 80.9,
+   "painted": 88.7,
+   "engine": "nowasm"
+  },
+  {
+   "module_start": 19.3,
+   "bundle_selected": 19.6,
+   "agg_fetch_ms": 7.6,
+   "chart_compile_ms": 26.7,
+   "dom_inserted": 55,
+   "painted": 63.2,
+   "engine": "nowasm"
+  },
+  {
+   "module_start": 18.5,
+   "bundle_selected": 18.9,
+   "agg_fetch_ms": 7.6,
+   "chart_compile_ms": 29.9,
+   "dom_inserted": 57.2,
+   "painted": 65.7,
+   "engine": "nowasm"
+  }
+ ]
+}

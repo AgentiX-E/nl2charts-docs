@@ -1,0 +1,149 @@
+{
+ "A_current_baseline": {
+  "point": 83.3,
+  "ci95": [
+   66.4,
+   92.7
+  ],
+  "half_width_pp": 13.1,
+  "gate_88_inside_ci": true,
+  "delta_pp": 4.7
+ },
+ "B_precision_by_n": [
+  {
+   "n": 30,
+   "ci95": [
+    66.4,
+    92.7
+   ],
+   "half_width_pp": 13.1
+  },
+  {
+   "n": 50,
+   "ci95": [
+    71.5,
+    91.7
+   ],
+   "half_width_pp": 10.1
+  },
+  {
+   "n": 100,
+   "ci95": [
+    74.5,
+    89.1
+   ],
+   "half_width_pp": 7.3
+  },
+  {
+   "n": 200,
+   "ci95": [
+    77.7,
+    88.0
+   ],
+   "half_width_pp": 5.1
+  },
+  {
+   "n": 400,
+   "ci95": [
+    79.3,
+    86.6
+   ],
+   "half_width_pp": 3.7
+  },
+  {
+   "n": 1000,
+   "ci95": [
+    80.9,
+    85.5
+   ],
+   "half_width_pp": 2.3
+  },
+  {
+   "n": 1300,
+   "ci95": [
+    81.2,
+    85.2
+   ],
+   "half_width_pp": 2.0
+  },
+  {
+   "n": 2000,
+   "ci95": [
+    81.7,
+    84.9
+   ],
+   "half_width_pp": 1.6
+  }
+ ],
+ "C_baseline_n_for_delta": [
+  {
+   "delta_pp": 2.0,
+   "max_half_width_pp": 1.0,
+   "baseline_n_required": 5337
+  },
+  {
+   "delta_pp": 3.0,
+   "max_half_width_pp": 1.5,
+   "baseline_n_required": 2372
+  },
+  {
+   "delta_pp": 4.7,
+   "max_half_width_pp": 2.35,
+   "baseline_n_required": 967
+  },
+  {
+   "delta_pp": 5.0,
+   "max_half_width_pp": 2.5,
+   "baseline_n_required": 854
+  },
+  {
+   "delta_pp": 7.0,
+   "max_half_width_pp": 3.5,
+   "baseline_n_required": 436
+  },
+  {
+   "delta_pp": 10.0,
+   "max_half_width_pp": 5.0,
+   "baseline_n_required": 214
+  }
+ ],
+ "D_paired_n": [
+  {
+   "delta_pp": 3.0,
+   "n_disc20": 1742,
+   "n_disc30": 2614,
+   "n_disc40": 3487
+  },
+  {
+   "delta_pp": 4.7,
+   "n_disc20": 709,
+   "n_disc30": 1064,
+   "n_disc40": 1419
+  },
+  {
+   "delta_pp": 5.0,
+   "n_disc20": 626,
+   "n_disc30": 940,
+   "n_disc40": 1254
+  },
+  {
+   "delta_pp": 7.0,
+   "n_disc20": 318,
+   "n_disc30": 479,
+   "n_disc40": 639
+  },
+  {
+   "delta_pp": 10.0,
+   "n_disc20": 155,
+   "n_disc30": 234,
+   "n_disc40": 312
+  }
+ ],
+ "E_verdict": {
+  "absolute_gate_needs_baseline_n": 967,
+  "paired_gate_needs_n_40pct": 1254,
+  "paired_gate_needs_n_20pct": 626,
+  "pilot50_half_width_pp": 10.1,
+  "pilot50_can_set_gate_at_delta_pp": 20.2
+ }
+}

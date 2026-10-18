@@ -1,0 +1,22 @@
+<!doctype html><meta charset="utf-8"><title>Chart</title>
+<div id="c" style="width:640px;height:360px"></div>
+<script src="./chart.js"></script>
+<script>
+const t0 = performance.now();
+const spec = { mark:'bar', categories:['一月','二月','三月','四月','五月','六月'],
+  series:[{name:'营收',data:[120,200,150,80,170,230]},{name:'成本',data:[60,90,70,40,80,110]}] };
+window.__chart = {};
+requestAnimationFrame(() => {
+  const t1 = performance.now();
+  const svg = ChartLib.renderSVG(spec, 640, 360);
+  document.getElementById('c').innerHTML = svg;
+  requestAnimationFrame(() => {
+    const t2 = performance.now();
+    const nav = performance.getEntriesByType('navigation')[0];
+    const fcp = performance.getEntriesByName('first-contentful-paint')[0];
+    window.__chart = { renderMs: +(t2 - t1).toFixed(2), scriptToPaintMs: +(t2 - t0).toFixed(2),
+      domContentLoaded: +(nav?.domContentLoadedEventEnd || 0).toFixed(1),
+      fcp: fcp ? +fcp.startTime.toFixed(1) : null, t0: +t0.toFixed(1) };
+  });
+});
+</script>

@@ -1,0 +1,288 @@
+[
+ {
+  "label": "dev57 (npm latest)",
+  "persist": false,
+  "r1": {
+   "ok": true,
+   "engine": "v1.5.4",
+   "before": 0,
+   "after": 1,
+   "rows": [
+    {
+     "id": 45701,
+     "tag": "run1"
+    }
+   ],
+   "opfsImmediate": [
+    {
+     "path": "opfs_v2.db.wal",
+     "size": 0
+    },
+    {
+     "path": "opfs_v2.db",
+     "size": 0
+    }
+   ],
+   "opfsAfterClose": [
+    {
+     "path": "opfs_v2.db.wal",
+     "size": 0
+    },
+    {
+     "path": "opfs_v2.db",
+     "size": 0
+    }
+   ],
+   "log": [
+    "engine: v1.5.4",
+    "checkpoint ok",
+    "opfs files after write: [{\"path\":\"opfs_v2.db.wal\",\"size\":0},{\"path\":\"opfs_v2.db\",\"size\":0}]",
+    "db.close ERR db.close is not a function",
+    "opfs files after close: [{\"path\":\"opfs_v2.db.wal\",\"size\":0},{\"path\":\"opfs_v2.db\",\"size\":0}]"
+   ]
+  },
+  "r2": {
+   "ok": true,
+   "engine": "v1.5.4",
+   "before": 0,
+   "after": 1,
+   "rows": [
+    {
+     "id": 47031,
+     "tag": "run2"
+    }
+   ],
+   "opfsImmediate": [
+    {
+     "path": "opfs_v2.db.wal",
+     "size": 0
+    },
+    {
+     "path": "opfs_v2.db",
+     "size": 0
+    }
+   ],
+   "opfsAfterClose": [
+    {
+     "path": "opfs_v2.db.wal",
+     "size": 0
+    },
+    {
+     "path": "opfs_v2.db",
+     "size": 0
+    }
+   ],
+   "log": [
+    "engine: v1.5.4",
+    "checkpoint ok",
+    "opfs files after write: [{\"path\":\"opfs_v2.db.wal\",\"size\":0},{\"path\":\"opfs_v2.db\",\"size\":0}]",
+    "db.close ERR db.close is not a function",
+    "opfs files after close: [{\"path\":\"opfs_v2.db.wal\",\"size\":0},{\"path\":\"opfs_v2.db\",\"size\":0}]"
+   ]
+  }
+ },
+ {
+  "label": "dev65 (npm next)",
+  "persist": true,
+  "r1": {
+   "ok": true,
+   "engine": "v1.5.6",
+   "before": 0,
+   "after": 1,
+   "rows": [
+    {
+     "id": 50301,
+     "tag": "run1"
+    }
+   ],
+   "opfsImmediate": [
+    {
+     "path": "opfs_v2.db.wal.recovery",
+     "size": 0
+    },
+    {
+     "path": "opfs_v2.db.wal.checkpoint",
+     "size": 0
+    },
+    {
+     "path": "opfs_v2.db.wal",
+     "size": 309
+    },
+    {
+     "path": "opfs_v2.db",
+     "size": 536576
+    }
+   ],
+   "opfsAfterClose": [
+    {
+     "path": "opfs_v2.db.wal.recovery",
+     "size": 0
+    },
+    {
+     "path": "opfs_v2.db.wal.checkpoint",
+     "size": 0
+    },
+    {
+     "path": "opfs_v2.db.wal",
+     "size": 309
+    },
+    {
+     "path": "opfs_v2.db",
+     "size": 536576
+    }
+   ],
+   "log": [
+    "engine: v1.5.6",
+    "checkpoint ok",
+    "opfs files after write: [{\"path\":\"opfs_v2.db.wal.recovery\",\"size\":0},{\"path\":\"opfs_v2.db.wal.checkpoint\",\"size\":0},{\"path\":\"opfs_v2.db.wal\",\"size\":309},{\"path\":\"opfs_v2.db\",\"size\":536576}]",
+    "db.close ERR db.close is not a function",
+    "opfs files after close: [{\"path\":\"opfs_v2.db.wal.recovery\",\"size\":0},{\"path\":\"opfs_v2.db.wal.checkpoint\",\"size\":0},{\"path\":\"opfs_v2.db.wal\",\"size\":309},{\"path\":\"opfs_v2.db\",\"size\":536576}]"
+   ]
+  },
+  "r2": {
+   "ok": true,
+   "engine": "v1.5.6",
+   "before": 1,
+   "after": 2,
+   "rows": [
+    {
+     "id": 50301,
+     "tag": "run1"
+    },
+    {
+     "id": 51475,
+     "tag": "run2"
+    }
+   ],
+   "opfsImmediate": [
+    {
+     "path": "opfs_v2.db.wal.recovery",
+     "size": 0
+    },
+    {
+     "path": "opfs_v2.db.wal.checkpoint",
+     "size": 0
+    },
+    {
+     "path": "opfs_v2.db.wal",
+     "size": 194
+    },
+    {
+     "path": "opfs_v2.db",
+     "size": 798720
+    }
+   ],
+   "opfsAfterClose": [
+    {
+     "path": "opfs_v2.db.wal.recovery",
+     "size": 0
+    },
+    {
+     "path": "opfs_v2.db.wal.checkpoint",
+     "size": 0
+    },
+    {
+     "path": "opfs_v2.db.wal",
+     "size": 194
+    },
+    {
+     "path": "opfs_v2.db",
+     "size": 798720
+    }
+   ],
+   "log": [
+    "engine: v1.5.6",
+    "checkpoint ok",
+    "opfs files after write: [{\"path\":\"opfs_v2.db.wal.recovery\",\"size\":0},{\"path\":\"opfs_v2.db.wal.checkpoint\",\"size\":0},{\"path\":\"opfs_v2.db.wal\",\"size\":194},{\"path\":\"opfs_v2.db\",\"size\":798720}]",
+    "db.close ERR db.close is not a function",
+    "opfs files after close: [{\"path\":\"opfs_v2.db.wal.recovery\",\"size\":0},{\"path\":\"opfs_v2.db.wal.checkpoint\",\"size\":0},{\"path\":\"opfs_v2.db.wal\",\"size\":194},{\"path\":\"opfs_v2.db\",\"size\":798720}]"
+   ]
+  }
+ },
+ {
+  "label": "1.32.0 (stable)",
+  "persist": true,
+  "r1": {
+   "ok": true,
+   "engine": "v1.4.3",
+   "before": 0,
+   "after": 1,
+   "rows": [
+    {
+     "id": 54623,
+     "tag": "run1"
+    }
+   ],
+   "opfsImmediate": [
+    {
+     "path": "opfs_v2.db.wal",
+     "size": 309
+    },
+    {
+     "path": "opfs_v2.db",
+     "size": 536576
+    }
+   ],
+   "opfsAfterClose": [
+    {
+     "path": "opfs_v2.db.wal",
+     "size": 309
+    },
+    {
+     "path": "opfs_v2.db",
+     "size": 536576
+    }
+   ],
+   "log": [
+    "engine: v1.4.3",
+    "checkpoint ok",
+    "opfs files after write: [{\"path\":\"opfs_v2.db.wal\",\"size\":309},{\"path\":\"opfs_v2.db\",\"size\":536576}]",
+    "db.close ERR db.close is not a function",
+    "opfs files after close: [{\"path\":\"opfs_v2.db.wal\",\"size\":309},{\"path\":\"opfs_v2.db\",\"size\":536576}]"
+   ]
+  },
+  "r2": {
+   "ok": true,
+   "engine": "v1.4.3",
+   "before": 1,
+   "after": 2,
+   "rows": [
+    {
+     "id": 54623,
+     "tag": "run1"
+    },
+    {
+     "id": 55811,
+     "tag": "run2"
+    }
+   ],
+   "opfsImmediate": [
+    {
+     "path": "opfs_v2.db.wal",
+     "size": 309
+    },
+    {
+     "path": "opfs_v2.db",
+     "size": 798720
+    }
+   ],
+   "opfsAfterClose": [
+    {
+     "path": "opfs_v2.db.wal",
+     "size": 309
+    },
+    {
+     "path": "opfs_v2.db",
+     "size": 798720
+    }
+   ],
+   "log": [
+    "engine: v1.4.3",
+    "checkpoint ok",
+    "opfs files after write: [{\"path\":\"opfs_v2.db.wal\",\"size\":309},{\"path\":\"opfs_v2.db\",\"size\":798720}]",
+    "db.close ERR db.close is not a function",
+    "opfs files after close: [{\"path\":\"opfs_v2.db.wal\",\"size\":309},{\"path\":\"opfs_v2.db\",\"size\":798720}]"
+   ]
+  }
+ }
+]
