@@ -41,19 +41,26 @@ jobs:
         run: |
           pip install --quiet huggingface_hub
           python3 - <<'PY'
-          import os
-          from huggingface_hub import list_repo_files, snapshot_download
-          repo = 'birdsql/bird_mini_dev'
+          import json, os
+          from huggingface_hub import list_repo_files, hf_hub_download, snapshot_download
           token = os.environ.get('HF_TOKEN') or None
-          files = list_repo_files(repo, repo_type='dataset', token=token)
-          print('repo files:', len(files))
-          for f in files[:40]:
-              print('  ', f)
-          keep = [f for f in files if f.lower().endswith(('.sqlite', '.db', '.json', '.jsonl', '.zip', '.tar.gz', '.tgz', '.csv'))]
-          print('selected:', len(keep))
           root = os.path.expanduser('~/data/bird_mini_dev')
           os.makedirs(root, exist_ok=True)
-          snapshot_download(repo_id=repo, repo_type='dataset', local_dir=root,
+
+          # 1) questions (500) live in birdsql/bird_mini_dev
+          q = hf_hub_download('birdsql/bird_mini_dev', 'data/mini_dev_sqlite-00000-of-00001.json',
+                              repo_type='dataset', token=token, local_dir=root)
+          rows = json.load(open(q, encoding='utf-8'))
+          db_ids = sorted({r['db_id'] for r in rows})
+          print('questions:', len(rows), 'databases:', len(db_ids), db_ids[:5])
+
+          # 2) the SQLite files live in birdsql/bird-critic-1.0-sqlite
+          repo_db = 'birdsql/bird-critic-1.0-sqlite'
+          files = list_repo_files(repo_db, repo_type='dataset', token=token)
+          print('db repo files:', len(files))
+          keep = [f for f in files if f.lower().endswith('.sqlite') and any(d in f for d in db_ids)]
+          print('selected sqlite:', len(keep))
+          snapshot_download(repo_db, repo_type='dataset', local_dir=os.path.join(root, 'databases'),
                             token=token, allow_patterns=keep)
           print('downloaded to', root)
           PY
