@@ -930,3 +930,56 @@ jobs:
       - name: POC-6 OPFS persistence across restart
         working-directory: poc/06
         run: python3 opfs_test.py
+
+  # ---------- always-on: real PostgreSQL service ----------
+  # The three assertions PGlite cannot witness (auth, pool reuse, RLS) run here,
+  # against postgres:16 started by the runner. No external cluster, no secrets.
+  pg-cluster:
+    name: real PostgreSQL contract (service container)
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_PASSWORD: pgpass
+          POSTGRES_DB: nl2charts
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U postgres"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: POC-81 contract against a real server (12 assertions, 0 skipped)
+        env:
+          PG_DSN: postgres://postgres:pgpass@localhost:5432/nl2charts
+        run: |
+          cd poc/81
+          npm init -y >/dev/null 2>&1
+          npm i --silent pg
+          node contract.mjs results-cluster.json
+          python3 - <<'PY'
+          import json
+          d = json.load(open('results-cluster.json'))
+          s = d['summary']
+          assert s['backend'] == 'pg', s
+          assert s['skipped'] == 0, s
+          assert s['gatesFailed'] == 0, s
+          print('pg contract:', s)
+          PY
+
+      - name: upload
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: pg-contract
+          path: poc/81/results-cluster.json
+          if-no-files-found: warn
+          retention-days: 14

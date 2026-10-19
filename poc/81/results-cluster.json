@@ -1,0 +1,122 @@
+{
+ "ok": true,
+ "summary": {
+  "backend": "pg",
+  "assertions": 12,
+  "gatesPassed": 8,
+  "gatesFailed": 0,
+  "obligations": 4,
+  "obligationsUnmet": 1,
+  "skipped": 0
+ },
+ "assertions": [
+  {
+   "id": "readonly-transaction",
+   "class": "universal",
+   "kind": "gate",
+   "expected": "write rejected",
+   "got": "rejected",
+   "pass": true,
+   "note": ""
+  },
+  {
+   "id": "statement-timeout",
+   "class": "universal",
+   "kind": "obligation",
+   "expected": "aborted near 100ms",
+   "got": "aborted in 101ms",
+   "pass": true,
+   "note": ""
+  },
+  {
+   "id": "search-path",
+   "class": "universal",
+   "kind": "gate",
+   "expected": "resolves to s2.t3",
+   "got": "resolved",
+   "pass": true,
+   "note": "a pooled session must reset this; it leaks between tenants otherwise"
+  },
+  {
+   "id": "transaction-rollback",
+   "class": "universal",
+   "kind": "gate",
+   "expected": "0 rows",
+   "got": "0 rows",
+   "pass": true,
+   "note": ""
+  },
+  {
+   "id": "identifier-folding",
+   "class": "universal",
+   "kind": "gate",
+   "expected": "quoted kept, unquoted folded",
+   "got": "quoted=1 folded=0",
+   "pass": true,
+   "note": "SQLite is case-insensitive; a table named \"Users\" changes meaning on PG"
+  },
+  {
+   "id": "boolean-strictness",
+   "class": "universal",
+   "kind": "gate",
+   "expected": "flag = 1 rejected",
+   "got": "rejected",
+   "pass": true,
+   "note": "generated SQL often compares booleans to 1, which SQLite accepts"
+  },
+  {
+   "id": "concat-null",
+   "class": "universal",
+   "kind": "gate",
+   "expected": "NULL",
+   "got": "NULL",
+   "pass": true,
+   "note": ""
+  },
+  {
+   "id": "text-collation",
+   "class": "universal",
+   "kind": "obligation",
+   "expected": "both orders recorded",
+   "got": "default=B,a,c,Á | C=B,a,c,Á",
+   "pass": true,
+   "note": "same order on this server"
+  },
+  {
+   "id": "null-ordering",
+   "class": "universal",
+   "kind": "obligation",
+   "expected": "NULLS LAST (PG default)",
+   "got": "NULLS LAST",
+   "pass": true,
+   "note": "differs from SQLite; a bar chart gains a phantom category"
+  },
+  {
+   "id": "tls-and-auth",
+   "class": "cluster",
+   "kind": "gate",
+   "expected": "authenticated session",
+   "got": "postgres@nl2charts",
+   "pass": true,
+   "note": "PostgreSQL 16.15 (Ubuntu 16.15-0ubuntu0.24.0"
+  },
+  {
+   "id": "pool-reuse",
+   "class": "cluster",
+   "kind": "obligation",
+   "expected": "no leak across checkouts",
+   "got": "leaked",
+   "pass": false,
+   "note": "pg.Pool does not reset session state; the adapter must RESET ALL on release"
+  },
+  {
+   "id": "multi-tenant-rls",
+   "class": "cluster",
+   "kind": "gate",
+   "expected": "only tenant a visible",
+   "got": "[{\"tenant\":\"a\",\"v\":1}]",
+   "pass": true,
+   "note": "the server filters rows; a client-side filter would be a different product"
+  }
+ ]
+}

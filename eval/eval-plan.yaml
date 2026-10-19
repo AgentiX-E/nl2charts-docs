@@ -1,4 +1,4 @@
-version: v5.27
+version: v5.28
 # The evaluation plan is the machine-readable half of §5/§8.19. Every benchmark we
 # quote must appear here with n, metric, grader and evidence; every measured row
 # must carry a baseline and a POC that produced it. `poc/73/check.py` enforces it.
@@ -103,11 +103,11 @@ benchmarks:
     provider: none
     status: measured
     baseline: 12
-    result: 9
-    target: "6/6 gate assertions pass; every unmet obligation has a named owner"
+    result: 12
+    target: "8/8 gate assertions pass on both backends; every unmet obligation has a named owner"
     gate: XCONN1
     evidencePoc: POC-81
-    notes: "6/6 gates pass on PGlite (read-only, search_path, rollback, identifier folding, boolean strictness, NULL propagation). 1 of 3 obligations unmet: statement_timeout is NOT enforced under WASM (601ms vs 100ms setting), so the host must terminate the worker. 3 cluster-only assertions skipped with reasons (TLS/SCRAM, pool reuse, RLS) and owned by the pg driver per DELEG1"
+    notes: "Two backends, same 12 assertions. PGlite: 6/6 gates, 3 cluster skipped, statement_timeout NOT enforced (601ms vs 100ms). Real postgres:16 service container in CI: 0 skipped, 8/8 gates pass, statement_timeout aborts at 101ms, pg.Pool leaks search_path across checkouts (adapter must RESET ALL), RLS filters correctly as a non-superuser. The 30s job is always-on; the two backends disagree in opposite directions on timeouts, which is why both run"
 
   - id: E6
     name: Spider2-Lite (SQLite subset)
