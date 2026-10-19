@@ -67,6 +67,11 @@ jobs:
           python3 -m pip install --quiet sqlglot==30.23.0
           python3 poc/65/validators.py
 
+      - name: POC-65 document follows the data (12 numbers, 3 mutations)
+        run: |
+          python3 poc/65/verify_doc.py --selftest
+          python3 poc/65/verify_doc.py
+
       - name: POC-59 benchmark ownership
         run: python3 poc/59/check.py
       - name: POC-56 preflight (portable paths, live entries, current constants)
