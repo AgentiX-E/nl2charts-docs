@@ -30,7 +30,11 @@ import sys
 import urllib.error
 import urllib.request
 
-HF = os.environ.get("HF_ENDPOINT", "https://huggingface.co").rstrip("/")
+# `os.environ.get(k, default)` does NOT apply the default when the variable is
+# present but empty — which is exactly what a workflow does with an optional
+# input (`endpoint: ''`). That produced a relative URL and a ValueError on the
+# first live run. `or` is the correct idiom.
+HF = (os.environ.get("HF_ENDPOINT") or "https://huggingface.co").rstrip("/")
 
 # Names in the order we will try them. GitHub org/repo secrets are injected as
 # env vars by name; an undefined secret is simply an empty string, which is why
@@ -78,11 +82,13 @@ def classify(status: int, body: dict | None) -> str:
 
 
 def fetch(url: str, token: str | None, timeout: int = 25) -> tuple[int, dict | None, str]:
-    req = urllib.request.Request(url)
-    if token:
-        req.add_header("Authorization", "Bearer " + token)
-    req.add_header("Accept", "application/json")
     try:
+        # Request() itself can raise (bad scheme, relative URL); it belongs
+        # inside the try so one malformed endpoint cannot kill the whole run.
+        req = urllib.request.Request(url)
+        if token:
+            req.add_header("Authorization", "Bearer " + token)
+        req.add_header("Accept", "application/json")
         with urllib.request.urlopen(req, timeout=timeout) as r:
             raw = r.read()
             try:
@@ -171,6 +177,14 @@ def selftest() -> int:
     finally:
         globals()["fetch"] = orig
     muts.append({"mutation": "probe-report-leak", "caught": fake not in rep})
+
+    # --- an empty HF_ENDPOINT must fall back, not become ""
+    base = (os.environ.get("HF_ENDPOINT") or "https://huggingface.co").rstrip("/")
+    os.environ["HF_ENDPOINT"] = ""
+    empty = (os.environ.get("HF_ENDPOINT") or "https://huggingface.co").rstrip("/")
+    del os.environ["HF_ENDPOINT"]
+    muts.append({"mutation": "empty-endpoint-falls-back",
+                 "caught": empty == base and bool(empty)})
 
     ok = all(m["caught"] for m in muts)
     print(json.dumps({"selftest": muts, "ok": ok}, ensure_ascii=False, indent=1))

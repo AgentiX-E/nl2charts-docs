@@ -17,9 +17,9 @@ on:
         type: string
         default: 'birdsql/bird_interact,xlang-ai/Spider2-Lite,xlang-ai/Spider2,birdsql/bird_mini_dev'
       endpoint:
-        description: 'HF endpoint (empty = huggingface.co)'
+        description: 'HF endpoint'
         type: string
-        default: ''
+        default: 'https://huggingface.co'
 
 permissions:
   contents: read
@@ -31,7 +31,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: selftest (redaction + classifier)
+      - name: selftest (10 mutations: leaks, classifier, empty endpoint)
         run: python3 poc/75/hf_probe.py --selftest
 
       - name: probe
