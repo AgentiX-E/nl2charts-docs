@@ -54,16 +54,20 @@ def doc_pocs(text: str):
 
 def load_yaml(path: pathlib.Path):
     """Tiny YAML subset reader — the plan file is flat by design (no PyYAML in CI)."""
-    data, cur = {"benchmarks": []}, None
+    data, cur, section = {"benchmarks": []}, None, "benchmarks"
     for raw in path.read_text(encoding="utf-8").splitlines():
         line = raw.split("#", 1)[0].rstrip()
         if not line.strip() or line.strip() == "---":
             continue
         if line.startswith("version:"):
             data["version"] = line.split(":", 1)[1].strip()
+        elif line.strip() in ("deferred:",):
+            cur = None
+            data.setdefault("deferred", [])
+            section = "deferred"
         elif line.strip().startswith("- id:"):
             cur = {"id": line.split(":", 1)[1].strip()}
-            data["benchmarks"].append(cur)
+            data.setdefault(section, []).append(cur)
         elif cur is not None and ":" in line:
             k, v = line.strip().split(":", 1)
             v = v.strip().strip('"')
@@ -74,7 +78,7 @@ def load_yaml(path: pathlib.Path):
 
 
 def check(reg, plan, text):
-    v = {"C1": [], "C2": [], "C3": [], "C4": [], "C5": []}
+    v = {"C1": [], "C2": [], "C3": [], "C4": [], "C5": [], "C6": []}
     gates = reg.get("gates", {})
     dg = doc_gates(text)
     if set(gates) != dg:
@@ -89,6 +93,10 @@ def check(reg, plan, text):
         layers = g.get("layer") or []
         if not layers or any(l not in CI_LAYERS for l in layers):
             v["C2"].append({"id": gid, "why": "unknown layer", "layer": layers})
+    v["C6"] = []
+    for d in plan.get("deferred", []):
+        if not (d.get("goal") and d.get("reason") and d.get("revisit")):
+            v["C6"].append({"id": d.get("id"), "why": "deferred needs goal+reason+revisit"})
     pocs = doc_pocs(text)
     for b in plan["benchmarks"]:
         if b.get("status") == "measured":
@@ -135,6 +143,10 @@ def selftest(base_reg, base_plan, text):
         if b["id"] == "E3":
             b["unblock"] = None
     out.append({"mutation": "M5 planned without unblock", "caught": bool(check(base_reg, plan, text)["C4"]), "rule": "C4"})
+    plan = copy.deepcopy(base_plan)
+    if plan.get("deferred"):
+        plan["deferred"][0]["revisit"] = None
+    out.append({"mutation": "M6 deferred without revisit", "caught": bool(check(base_reg, plan, text)["C6"]), "rule": "C6"})
     return out
 
 

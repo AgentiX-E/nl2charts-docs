@@ -82,3 +82,16 @@ benchmarks:
     gate: EV1
     evidencePoc: POC-30
     unblock: adjudication round with two annotators (kappa >=0.7)
+
+# Objectives we are deliberately NOT pursuing in the design/POC phase. Recorded
+# here (not in prose) so they cannot quietly disappear or quietly become
+# commitments. Each one names why it is deferred and what would bring it back.
+deferred:
+  - id: SOTA-ABS
+    goal: BIRD Mini-Dev >=52-62% (absolute); BIRD test >=75%
+    reason: requires a fine-tuned generator or oracle evidence; both are outside the product constraint (CPU inference, no fine-tuning) and outside the current scope (docs + POC)
+    revisit: development phase, only if a cloud fine-tuning route is approved; until then E1 is judged on the relative target (+3pp over same-model zero-shot)
+  - id: FINE-TUNE
+    goal: a fine-tuned text-to-SQL generator (SFT/RL on BIRD train)
+    reason: training pipeline, data licensing and compute are a separate project; no impact on inference-side CPU-only requirement
+    revisit: after M-B, with a budget and a data-licensing review
