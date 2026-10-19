@@ -88,13 +88,19 @@ def selftest():
         base = tmp / "repo"
         data = load(base)
 
-        # M1: delegated without evidence
-        d1 = json.loads(json.dumps(data)); del d1["capabilities"][12]["evidence"]
+        def first(pred):
+            return next(i for i, c in enumerate(data["capabilities"]) if pred(c))
+
+        # M1: delegated without evidence (index chosen by property, not position:
+        # the list grows, and a hard-coded index silently tests nothing)
+        d1 = json.loads(json.dumps(data))
+        del d1["capabilities"][first(lambda c: c.get("owner") == "delegated")]["evidence"]
         (base / "poc" / "59" / "delegation.json").write_text(json.dumps(d1), encoding="utf-8")
         r = run(base); out.append({"mutation": "M1 delegated without evidence", "caught": bool(r["violations"]["D2"]), "rule": "D2"})
 
         # M2: self measured but no probe
-        d2 = json.loads(json.dumps(data)); d2["capabilities"][1].pop("probe", None)
+        d2 = json.loads(json.dumps(data))
+        d2["capabilities"][first(lambda c: c.get("owner") == "self" and c.get("status") == "measured")].pop("probe", None)
         (base / "poc" / "59" / "delegation.json").write_text(json.dumps(d2), encoding="utf-8")
         r = run(base); out.append({"mutation": "M2 self measured without probe", "caught": bool(r["violations"]["D3"]), "rule": "D3"})
 
