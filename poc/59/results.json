@@ -4,8 +4,8 @@
   "platform": 2,
   "self": 12,
   "delegated": 4,
-  "selfMeasured": 8,
-  "selfPlanned": 4
+  "selfMeasured": 9,
+  "selfPlanned": 3
  },
  "violations": {
   "D1": [],
@@ -15,7 +15,6 @@
   "D5": []
  },
  "planned": [
-  "sql.generate",
   "chart.recommend",
   "text2chart",
   "hitl.quality"

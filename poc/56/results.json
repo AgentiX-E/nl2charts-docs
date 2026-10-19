@@ -21,9 +21,9 @@
  "P2_missingEntries": [],
  "P3_constantMismatch": [],
  "docs": {
-  "sections": 59,
-  "assumptions": 82,
-  "adrs": 126
+  "sections": 60,
+  "assumptions": 86,
+  "adrs": 128
  },
  "selftest": [
   {

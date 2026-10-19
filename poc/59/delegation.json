@@ -1,55 +1,178 @@
 {
-  "version": 1,
-  "capabilities": [
-    { "id": "sql.generate", "owner": "self", "gate": "E1", "benchmark": "BIRD (evidence=off)",
-      "status": "planned", "plan": "P0: Mini-Dev 500, 3-run majority, EX + R-VES" },
-    { "id": "schema.linking", "owner": "self", "gate": "E1", "benchmark": "self-built opaque schema (35 cols / 20 q)",
-      "status": "measured", "probe": "POC-8" },
-    { "id": "chart.explicit", "owner": "self", "gate": "CHART1", "benchmark": "type-shape acceptance table",
-      "status": "measured", "probe": "POC-55" },
-    { "id": "chart.recommend", "owner": "self", "gate": "E2", "benchmark": "nvBench (chart-type)",
-      "status": "planned", "plan": "P1: 500-question subset after flint-chart dist is vendored" },
-    { "id": "text2chart", "owner": "self", "gate": "E3", "benchmark": "Text2Vis (Final Pass)",
-      "status": "planned", "plan": "P1: 200-question subset, same runner as E2" },
-    { "id": "hitl.state", "owner": "self", "gate": "HITL3", "benchmark": "12-scenario fixture (drift + chain)",
-      "status": "measured", "probe": "POC-52" },
-    { "id": "hitl.quality", "owner": "self", "gate": "HITL1", "benchmark": "BIRD-Interact Lite 300",
-      "status": "planned", "plan": "P0: patience=3, paired vs reproduced ADK" },
-    { "id": "tier.reconcile", "owner": "self", "gate": "TIER1", "benchmark": "1M-key Merkle fixture",
-      "status": "measured", "probe": "POC-54" },
-    { "id": "guard.ast", "owner": "self", "gate": "SEC1", "benchmark": "25 legal / 28 attack corpus",
-      "status": "measured", "probe": "POC-33" },
-    { "id": "metric.semantics", "owner": "self", "gate": "E1", "benchmark": "5 metric classes vs independent gold",
-      "status": "measured", "probe": "POC-16" },
-    { "id": "obs.contract", "owner": "self", "gate": "OBS1", "benchmark": "PII probe + schema survival matrix",
-      "status": "measured", "probe": "POC-53" },
-    { "id": "provider.contract", "owner": "self", "gate": "OBS4", "benchmark": "two-vendor live contract",
-      "status": "measured", "probe": "POC-57" },
-
-    { "id": "engine.duckdb", "owner": "delegated", "tool": "duckdb",
-      "pin": "1.5.6 (1.5 line, EOL 2027-03-01)",
-      "evidence": "https://duckdb.org/2026/06/17/announcing-duckdb-154.html",
-      "probe": "POC-14", "risk": "dialect + storage version" },
-    { "id": "chart.render", "owner": "delegated", "tool": "flint-chart + echarts",
-      "pin": "flint-chart 0.x (locked) + echarts 6",
-      "evidence": "https://github.com/agentix-e/flint-chart#readme",
-      "probe": "POC-2", "risk": "our chart-type mapping table" },
-    { "id": "pg.driver", "owner": "delegated", "tool": "@duckdb/node-api / pg",
-      "pin": "1.5.6-r.1 / ^8",
-      "evidence": "https://duckdb.org/docs/stable/core_extensions/postgres",
-      "probe": "POC-12", "risk": "attach semantics + pushdown" },
-    { "id": "embedding.model", "owner": "delegated", "tool": "zhipu embedding-3",
-      "pin": "embedding-3 (2048d)",
-      "evidence": "https://open.bigmodel.cn/dev/api#embedding",
-      "probe": "POC-57", "risk": "dimension + normalization" },
-
-    { "id": "browser.opfs", "owner": "platform", "tool": "Chrome OPFS",
-      "pin": "dev65 (pinned build)",
-      "evidence": "https://developer.chrome.com/docs/capabilities/web-apis/file-system-access",
-      "probe": "POC-23", "risk": "self-check must reopen the file" },
-    { "id": "runtime.node", "owner": "platform", "tool": "Node 22 LTS",
-      "pin": "22.x",
-      "evidence": "https://nodejs.org/en/about/previous-releases",
-      "probe": "POC-41", "risk": "ESM resolution + permissions" }
-  ]
+ "version": 1,
+ "capabilities": [
+  {
+   "id": "sql.generate",
+   "owner": "self",
+   "gate": "E1",
+   "benchmark": "BIRD Mini-Dev 500 (evidence=off, schema=samples, 1 sample)",
+   "status": "measured",
+   "plan": "P0: Mini-Dev 500, 3-run majority, EX + R-VES",
+   "probe": "POC-60",
+   "measured": {
+    "ex_set": 0.46,
+    "ex_set_runs": [
+     0.462,
+     0.462,
+     0.46
+    ],
+    "multiset": 0.429,
+    "byDifficulty": {
+     "simple": 0.574,
+     "moderate": 0.464,
+     "challenging": 0.284
+    },
+    "descCoverage": 0.0,
+    "cost_usd": 0.207,
+    "run": "39192080569"
+   },
+   "gap": {
+    "vs_gpt4o_zeroshot_pp": -3.4,
+    "vs_target_52_62_pp": -6.0,
+    "cause": "column descriptions unavailable (descCoverage=0)"
+   }
+  },
+  {
+   "id": "schema.linking",
+   "owner": "self",
+   "gate": "E1",
+   "benchmark": "self-built opaque schema (35 cols / 20 q)",
+   "status": "measured",
+   "probe": "POC-8"
+  },
+  {
+   "id": "chart.explicit",
+   "owner": "self",
+   "gate": "CHART1",
+   "benchmark": "type-shape acceptance table",
+   "status": "measured",
+   "probe": "POC-55"
+  },
+  {
+   "id": "chart.recommend",
+   "owner": "self",
+   "gate": "E2",
+   "benchmark": "nvBench (chart-type)",
+   "status": "planned",
+   "plan": "P1: 500-question subset after flint-chart dist is vendored"
+  },
+  {
+   "id": "text2chart",
+   "owner": "self",
+   "gate": "E3",
+   "benchmark": "Text2Vis (Final Pass)",
+   "status": "planned",
+   "plan": "P1: 200-question subset, same runner as E2"
+  },
+  {
+   "id": "hitl.state",
+   "owner": "self",
+   "gate": "HITL3",
+   "benchmark": "12-scenario fixture (drift + chain)",
+   "status": "measured",
+   "probe": "POC-52"
+  },
+  {
+   "id": "hitl.quality",
+   "owner": "self",
+   "gate": "HITL1",
+   "benchmark": "BIRD-Interact Lite 300",
+   "status": "planned",
+   "plan": "P0: patience=3, paired vs reproduced ADK"
+  },
+  {
+   "id": "tier.reconcile",
+   "owner": "self",
+   "gate": "TIER1",
+   "benchmark": "1M-key Merkle fixture",
+   "status": "measured",
+   "probe": "POC-54"
+  },
+  {
+   "id": "guard.ast",
+   "owner": "self",
+   "gate": "SEC1",
+   "benchmark": "25 legal / 28 attack corpus",
+   "status": "measured",
+   "probe": "POC-33"
+  },
+  {
+   "id": "metric.semantics",
+   "owner": "self",
+   "gate": "E1",
+   "benchmark": "5 metric classes vs independent gold",
+   "status": "measured",
+   "probe": "POC-16"
+  },
+  {
+   "id": "obs.contract",
+   "owner": "self",
+   "gate": "OBS1",
+   "benchmark": "PII probe + schema survival matrix",
+   "status": "measured",
+   "probe": "POC-53"
+  },
+  {
+   "id": "provider.contract",
+   "owner": "self",
+   "gate": "OBS4",
+   "benchmark": "two-vendor live contract",
+   "status": "measured",
+   "probe": "POC-57"
+  },
+  {
+   "id": "engine.duckdb",
+   "owner": "delegated",
+   "tool": "duckdb",
+   "pin": "1.5.6 (1.5 line, EOL 2027-03-01)",
+   "evidence": "https://duckdb.org/2026/06/17/announcing-duckdb-154.html",
+   "probe": "POC-14",
+   "risk": "dialect + storage version"
+  },
+  {
+   "id": "chart.render",
+   "owner": "delegated",
+   "tool": "flint-chart + echarts",
+   "pin": "flint-chart 0.x (locked) + echarts 6",
+   "evidence": "https://github.com/agentix-e/flint-chart#readme",
+   "probe": "POC-2",
+   "risk": "our chart-type mapping table"
+  },
+  {
+   "id": "pg.driver",
+   "owner": "delegated",
+   "tool": "@duckdb/node-api / pg",
+   "pin": "1.5.6-r.1 / ^8",
+   "evidence": "https://duckdb.org/docs/stable/core_extensions/postgres",
+   "probe": "POC-12",
+   "risk": "attach semantics + pushdown"
+  },
+  {
+   "id": "embedding.model",
+   "owner": "delegated",
+   "tool": "zhipu embedding-3",
+   "pin": "embedding-3 (2048d)",
+   "evidence": "https://open.bigmodel.cn/dev/api#embedding",
+   "probe": "POC-57",
+   "risk": "dimension + normalization"
+  },
+  {
+   "id": "browser.opfs",
+   "owner": "platform",
+   "tool": "Chrome OPFS",
+   "pin": "dev65 (pinned build)",
+   "evidence": "https://developer.chrome.com/docs/capabilities/web-apis/file-system-access",
+   "probe": "POC-23",
+   "risk": "self-check must reopen the file"
+  },
+  {
+   "id": "runtime.node",
+   "owner": "platform",
+   "tool": "Node 22 LTS",
+   "pin": "22.x",
+   "evidence": "https://nodejs.org/en/about/previous-releases",
+   "probe": "POC-41",
+   "risk": "ESM resolution + permissions"
+  }
+ ]
 }
