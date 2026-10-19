@@ -263,6 +263,10 @@ def literal_flag(conn: sqlite3.Connection, sql: str, limit: int = 3) -> dict:
                 pairs.append((node.this, lit.this))
     hits, checked = [], 0
     for col, lit in pairs[:limit]:
+        # `col = ''` is a defined idiom (empty-string sentinel), not a value
+        # mismatch; flagging it produced 3 false alarms in the first run.
+        if lit == "":
+            continue
         table, name = _resolve(schema, tmap, col)
         if not table:
             continue
@@ -395,6 +399,9 @@ def selftest() -> dict:
                  expect_literal=False)
     cases += run("cancelled orders", "SELECT id FROM orders WHERE status = 'cancelled'",
                  expect_literal=True)
+    # empty-string comparison is an idiom, not a missing value
+    cases += run("users without a name", "SELECT id FROM users WHERE name IS NULL OR name = ''",
+                 expect_literal=False)
     # DEGENERATE: aggregate over an empty filter is NULL, not 0
     cases += run("What is the total amount?",
                  "SELECT SUM(amount) FROM orders WHERE status = 'cancelled'",

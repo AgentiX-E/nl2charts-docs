@@ -62,7 +62,7 @@ jobs:
       - name: POC-60 comparator selftest (18 mutations)
         run: python3 poc/60/run.py --selftest
 
-      - name: POC-65 validator selftest (16 mutations)
+      - name: POC-65 validator selftest (17 mutations)
         run: |
           python3 -m pip install --quiet sqlglot==30.23.0
           python3 poc/65/validators.py
