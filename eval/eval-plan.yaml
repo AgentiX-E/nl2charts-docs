@@ -1,4 +1,4 @@
-version: v5.23
+version: v5.24
 # The evaluation plan is the machine-readable half of §5/§8.19. Every benchmark we
 # quote must appear here with n, metric, grader and evidence; every measured row
 # must carry a baseline and a POC that produced it. `poc/73/check.py` enforces it.
@@ -17,7 +17,8 @@ benchmarks:
     target: relative +3pp over same-model zero-shot (achieved +3.00pp)
     gate: BIRD1
     evidencePoc: POC-68
-    notes: 5 samples + two-stage repair; zero-shot baseline 46.6%
+    engine: sqlite3 (stdlib)
+    notes: "5 samples + two-stage repair; zero-shot baseline 46.6%. Engine-pinned: on DuckDB the same predictions score 46.39% and 21.1% of gold does not run at all (POC-78)"
 
   - id: E2
     name: nvBench 2.0 dev (chart type)
@@ -64,14 +65,31 @@ benchmarks:
     grader: official
     evidence: n/a
     provider: deepseek
-    status: blocked
+    status: reference
     baseline: null
     result: null
-    target: P1 >=54%, P2 >=40%
-    gate: HITL1
+    target: not a gate; recorded so the option stays visible
+    gate: null
     evidencePoc: null
-    unblock: ground truth is withheld by design (sol_sql and test_cases ship empty; request by email with the tag [bird-interact-lite GT&Test Cases]); Lite targets PostgreSQL, so the harness needs a PG service, not SQLite
-    notes: "the task texts are public and already fetched; the old 'gated on HF' claim was a wrong repo id returning 404 (POC-75)"
+    reason: "CRUD tasks need assertion-type gold (sol_sql/test_cases), which is withheld by design; and the c/a-Interact protocol plus user simulator are the authors' product assumptions, not ours (ADR-150, section 8.36). PG itself is still verified, as a cross-engine consistency fixture (E7), not as a leaderboard"
+    notes: "the 300 task texts are public and already fetched; 6 of them carry external_knowledge references"
+
+  - id: E7
+    name: cross-engine gold consistency
+    dataset: birdsql/bird_mini_dev (500 gold SQL)
+    datasetProbe: poc/75/probe.json
+    n: 492
+    metric: share of gold statements that run on >=2 engines; share of verdicts that agree
+    grader: own
+    evidence: "off"
+    provider: none
+    status: measured
+    baseline: 1.0
+    result: 0.982
+    target: "verdict agreement >=97% between sqlite3 and DuckDB (baseline 1.0 = same engine twice); report the un-runnable share"
+    gate: EV9
+    evidencePoc: POC-78
+    notes: "gold self-consistency 98.2% (382/388 comparable); 21.1% of gold cannot run on DuckDB at all; verdict agreement 97.68%, 7 vs 2 flips, p=0.180. This is a product metric: our adapters are the thing being measured (ADR-149)"
 
   - id: E6
     name: Spider2-Lite (SQLite subset)

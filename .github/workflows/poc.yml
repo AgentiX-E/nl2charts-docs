@@ -107,6 +107,11 @@ jobs:
       - name: POC-77 Spider2-Lite comparator (10 mutations, no network)
         run: python3 poc/77/run.py --selftest
 
+      - name: POC-78 cross-engine verdicts (9 mutations, no network)
+        run: |
+          python3 -m pip install --quiet duckdb
+          python3 poc/78/run.py --selftest
+
       - name: POC-67 CPU-only dependency guard (5 mutations)
         run: |
           python3 poc/67/no_gpu_deps.py --selftest
@@ -131,8 +136,8 @@ jobs:
           assert d['P1_index_matches_sections'], d
           a, b = d['P2_pass_rate'].split('/')
           assert a == b, d
-          assert d['sections'] == 77, d
-          assert d['P4_assumption_rows'] == 116, d
+          assert d['sections'] == 78, d
+          assert d['P4_assumption_rows'] == 117, d
           print('POC-35 ok:', d['sections'], 'sections,', d['P2_pass_rate'], 'five-part,', d['P4_assumption_rows'], 'assumptions')
           PY
 

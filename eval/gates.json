@@ -217,6 +217,14 @@
    ],
    "source": "技术设计方案.md"
   },
+  "EV9": {
+   "family": "EV",
+   "criterion": "缺三个限定词即红；把两个引擎的数字并列比较而不报一致率即红",
+   "layer": [
+    "ci:eval"
+   ],
+   "source": "技术设计方案.md"
+  },
   "FG1": {
    "family": "FG",
    "criterion": "`ATTACH` + schema 发现 **p95 ≤ 500 ms**（实测 10–12 ms）",
