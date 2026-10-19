@@ -4,13 +4,14 @@
 The design document has said since v4.37: "the total is whatever `gates.json`
 says; the document does not hardcode it." Until this commit there was no such
 file in the repository, so the claim could not be tested. This checker closes
-that hole with five rules and four mutations:
+that hole with six rules and six mutations:
 
   C1  document gate set == registry gate set (both directions)
   C2  every gate has a family, a criterion and a known CI layer
   C3  every measured benchmark has baseline + result + a POC that exists
   C4  every planned/blocked benchmark names what unblocks it
   C5  a plan row's gate, if any, exists in the registry
+  C6  a deferred objective carries goal + reason + revisit
 
 A rule that cannot fail is a comment. Each mutation targets one rule.
 
@@ -138,11 +139,18 @@ def selftest(base_reg, base_plan, text):
             b["gate"] = "NOPE9"
     out.append({"mutation": "M4 unknown gate", "caught": bool(check(base_reg, plan, text)["C5"]), "rule": "C5"})
 
+    # Target by status, never by id: E3 moved from planned to measured in v5.23
+    # and this mutation silently stopped testing anything. A mutation that has
+    # lost its target is a red, not a pass.
     plan = copy.deepcopy(base_plan)
-    for b in plan["benchmarks"]:
-        if b["id"] == "E3":
-            b["unblock"] = None
-    out.append({"mutation": "M5 planned without unblock", "caught": bool(check(base_reg, plan, text)["C4"]), "rule": "C4"})
+    targets = [b for b in plan["benchmarks"] if b.get("status") in ("planned", "blocked")]
+    if not targets:
+        out.append({"mutation": "M5 planned without unblock", "caught": False, "rule": "C4",
+                    "why": "no planned/blocked benchmark to mutate"})
+    else:
+        targets[0]["unblock"] = None
+        out.append({"mutation": "M5 planned without unblock",
+                    "caught": bool(check(base_reg, plan, text)["C4"]), "rule": "C4"})
     plan = copy.deepcopy(base_plan)
     if plan.get("deferred"):
         plan["deferred"][0]["revisit"] = None
