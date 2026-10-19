@@ -11,7 +11,7 @@ on:
       group:
         description: 'Which POC group to run'
         type: choice
-        options: [deterministic, duckdb, llm, browser, all]
+        options: [deterministic, duckdb, llm, browser, chart, all]
         default: deterministic
 
 permissions:
@@ -137,19 +137,6 @@ jobs:
           ok = sum(1 for r in d['results'] if r['ok'])
           assert ok == 8, ok
           print('POC-44 ok: SQLite executes', ok, 'of', len(d['results']), 'metric SQL forms')
-          PY
-
-      - name: POC-2 chart output renders
-        working-directory: poc/02
-        run: |
-          node main.mjs
-          python3 - <<'PY'
-          import json
-          d = json.load(open('results.json'))
-          assert len(d['cases']) == 6, d
-          assert all(c['render_ok'] for c in d['cases']), d
-          assert d['stack_flag_ignored'] is True, d
-          print('POC-2 ok: 6/6 charts render; chart_spec.stack ignored')
           PY
 
       - name: POC-45 single package vs three packages
@@ -369,6 +356,35 @@ jobs:
           (cd poc/37 && python3 main.py       > /tmp/p37.txt)
           (cd poc/38 && python3 main.py       > /tmp/p38.txt)
           for p in 27 28 36 37 38; do test -s /tmp/p$p.txt || (echo "POC-$p produced no output"; exit 1); done
+
+  # ---------- manual: chart rendering (needs 108 MB of third-party renderers) ----------
+  chart:
+    name: chart rendering (manual, needs flint-chart + echarts)
+    if: github.event_name == 'workflow_dispatch' && (inputs.group == 'chart' || inputs.group == 'all')
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+      - name: POC-2 dependencies
+        working-directory: poc/02
+        run: |
+          npm install --no-audit --no-fund --fetch-retries=5 --fetch-retry-mintimeout=3000 --fetch-retry-maxtimeout=60000 \
+            || npm install --no-audit --no-fund --registry=https://registry.npmmirror.com \
+            || (sleep 15 && npm install --no-audit --no-fund)
+      - name: POC-2 chart output renders
+        working-directory: poc/02
+        run: |
+          node main.mjs
+          python3 - <<'PY'
+          import json
+          d = json.load(open('results.json'))
+          assert len(d['cases']) == 6, d
+          assert all(c['render_ok'] for c in d['cases']), d
+          assert d['stack_flag_ignored'] is True, d
+          print('POC-2 ok: 6/6 charts render; chart_spec.stack ignored')
+          PY
 
   # ---------- manual: PostgreSQL + DuckDB native ----------
   duckdb:

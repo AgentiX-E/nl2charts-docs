@@ -34,55 +34,30 @@ def workflow_text():
     return WF.read_text(encoding="utf-8")
 
 
-def always_on_jobs(text):
-    """Job blocks that run on every push (no workflow_dispatch guard)."""
+def job_blocks(text):
+    """Top-level jobs are `  <name>:` followed by `    name:`."""
+    heads = [(m.start(), m.group(1)) for m in re.finditer(r"^  ([a-z][\w-]*):\n    name:", text, re.M)]
     blocks = {}
-    cur = None
-    for line in text.splitlines():
-        m = re.match(r"^  ([a-z][\w-]*):\s*$", line)
-        if m:
-            cur = m.group(1)
-            blocks[cur] = []
-            continue
-        if cur is not None:
-            blocks[cur].append(line)
-    return [k for k, v in blocks.items() if "workflow_dispatch" not in "\n".join(v)]
+    for i, (pos, name) in enumerate(heads):
+        end = heads[i + 1][0] if i + 1 < len(heads) else len(text)
+        blocks[name] = text[pos:end]
+    return blocks
+
+
+def always_on_jobs(text):
+    return [k for k, v in job_blocks(text).items() if "workflow_dispatch" not in v]
 
 
 def ci_dirs(text):
     """Directories executed by always-on jobs only (manual jobs may use fixtures)."""
-    keep = always_on_jobs(text)
-    blocks, cur = {}, None
-    for line in text.splitlines():
-        m = re.match(r"^  ([a-z][\w-]*):\s*$", line)
-        if m:
-            cur = m.group(1)
-            blocks[cur] = []
-            continue
-        if cur is not None:
-            blocks[cur].append(line)
     dirs = set()
-    for job in keep:
-        for line in blocks[job]:
+    blocks = job_blocks(text)
+    for job in always_on_jobs(text):
+        for line in blocks[job].splitlines():
             m = re.search(r"working-directory:\s*(\S+)", line)
             if m:
                 dirs.add(m.group(1))
     return sorted(dirs)
-
-
-def entry_commands(text):
-    """(dir, command, target) for every `node X` / `python3 X` in run blocks."""
-    out = []
-    cur = None
-    for line in text.splitlines():
-        m = re.search(r"working-directory:\s*(\S+)", line)
-        if m:
-            cur = m.group(1)
-            continue
-        m = re.search(r"^\s+(node|python3)\s+(?:--[\w-]+\s+)*([\w./-]+\.(?:mjs|cjs|js|py))", line)
-        if m and cur:
-            out.append((cur, m.group(1), m.group(2)))
-    return out
 
 
 def scan_abs_paths(dirs):
@@ -152,15 +127,17 @@ def run_checks(root=ROOT):
     text = (root / ".github" / "workflows" / "poc.yml").read_text(encoding="utf-8")
     dirs = ci_dirs(text)
     entries = []
-    cur = None
-    for line in text.splitlines():
-        m = re.search(r"working-directory:\s*(\S+)", line)
-        if m:
-            cur = m.group(1)
-            continue
-        m = re.search(r"^\s+(node|python3)\s+(?:--[\w-]+\s+)*([\w./-]+\.(?:mjs|cjs|js|py))", line)
-        if m and cur and cur in dirs:
-            entries.append((cur, m.group(1), m.group(2)))
+    blocks = job_blocks(text)
+    for job in always_on_jobs(text):
+        cur = None
+        for line in blocks[job].splitlines():
+            m = re.search(r"working-directory:\s*(\S+)", line)
+            if m:
+                cur = m.group(1)
+                continue
+            m = re.search(r"^\s+(node|python3)\s+(?:--[\w-]+\s+)*([\w./-]+\.(?:mjs|cjs|js|py))", line)
+            if m and cur:
+                entries.append((cur, m.group(1), m.group(2)))
 
     hits = []
     for d in dirs:
