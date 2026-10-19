@@ -30,8 +30,8 @@ def scope(doc):
     """Only the POC-65 sections, so an unrelated '99.9%' cannot satisfy a check."""
     i = doc.index("### 8.22")
     j = doc.index("## 9. 发布工程", i)
-    k = doc.index("### 14.66")
-    m = doc.index("### 14.65", k)
+    k = doc.index("### 14.65")
+    m = doc.index("### 14.66", k)
     return doc[i:j] + doc[k:m]
 
 
@@ -68,6 +68,20 @@ def check(a, doc):
     return missing, len(checks) + len(ints)
 
 
+def check66(doc, r=None):
+    """POC-66 headline numbers, checked inside its own two sections only."""
+    i = doc.index("### 8.23"); j = doc.index("## 9. 发布工程", i)
+    k = doc.index("### 14.66"); m = doc.index("### 14.67", k)
+    seg = doc[i:j] + doc[k:m]
+    if r is None:
+        r = json.load(open(HERE.parent / "66" / "results.json"))["summary"]
+    need = ["%.1f%%" % (r["reason"]["yield"] * 100),
+            "%.1f%%" % (r["generic"]["yield"] * 100),
+            "p=%s" % ("%.3f" % r["mcnemar"]["p"]).rstrip("0").rstrip("."),
+            "$%.4f" % r["cost_usd"]]
+    return [(n, n in seg) for n in need]
+
+
 def main():
     a = json.load(open(HERE / "analysis.json"))
     doc = DOC.read_text(encoding="utf-8")
@@ -86,11 +100,19 @@ def main():
             fn(m)
             miss, _n = check(m, doc)
             mutations.append({"mutation": label, "caught": bool(miss)})
+        # POC-66 has its own mutation: a changed yield must be reported
+        import copy as _c
+        r66 = json.load(open(HERE.parent / "66" / "results.json"))["summary"]
+        r66_bad = _c.deepcopy(r66)
+        r66_bad["reason"]["yield"] = 0.999
+        ok66 = any(not hit for _n, hit in check66(doc, r66_bad))
+        mutations.append({"mutation": "poc66 reason yield", "caught": ok66})
         ok = all(m["caught"] for m in mutations)
         print(json.dumps({"selftest": mutations, "ok": ok}, ensure_ascii=False))
         return 0 if ok else 1
 
     missing, n = check(a, doc)
+    missing += [{"poc66": n} for n, hit in check66(doc) if not hit]
     ok = not missing
     print(json.dumps({"ok": ok, "checked": n, "missing": missing},
                      ensure_ascii=False, indent=1))

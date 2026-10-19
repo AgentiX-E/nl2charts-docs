@@ -35,7 +35,7 @@ on:
       stage:
         description: 'Which experiment to run'
         type: choice
-        options: [baseline, repair, confidence]
+        options: [baseline, repair, confidence, repair-flags]
         default: baseline
 
 permissions:
@@ -72,6 +72,14 @@ jobs:
           python3 poc/65/verify_doc.py --selftest
           python3 poc/65/verify_doc.py
 
+      - name: POC-66 diagnosis vs generic repair (9 mutations)
+        run: python3 poc/66/run.py --selftest
+
+      - name: POC-67 CPU-only dependency guard (5 mutations)
+        run: |
+          python3 poc/67/no_gpu_deps.py --selftest
+          python3 poc/67/no_gpu_deps.py
+
       - name: POC-59 benchmark ownership
         run: python3 poc/59/check.py
       - name: POC-56 preflight (portable paths, live entries, current constants)
@@ -89,8 +97,8 @@ jobs:
           assert d['P1_index_matches_sections'], d
           a, b = d['P2_pass_rate'].split('/')
           assert a == b, d
-          assert d['sections'] == 65, d
-          assert d['P4_assumption_rows'] == 102, d
+          assert d['sections'] == 67, d
+          assert d['P4_assumption_rows'] == 105, d
           print('POC-35 ok:', d['sections'], 'sections,', d['P2_pass_rate'], 'five-part,', d['P4_assumption_rows'], 'assumptions')
           PY
 
@@ -641,6 +649,15 @@ jobs:
                    d['with_trigger'], d['wrong'], d['trigger_rate'] * 100, d['repair_yield'] * 100))
           PY
 
+      - name: run diagnosis-driven repair (POC-66)
+        if: inputs.stage == 'repair-flags'
+        env:
+          DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
+        run: |
+          python3 poc/66/run.py --data-dir "$HOME/data/bird_mini_dev" \
+            --results poc/65/results.json --workers 6 --out poc/66/results.json
+          python3 -c "import json;d=json.load(open('poc/66/results.json'))['summary'];print('repair: reason %d vs generic %d, p=%.4f' % (d['reason']['fixed'], d['generic']['fixed'], d['mcnemar']['p']))"
+
       - name: run confidence + validator experiment (POC-65)
         if: inputs.stage == 'confidence'
         env:
@@ -722,6 +739,7 @@ jobs:
             poc/64/results.json
             poc/65/results.json
             poc/65/analysis.json
+            poc/66/results.json
 
   llm:
     name: LLM / embedding POCs (manual, needs secrets)
