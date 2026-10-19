@@ -11,7 +11,7 @@ on:
       group:
         description: 'Which POC group to run'
         type: choice
-        options: [deterministic, duckdb, llm, browser, chart, all]
+        options: [deterministic, duckdb, llm, browser, chart, net, all]
         default: deterministic
 
 permissions:
@@ -347,6 +347,39 @@ jobs:
           (cd poc/37 && python3 main.py       > /tmp/p37.txt)
           (cd poc/38 && python3 main.py       > /tmp/p38.txt)
           for p in 27 28 36 37 38; do test -s /tmp/p$p.txt || (echo "POC-$p produced no output"; exit 1); done
+
+  # ---------- manual: network diagnostics ----------
+  net:
+    name: network diagnostics (manual)
+    if: github.event_name == 'workflow_dispatch' && (inputs.group == 'net' || inputs.group == 'all')
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: environment
+        run: |
+          node -v; npm -v
+          npm config get registry
+          env | grep -iE 'proxy|registry' || true
+
+      - name: registry reachability
+        run: |
+          curl -sS -o /dev/null -w 'npmjs=%{http_code} time=%{time_total}s\n' https://registry.npmjs.org/esbuild || true
+          npm view esbuild version || true
+
+      - name: install a small dependency set
+        run: |
+          mkdir -p /tmp/n1 && cd /tmp/n1 && npm init -y >/dev/null
+          npm install --no-audit --no-fund esbuild pg hono && echo SMALL_OK
+
+      - name: install poc/41 as declared
+        working-directory: poc/41
+        run: |
+          rm -rf node_modules
+          npm install --no-audit --no-fund && echo POC41_OK
 
   # ---------- manual: chart rendering (needs 108 MB of third-party renderers) ----------
   chart:
