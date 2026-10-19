@@ -18,6 +18,20 @@ on:
         required: false
         type: string
         default: '50'
+      schema:
+        description: 'Schema card mode'
+        type: choice
+        options: [full, desc, samples, names]
+        default: full
+      evidence:
+        description: 'Use the BIRD hint field'
+        type: choice
+        options: [off, on]
+        default: off
+      samples:
+        description: 'Samples per question for majority vote'
+        type: string
+        default: '3'
 
 permissions:
   contents: read
@@ -539,7 +553,10 @@ jobs:
                       if f.lower().endswith('.sqlite') and any(i in f for i in ids)]
               snapshot_download(repo_db, repo_type='dataset',
                                 local_dir=os.path.join(root, 'databases'), allow_patterns=keep)
-              print('downloaded', len(keep), 'files')
+              print('downloaded', len(keep), 'sqlite files')
+              # column descriptions live next to the questions, not next to the dbs
+              snapshot_download('birdsql/bird_mini_dev', repo_type='dataset', local_dir=root,
+                                allow_patterns=['**/database_description/*.csv'])
 
           after = dbs()
           total = sum(os.path.getsize(p) for p in after)
@@ -560,16 +577,25 @@ jobs:
       - name: run BIRD Mini-Dev
         env:
           DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
+          SCHEMA: ${{ inputs.schema }}
+          EVIDENCE: ${{ inputs.evidence }}
+          SAMPLES: ${{ inputs.samples }}
         run: |
-          n="${{ inputs.limit }}"
-          python3 poc/60/run.py --data-dir "$HOME/data/bird_mini_dev" --limit "$n" \
-            --samples 3 --workers 6 --schema-mode samples --evidence off
+          python3 poc/60/run.py --data-dir "$HOME/data/bird_mini_dev" \
+            --limit "${{ inputs.limit }}" --samples "${{ inputs.samples }}" --workers 6 \
+            --schema-mode "${{ inputs.schema }}" --evidence "${{ inputs.evidence }}" \
+            --out "poc/60/results-${SCHEMA}-${EVIDENCE}-${SAMPLES}.json"
 
       - name: summary
+        env:
+          SCHEMA: ${{ inputs.schema }}
+          EVIDENCE: ${{ inputs.evidence }}
+          SAMPLES: ${{ inputs.samples }}
         run: |
           python3 - <<'PY'
-          import json
-          d = json.load(open('poc/60/results.json'))
+          import glob, json, os
+          path = 'poc/60/results-%s-%s-%s.json' % (os.environ['SCHEMA'], os.environ['EVIDENCE'], os.environ['SAMPLES'])
+          d = json.load(open(path))
           s = d['summary']
           print('n=%d  EX(set)=%.2f%%  pass@1=%.2f%%  vote gain=%+.2fpp  cost=$%.4f  wall=%ss'
                 % (s['n'], s['ex_set'] * 100, s['pass_at_1'] * 100, s['vote_gain_pp'],
@@ -580,6 +606,8 @@ jobs:
           assert s['statuses'].get('db_missing', 0) == 0, s['statuses']
           assert s['statuses'].get('gold_error', 0) == 0, s['statuses']
           assert s['llm_errors'] == 0, s['llm_errors']
+          # BIRD Mini-Dev has a few broken gold queries; tolerate them, do not hide them
+          assert s['statuses'].get('gold_error', 0) <= max(2, 0.01 * s['n']), s['statuses']
           PY
 
       - uses: actions/upload-artifact@v4
@@ -587,7 +615,7 @@ jobs:
         with:
           name: bird-mini-dev-results
           path: |
-            poc/60/results.json
+            poc/60/results-*.json
             poc/60/selftest.json
 
   llm:

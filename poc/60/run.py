@@ -69,11 +69,56 @@ def find_db(db_dir: str, db_id: str) -> str | None:
     return None
 
 
+DESC_CACHE: dict[str, dict[str, str]] = {}
+DESC_INDEX: dict[str, str] = {}
+
+
+def index_descriptions(data_dir: str) -> dict[str, str]:
+    """Map db_id -> description CSV path.
+
+    BIRD ships column descriptions as `database_description/<db_id>.csv` with
+    headers `original_column_name,column_name,column_description,...`. They are
+    the only source of domain meaning ("is_active" means what?), and POC-60
+    measures them as the largest single lever, so they are indexed explicitly
+    rather than hoped for.
+    """
+    import glob
+
+    if DESC_INDEX:
+        return DESC_INDEX
+    for f in glob.glob(os.path.join(data_dir, "**", "database_description", "*.csv"), recursive=True):
+        DESC_INDEX[os.path.splitext(os.path.basename(f))[0]] = f
+    return DESC_INDEX
+
+
+def load_descriptions(db_id: str, data_dir: str) -> dict[str, str]:
+    if db_id in DESC_CACHE:
+        return DESC_CACHE[db_id]
+    import csv
+
+    path = index_descriptions(data_dir).get(db_id)
+    out: dict[str, str] = {}
+    if path:
+        try:
+            with open(path, encoding="utf-8-sig", newline="") as fh:
+                for row in csv.DictReader(fh):
+                    name = (row.get("column_name") or row.get("original_column_name") or "").strip()
+                    text = " ".join(
+                        x.strip() for x in (row.get("column_description") or "", row.get("value_description") or "") if x
+                    ).strip()
+                    if name and text:
+                        out[name.lower()] = text[:180]
+        except Exception:  # noqa: BLE001 - a broken CSV must not stop the run
+            out = {}
+    DESC_CACHE[db_id] = out
+    return out
+
+
 SCHEMA_CACHE: dict[str, str] = {}
 
 
-def schema_card(db_path: str, db_id: str, mode: str) -> str:
-    key = f"{db_path}|{mode}"
+def schema_card(db_path: str, db_id: str, mode: str, data_dir: str = "") -> str:
+    key = f"{db_path}|{mode}|{data_dir}"
     if key in SCHEMA_CACHE:
         return SCHEMA_CACHE[key]
     import sqlite3
@@ -91,10 +136,13 @@ def schema_card(db_path: str, db_id: str, mode: str) -> str:
         for t in tables:
             cols = list(conn.execute(f'PRAGMA table_info("{t}")'))
             lines.append(f"Table: {t}")
+            descs = load_descriptions(db_id, data_dir) if mode in ("desc", "full") else {}
             for _cid, name, ctype, _notnull, _default, pk in cols:
                 suffix = " PRIVATE KEY" if pk else ""
-                lines.append(f"  {name} {ctype or 'TEXT'}{suffix}")
-            if mode == "samples" and cols:
+                note = descs.get(name.lower())
+                tail = f"  -- {note}" if note else ""
+                lines.append(f"  {name} {ctype or 'TEXT'}{suffix}{tail}")
+            if mode in ("samples", "full") and cols:
                 sel = ", ".join(f'"{c[1]}"' for c in cols[:6])
                 try:
                     rows = list(conn.execute(f'SELECT {sel} FROM "{t}" LIMIT 20'))
@@ -194,7 +242,7 @@ def call(messages, max_tokens=400, temperature=0.0, tries=5):
 # ---------------------------------------------------------------- one question
 
 
-def run_question(q, db_dir, samples, mode, evidence):
+def run_question(q, db_dir, samples, mode, evidence, data_dir=""):
     db_path = find_db(db_dir, q["db_id"])
     out = {"id": q["question_id"], "db_id": q["db_id"],
            "difficulty": (q.get("difficulty") or "unknown").lower()}
@@ -209,7 +257,7 @@ def run_question(q, db_dir, samples, mode, evidence):
         return out
     out["gold_ms"] = round(gold.ms, 3)
 
-    card = schema_card(db_path, q["db_id"], mode)
+    card = schema_card(db_path, q["db_id"], mode, data_dir)
     msgs = build_prompt(q, card, evidence)
 
     got = []
@@ -385,7 +433,7 @@ def main():
     ap.add_argument("--limit", type=int, default=0)
     ap.add_argument("--samples", type=int, default=3)
     ap.add_argument("--workers", type=int, default=6)
-    ap.add_argument("--schema-mode", choices=["names", "samples"], default="samples")
+    ap.add_argument("--schema-mode", choices=["names", "samples", "desc", "full"], default="full")
     ap.add_argument("--evidence", choices=["on", "off"], default="off")
     ap.add_argument("--seed", type=int, default=0)
     ap.add_argument("--out", default=os.path.join(HERE, "results.json"))
@@ -426,7 +474,7 @@ def main():
     db_dir = a.db_dir or os.path.join(a.data_dir, "databases")
     t0 = time.time()
     with ThreadPoolExecutor(max_workers=a.workers) as pool:
-        rows = list(pool.map(lambda q: run_question(q, db_dir, a.samples, a.schema_mode, a.evidence), qs))
+        rows = list(pool.map(lambda q: run_question(q, db_dir, a.samples, a.schema_mode, a.evidence, a.data_dir), qs))
     wall = time.time() - t0
 
     ok = [r for r in rows if r.get("status") == "ok"]
@@ -477,6 +525,9 @@ def main():
         "cost_usd": round(cost, 4),
         "wall_s": round(wall, 1),
         "gold_p50_ms": round(lat[len(lat) // 2], 2) if lat else None,
+        "descriptionIndex": len(index_descriptions(a.data_dir)),
+        "descCoverage": round(
+            sum(1 for q in qs if load_descriptions(q["db_id"], a.data_dir)) / max(1, len(qs)), 4),
     }
     json.dump({"summary": summary, "rows": rows}, open(a.out, "w"), ensure_ascii=False, indent=1)
     print(json.dumps(summary, ensure_ascii=False, indent=1))
