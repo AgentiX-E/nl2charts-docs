@@ -1,0 +1,36 @@
+{
+ "ablation": [
+  {
+   "from": "names",
+   "to": "profile_lite",
+   "delta_pp": 1.6,
+   "mcnemar_p": 0.215327,
+   "up": 20,
+   "down": 12
+  },
+  {
+   "from": "names",
+   "to": "samples",
+   "delta_pp": 5.2,
+   "mcnemar_p": 0.001858,
+   "up": 46,
+   "down": 20
+  },
+  {
+   "from": "profile_lite",
+   "to": "profile",
+   "delta_pp": 3.2,
+   "mcnemar_p": 0.051894,
+   "up": 38,
+   "down": 22
+  },
+  {
+   "from": "samples",
+   "to": "profile",
+   "delta_pp": -0.4,
+   "mcnemar_p": 0.891923,
+   "up": 26,
+   "down": 28
+  }
+ ]
+}

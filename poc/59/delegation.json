@@ -5,7 +5,7 @@
    "id": "sql.generate",
    "owner": "self",
    "gate": "E1",
-   "benchmark": "BIRD Mini-Dev 500 (evidence=off, schema=samples, 1 sample)",
+   "benchmark": "BIRD Mini-Dev 500 (evidence=off, default card = names + samples, 1 sample)",
    "status": "measured",
    "plan": "P0: Mini-Dev 500, 3-run majority, EX + R-VES",
    "probe": "POC-60",
@@ -34,13 +34,37 @@
      3,
      3,
      1
-    ]
+    ],
+    "note": "card ablation moved the best card to 45.40% with p=0.0019 vs names-only"
    },
    "gap": {
     "vs_gpt4o_zeroshot_pp": -3.4,
     "vs_target_52_62_pp": -6.0,
     "cause": "column descriptions unavailable (descCoverage=0)"
    }
+  },
+  {
+   "id": "metadata.card",
+   "owner": "self",
+   "gate": "BIRD2",
+   "benchmark": "BIRD Mini-Dev 500, 4-arm card ablation (paired McNemar)",
+   "status": "measured",
+   "probe": "POC-61",
+   "measured": {
+    "names": 0.402,
+    "samples": 0.454,
+    "profile_lite": 0.418,
+    "profile": 0.45,
+    "samples_vs_names": {
+     "delta_pp": 5.2,
+     "p": 0.0019
+    },
+    "profile_vs_samples": {
+     "delta_pp": -0.4,
+     "p": 0.892
+    }
+   },
+   "decision": "default card = names + 3 sample values (ADR-129)"
   },
   {
    "id": "schema.linking",

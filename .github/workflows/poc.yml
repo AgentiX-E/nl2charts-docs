@@ -71,8 +71,8 @@ jobs:
           assert d['P1_index_matches_sections'], d
           a, b = d['P2_pass_rate'].split('/')
           assert a == b, d
-          assert d['sections'] == 60, d
-          assert d['P4_assumption_rows'] == 86, d
+          assert d['sections'] == 61, d
+          assert d['P4_assumption_rows'] == 90, d
           print('POC-35 ok:', d['sections'], 'sections,', d['P2_pass_rate'], 'five-part,', d['P4_assumption_rows'], 'assumptions')
           PY
 
