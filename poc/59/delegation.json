@@ -10,11 +10,12 @@
    "plan": "P0: Mini-Dev 500, 3-run majority, EX + R-VES",
    "probe": "POC-60",
    "measured": {
-    "ex_set": 0.46,
+    "ex_set": 0.454,
     "ex_set_runs": [
      0.462,
      0.462,
-     0.46
+     0.46,
+     0.454
     ],
     "multiset": 0.429,
     "byDifficulty": {
@@ -23,8 +24,17 @@
      "challenging": 0.284
     },
     "descCoverage": 0.0,
-    "cost_usd": 0.207,
-    "run": "39192080569"
+    "cost_usd": {
+     "3_samples": 0.207,
+     "1_sample": 0.069
+    },
+    "run": "39193479951",
+    "samples_per_run": [
+     3,
+     3,
+     3,
+     1
+    ]
    },
    "gap": {
     "vs_gpt4o_zeroshot_pp": -3.4,

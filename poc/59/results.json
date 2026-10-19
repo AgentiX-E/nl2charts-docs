@@ -1,9 +1,9 @@
 {
  "counts": {
   "total": 18,
-  "platform": 2,
   "self": 12,
   "delegated": 4,
+  "platform": 2,
   "selfMeasured": 9,
   "selfPlanned": 3
  },
