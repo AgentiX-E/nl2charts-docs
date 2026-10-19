@@ -1,6 +1,5 @@
 {
  "ciDirs": [
-  "poc/03",
   "poc/41",
   "poc/42",
   "poc/43",
@@ -17,7 +16,7 @@
   "poc/54",
   "poc/55"
  ],
- "entryCommands": 18,
+ "entryCommands": 17,
  "P1_absolutePaths": [],
  "P2_missingEntries": [],
  "P3_constantMismatch": [],

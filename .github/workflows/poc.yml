@@ -325,17 +325,6 @@ jobs:
           print('POC-55 ok:', b['gzip'], 'B gzip, 0 core/ai imports')
           PY
 
-      - name: POC-3 compile latency budget
-        working-directory: poc/03
-        run: |
-          node main.mjs
-          python3 - <<'PY'
-          import json
-          d = json.load(open('latency.json'))
-          assert d['p95'] < 3.0, d
-          print('POC-3 ok: p50', d['p50'], 'ms, p95', d['p95'], 'ms')
-          PY
-
   # ---------- always-on: pure-python statistics ----------
   python-stats:
     name: python-only POCs (27/28/36/37/38)
@@ -384,6 +373,17 @@ jobs:
           assert all(c['render_ok'] for c in d['cases']), d
           assert d['stack_flag_ignored'] is True, d
           print('POC-2 ok: 6/6 charts render; chart_spec.stack ignored')
+          PY
+
+      - name: POC-3 compile latency budget
+        working-directory: poc/03
+        run: |
+          node main.mjs
+          python3 - <<'PY'
+          import json
+          d = json.load(open('latency.json'))
+          assert d['p95'] < 3.0, d
+          print('POC-3 ok: p50', d['p50'], 'ms, p95', d['p95'], 'ms')
           PY
 
   # ---------- manual: PostgreSQL + DuckDB native ----------
