@@ -1,4 +1,4 @@
-version: v5.20
+version: v5.22
 # The evaluation plan is the machine-readable half of §5/§8.19. Every benchmark we
 # quote must appear here with n, metric, grader and evidence; every measured row
 # must carry a baseline and a POC that produced it. `poc/73/check.py` enforces it.
@@ -37,23 +37,29 @@ benchmarks:
 
   - id: E3
     name: Text2Vis (text-to-chart)
-    dataset: unknown
-    n: null
-    metric: answer match + code execution
+    dataset: mizanurr/Text2Vis
+    datasetProbe: poc/75/probe.json
+    datasetVerified: 2026-10-19
+    n: 1985
+    metric: answer match + chart-type match against the per-row gold
     grader: own
     evidence: n/a
     provider: deepseek
-    status: blocked
+    status: planned
     baseline: null
     result: null
-    target: ">=50% answer match once a public copy is located"
-    gate: null
-    evidencePoc: null
-    unblock: a public dataset URL that can be fetched without credentials
+    target: ">=50% answer match"
+    gate: CHART1
+    evidencePoc: POC-71
+    unblock: run the CPU-only harness on the CSV; the file carries Answer, Visualization Code and Chart Type per row
+    notes: "6.7 MB, single CSV; the earlier 'no public copy' was never searched for (POC-75)"
+
 
   - id: E4
-    name: BIRD-Interact Lite
-    dataset: birdsql/bird_interact (gated)
+    name: BIRD-Interact Lite (c-Interact)
+    dataset: birdsql/bird-interact-lite
+    datasetProbe: poc/75/probe.json
+    datasetVerified: 2026-10-19
     n: 300
     metric: P1 (accuracy) + P2 (efficiency)
     grader: official
@@ -65,7 +71,28 @@ benchmarks:
     target: P1 >=54%, P2 >=40%
     gate: HITL1
     evidencePoc: null
-    unblock: gated HF access; the public ADK examples are agent run logs (n=10), not a task set
+    unblock: ground truth is withheld by design (sol_sql and test_cases ship empty; request by email with the tag [bird-interact-lite GT&Test Cases]); Lite targets PostgreSQL, so the harness needs a PG service, not SQLite
+    notes: "the task texts are public and already fetched; the old 'gated on HF' claim was a wrong repo id returning 404 (POC-75)"
+
+  - id: E6
+    name: Spider2-Lite (SQLite subset)
+    dataset: xlangai/spider2-lite + xlangai/spider2-localdb
+    datasetProbe: poc/75/probe.json
+    datasetVerified: 2026-10-19
+    n: 260
+    metric: execution match against the published gold result set
+    grader: official (xlang-ai/Spider2 spider2-lite/evaluation_suite/gold)
+    evidence: n/a
+    provider: deepseek
+    status: planned
+    baseline: null
+    result: null
+    target: relative +3pp over same-model zero-shot on the SQLite subset
+    gate: BIRD1
+    evidencePoc: null
+    unblock: download spider2-localdb/sqlite.zip (573 MB) and keep only the instances whose db is in that archive
+    notes: "260 instances in total; the SQLite-subset count is measured after the archive is unpacked"
+
 
   - id: E5
     name: private adjudicated set

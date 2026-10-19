@@ -42,10 +42,14 @@ HF = (os.environ.get("HF_ENDPOINT") or "https://huggingface.co").rstrip("/")
 CANDIDATES = ("HF_TOKEN", "HUGGINGFACE_TOKEN", "HF_API_TOKEN", "HUGGING_FACE_TOKEN")
 
 DEFAULT_REPOS = (
-    "birdsql/bird_interact",     # E4 BIRD-Interact Lite
-    "xlang-ai/Spider2-Lite",     # E1 successor (SQLite subset)
-    "xlang-ai/Spider2",
-    "birdsql/bird_mini_dev",     # control: known public, must come back usable
+    # IDs are checked against /api/datasets?search=... before being trusted; the
+    # first run of this probe used `bird_interact` and `xlang-ai/...`, both 404,
+    # and those 404s were written down as "gated" for two revisions.
+    "birdsql/bird-interact-lite",    # E4 BIRD-Interact Lite (hyphen, not underscore)
+    "xlangai/spider2-lite",          # E6 (org is xlangai, not xlang-ai)
+    "xlangai/spider2-localdb",
+    "mizanurr/Text2Vis",             # E3
+    "birdsql/bird_mini_dev",         # control: known public, must come back usable
 )
 
 

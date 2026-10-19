@@ -98,6 +98,9 @@ jobs:
       - name: POC-74 span contract extension (3 positive, 7 mutations)
         run: python3 poc/74/run.py
 
+      - name: POC-75 dataset probe selftest (10 mutations, no network)
+        run: python3 poc/75/hf_probe.py --selftest
+
       - name: POC-67 CPU-only dependency guard (5 mutations)
         run: |
           python3 poc/67/no_gpu_deps.py --selftest
@@ -122,8 +125,8 @@ jobs:
           assert d['P1_index_matches_sections'], d
           a, b = d['P2_pass_rate'].split('/')
           assert a == b, d
-          assert d['sections'] == 74, d
-          assert d['P4_assumption_rows'] == 113, d
+          assert d['sections'] == 75, d
+          assert d['P4_assumption_rows'] == 114, d
           print('POC-35 ok:', d['sections'], 'sections,', d['P2_pass_rate'], 'five-part,', d['P4_assumption_rows'], 'assumptions')
           PY
 

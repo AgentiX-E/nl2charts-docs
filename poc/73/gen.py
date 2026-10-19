@@ -31,17 +31,17 @@ LAYER = {
     "CHART": ["ci:unit"], "EV": ["ci:eval"], "PRE": ["ci:lint"],
     "DELEG": ["ci:lint"], "BIRD": ["ci:eval"], "API": ["ci:pack"],
     "LINK": ["ci:eval"], "REPAIR": ["ci:eval"], "CONF": ["ci:eval"],
-    "SILENT": ["ci:eval", "ci:unit"], "PLT8": ["ci:pack"], "LEVER": ["ci:eval"],
+    "SILENT": ["ci:eval", "ci:unit"], "PLT8": ["ci:pack"], "LEVER": ["ci:eval"], "DS": ["ci:eval"],
     "P": ["ci:unit"],
 }
-FAMILY = re.compile(r"^(DG|FG|UX|PKG|TIER|OBS|HITL|CHART|EV|PRE|DELEG|BIRD|API|LINK|REPAIR|CONF|SILENT|PLT|LEVER)(\d{1,2})$")
+FAMILY = re.compile(r"^(DG|FG|UX|PKG|TIER|OBS|HITL|CHART|EV|PRE|DELEG|BIRD|API|LINK|REPAIR|CONF|SILENT|PLT|LEVER|DS)(\d{1,2})$")
 
 
 def extract(text: str):
     """Same row grammar as poc/39/audit.py, so both agree on what a gate is."""
     gates = {}
     for line in text.split("\n"):
-        m = re.match(r"^\|\s*\**(DG|FG|UX|PKG|TIER|OBS|HITL|CHART|EV|PRE|DELEG|BIRD|API|LINK|REPAIR|CONF|SILENT|PLT|LEVER)(\d{1,2})\**\s*(\||\s+[^|]+\|)", line)
+        m = re.match(r"^\|\s*\**(DG|FG|UX|PKG|TIER|OBS|HITL|CHART|EV|PRE|DELEG|BIRD|API|LINK|REPAIR|CONF|SILENT|PLT|LEVER|DS)(\d{1,2})\**\s*(\||\s+[^|]+\|)", line)
         if m and "–" not in line.split("|")[1]:
             gid = f"{m.group(1)}{m.group(2)}"
             gates.setdefault(gid, line.strip())

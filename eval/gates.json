@@ -1,5 +1,5 @@
 {
- "version": "v5.21",
+ "version": "v5.20",
  "gates": {
   "API1": {
    "family": "API",
@@ -142,6 +142,14 @@
    "criterion": "| **DG11** | **AST 改写保真**：改写前后行集哈希一致、改写幂等、正反例各 1 条（ADR-087） |",
    "layer": [
     "ci:federation"
+   ],
+   "source": "技术设计方案.md"
+  },
+  "DS1": {
+   "family": "DS",
+   "criterion": "`dataset` 无探测产物即红；`blocked` 的 `unblock` 只写 404 即红；探测无对照组即红",
+   "layer": [
+    "ci:eval"
    ],
    "source": "技术设计方案.md"
   },

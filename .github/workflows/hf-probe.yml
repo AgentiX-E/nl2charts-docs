@@ -15,7 +15,7 @@ on:
       repos:
         description: 'Comma separated dataset repos to probe'
         type: string
-        default: 'birdsql/bird_interact,xlang-ai/Spider2-Lite,xlang-ai/Spider2,birdsql/bird_mini_dev'
+        default: 'birdsql/bird-interact-lite,xlangai/spider2-lite,xlangai/spider2-localdb,mizanurr/Text2Vis,birdsql/bird_mini_dev'
       endpoint:
         description: 'HF endpoint'
         type: string

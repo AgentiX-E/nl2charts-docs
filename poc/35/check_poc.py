@@ -16,7 +16,11 @@ i0 = s.find('**索引（')
 i1 = s.find('**自动化校验', i0)
 assert i0 > 0 and i1 > i0
 seg = s[i0:i1]
-idx_nums = sorted({int(x) for x in re.findall(r'^\| (\d+) \|', seg, re.M)})
+_idx_all = [int(x) for x in re.findall(r'^\| (\d+) \|', seg, re.M)]
+idx_nums = sorted(set(_idx_all))
+# A set comparison hides a duplicated row: the index once carried 68-73 three
+# times each while P1 stayed green. Multiplicity is part of the invariant.
+idx_dups = sorted({n for n in _idx_all if _idx_all.count(n) > 1})
 sec_nums = sorted({n for n, _, _ in secs})
 
 SIG = {
@@ -35,7 +39,8 @@ for i, (n, title, _) in enumerate(secs):
 
 out = {
   'sections': len(secs),
-  'P1_index_matches_sections': idx_nums == sec_nums,
+  'P1_index_matches_sections': idx_nums == sec_nums and not idx_dups,
+  'P1b_index_duplicates': idx_dups,
   'index_only': sorted(set(idx_nums)-set(sec_nums)),
   'sections_only': sorted(set(sec_nums)-set(idx_nums)),
   'P2_pass_rate': f"{sum(1 for r in rows if r['pass'])}/{len(rows)}",
