@@ -11,7 +11,11 @@ on:
       group:
         description: 'Which POC group to run'
         type: choice
-        options: [deterministic, duckdb, llm, browser, chart, net, all]
+        options: [deterministic, duckdb, llm, browser, chart, net, eval, all]
+      limit:
+        description: 'BIRD Mini-Dev question count (0 = all 500)'
+        required: false
+        default: '50'
         default: deterministic
 
 permissions:
@@ -31,6 +35,9 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: POC-60 comparator selftest (18 mutations)
+        run: python3 poc/60/run.py --selftest
 
       - name: POC-59 benchmark ownership
         run: python3 poc/59/check.py
@@ -473,6 +480,77 @@ jobs:
           node main.js
 
   # ---------- manual: LLM-backed ----------
+  # ---------- manual: external benchmark (BIRD Mini-Dev) ----------
+  eval:
+    name: BIRD Mini-Dev evaluation (manual, uses dataset cache)
+    if: github.event_name == 'workflow_dispatch' && (inputs.group == 'eval' || inputs.group == 'all')
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: restore the dataset cache
+        id: ds
+        uses: actions/cache@v4
+        with:
+          path: ~/data/bird_mini_dev
+          key: bird-mini-dev-sqlite-v1
+
+      - name: download on cache miss
+        if: steps.ds.outputs.cache-hit != 'true'
+        run: |
+          pip install --quiet huggingface_hub
+          python3 - <<'PY'
+          import json, os
+          from huggingface_hub import hf_hub_download, snapshot_download
+          root = os.path.expanduser('~/data/bird_mini_dev')
+          os.makedirs(root, exist_ok=True)
+          q = hf_hub_download('birdsql/bird_mini_dev', 'data/mini_dev_sqlite-00000-of-00001.json',
+                              repo_type='dataset', local_dir=root)
+          db_ids = sorted({r['db_id'] for r in json.load(open(q, encoding='utf-8'))})
+          repo_db = 'birdsql/bird-critic-1.0-sqlite'
+          from huggingface_hub import list_repo_files
+          keep = [f for f in list_repo_files(repo_db, repo_type='dataset')
+                  if f.lower().endswith('.sqlite') and any(d in f for d in db_ids)]
+          snapshot_download(repo_db, repo_type='dataset',
+                            local_dir=os.path.join(root, 'databases'), allow_patterns=keep)
+          print('downloaded', len(keep), 'sqlite files')
+          PY
+
+      - name: comparator selftest (must pass before any number is reported)
+        run: python3 poc/60/run.py --selftest
+
+      - name: run BIRD Mini-Dev
+        env:
+          DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
+        run: |
+          n="${{ inputs.limit }}"
+          python3 poc/60/run.py --data-dir "$HOME/data/bird_mini_dev" --limit "$n" \
+            --samples 3 --workers 6 --schema-mode samples --evidence off
+
+      - name: summary
+        run: python3 - <<'PY'
+          import json
+          d = json.load(open('poc/60/results.json'))
+          s = d['summary']
+          print('n=%s  EX(set)=%.2f%%  pass@1=%.2f%%  vote gain=%.2fpp  cost=$%.4f'
+                % (s['n'], s['ex_set'] * 100, s['pass_at_1'] * 100, s['vote_gain_pp'], s['cost_usd']))
+          assert s['n'] > 0
+          assert s['statuses'].get('db_missing', 0) == 0, s['statuses']
+          assert s['statuses'].get('gold_error', 0) == 0, s['statuses']
+          PY
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: bird-mini-dev-results
+          path: |
+            poc/60/results.json
+            poc/60/selftest.json
+
   llm:
     name: LLM / embedding POCs (manual, needs secrets)
     if: github.event_name == 'workflow_dispatch' && (inputs.group == 'llm' || inputs.group == 'all')

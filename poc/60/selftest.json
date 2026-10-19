@@ -1,0 +1,143 @@
+{
+ "comparator": [
+  {
+   "case": "identical",
+   "multiset": true,
+   "set": true,
+   "expected": [
+    true,
+    true
+   ],
+   "pass": true
+  },
+  {
+   "case": "row order differs",
+   "multiset": true,
+   "set": true,
+   "expected": [
+    true,
+    true
+   ],
+   "pass": true
+  },
+  {
+   "case": "duplicate collapsed",
+   "multiset": false,
+   "set": true,
+   "expected": [
+    false,
+    true
+   ],
+   "pass": true
+  },
+  {
+   "case": "value changed",
+   "multiset": false,
+   "set": false,
+   "expected": [
+    false,
+    false
+   ],
+   "pass": true
+  },
+  {
+   "case": "float rounded",
+   "multiset": true,
+   "set": true,
+   "expected": [
+    true,
+    true
+   ],
+   "pass": true
+  },
+  {
+   "case": "column count differs",
+   "multiset": false,
+   "set": false,
+   "expected": [
+    false,
+    false
+   ],
+   "pass": true
+  }
+ ],
+ "guard": [
+  {
+   "sql": "SELECT 1",
+   "allowed": true,
+   "expected": true,
+   "pass": true
+  },
+  {
+   "sql": "  with x as (select 1) select * from x",
+   "allowed": true,
+   "expected": true,
+   "pass": true
+  },
+  {
+   "sql": "DELETE FROM t",
+   "allowed": false,
+   "expected": false,
+   "pass": true
+  },
+  {
+   "sql": "WITH x AS (DELETE FROM t RETURNING a) SELECT * FROM x",
+   "allowed": false,
+   "expected": false,
+   "pass": true
+  },
+  {
+   "sql": "SELECT 1; DROP TABLE t",
+   "allowed": false,
+   "expected": false,
+   "pass": true
+  },
+  {
+   "sql": "PRAGMA writable_schema=1",
+   "allowed": false,
+   "expected": false,
+   "pass": true
+  },
+  {
+   "sql": "-- comment only",
+   "allowed": false,
+   "expected": false,
+   "pass": true
+  }
+ ],
+ "fence": [
+  {
+   "input": "```sql\nSELECT 1\n```",
+   "sql": "SELECT 1",
+   "fenced": true,
+   "pass": true
+  },
+  {
+   "input": "```\nSELECT 1\n```",
+   "sql": "SELECT 1",
+   "fenced": true,
+   "pass": true
+  },
+  {
+   "input": "SELECT 1",
+   "sql": "SELECT 1",
+   "fenced": false,
+   "pass": true
+  }
+ ],
+ "vote": [
+  {
+   "case": "2 of 3 agree",
+   "pick": "SELECT 1",
+   "pass": true
+  },
+  {
+   "case": "order does not matter",
+   "pick": "SELECT 1",
+   "pass": true
+  }
+ ],
+ "pass": 18,
+ "total": 18,
+ "ok": true
+}
