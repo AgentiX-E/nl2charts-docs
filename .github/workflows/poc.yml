@@ -29,9 +29,9 @@ on:
         options: ['off', 'on']
         default: 'off'
       samples:
-        description: 'Samples per question for majority vote'
+        description: 'Samples per question (1 = ADR-128 default; voting is not a free win)'
         type: string
-        default: '3'
+        default: '1'
 
 permissions:
   contents: read
