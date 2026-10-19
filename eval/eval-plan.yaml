@@ -107,7 +107,7 @@ benchmarks:
     target: "8/8 gate assertions pass on both backends; every unmet obligation has a named owner"
     gate: XCONN1
     evidencePoc: POC-81
-    notes: "Two backends, same 12 assertions. PGlite: 6/6 gates, 3 cluster skipped, statement_timeout NOT enforced (601ms vs 100ms). Real postgres:16 service container in CI: 0 skipped, 8/8 gates pass, statement_timeout aborts at 101ms, pg.Pool leaks search_path across checkouts (adapter must RESET ALL), RLS filters correctly as a non-superuser. The 30s job is always-on; the two backends disagree in opposite directions on timeouts, which is why both run"
+    notes: "Two backends, same 12 assertions. PGlite: 6/6 gates, 3 cluster skipped, statement_timeout NOT enforced (601ms vs 100ms). Real postgres:16 service container in CI: 0 skipped, 8/8 gates pass, statement_timeout aborts at 101ms, pg.Pool leaks search_path across checkouts (adapter must RESET ALL), RLS filters correctly as a non-superuser. On CI the collation actually forks: default collation orders a,Á,B,c while COLLATE \"C\" orders B,a,c,Á, so the chart axis order depends on the server. The 30s job is always-on; the two backends disagree in opposite directions on timeouts, which is why both run"
 
   - id: E6
     name: Spider2-Lite (SQLite subset)
