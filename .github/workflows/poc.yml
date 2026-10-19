@@ -142,8 +142,8 @@ jobs:
           assert d['P1_index_matches_sections'], d
           a, b = d['P2_pass_rate'].split('/')
           assert a == b, d
-          assert d['sections'] == 80, d
-          assert d['P4_assumption_rows'] == 119, d
+          assert d['sections'] == 81, d
+          assert d['P4_assumption_rows'] == 120, d
           print('POC-35 ok:', d['sections'], 'sections,', d['P2_pass_rate'], 'five-part,', d['P4_assumption_rows'], 'assumptions')
           PY
 
@@ -715,6 +715,8 @@ jobs:
         if: inputs.stage == 'pglite'
         run: |
           cd poc/79 && npm init -y >/dev/null 2>&1 && npm i --silent @electric-sql/pglite@0.2 && cd -
+          cd poc/81 && npm init -y >/dev/null 2>&1 && npm i --silent @electric-sql/pglite@0.2 \
+            && node contract.mjs results.json && cd -
           python3 poc/79/run.py --dbs superhero,toxicology,student_club \
             --data-dir "$HOME/data/bird_mini_dev" --out poc/79/results.json
           python3 -c "import json;d=json.load(open('poc/79/results.json'))['summary'];print('pg: runnable %.2f%%, self-consistency %.2f%%, silent %d' % (d['goldRunsOnPg']*100, d['goldSelfConsistency']*100, d['n']-d['goldComparable']));assert d['n']>0 and d['goldRunsOnPg']>0.9"
@@ -861,6 +863,7 @@ jobs:
             poc/77/linked-results.json
             poc/79/results.json
             poc/80/results.json
+            poc/81/results.json
 
   llm:
     name: LLM / embedding POCs (manual, needs secrets)

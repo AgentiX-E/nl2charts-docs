@@ -648,6 +648,14 @@
     "ci:unit"
    ],
    "source": "技术设计方案.md"
+  },
+  "XCONN1": {
+   "family": "XCONN",
+   "criterion": "四条缺一即红；把超时只转发给引擎而不在客户端兜底即红",
+   "layer": [
+    "ci:eval"
+   ],
+   "source": "技术设计方案.md"
   }
  }
 }

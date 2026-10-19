@@ -34,13 +34,13 @@ PLAN = ROOT / "eval" / "eval-plan.yaml"
 
 CI_LAYERS = {"ci:unit", "ci:eval", "ci:pack", "ci:lint", "ci:bench", "ci:obs",
              "ci:federation", "ci:chart", "ci:browser", "ci:net"}
-GATE = re.compile(r"^(DG|FG|UX|PKG|TIER|OBS|HITL|CHART|EV|PRE|DELEG|BIRD|API|LINK|REPAIR|CONF|SILENT|PLT|LEVER|DS|P)(\d{1,2})$")
+GATE = re.compile(r"^(DG|FG|UX|PKG|TIER|OBS|HITL|CHART|EV|PRE|DELEG|BIRD|API|LINK|REPAIR|CONF|SILENT|PLT|LEVER|DS|XCONN|P)(\d{1,2})$")
 
 
 def doc_gates(text: str):
     out = set()
     for line in text.split("\n"):
-        m = re.match(r"^\|\s*\**(DG|FG|UX|PKG|TIER|OBS|HITL|CHART|EV|PRE|DELEG|BIRD|API|LINK|REPAIR|CONF|SILENT|PLT|LEVER|DS)(\d{1,2})\**\s*(\||\s+[^|]+\|)", line)
+        m = re.match(r"^\|\s*\**(DG|FG|UX|PKG|TIER|OBS|HITL|CHART|EV|PRE|DELEG|BIRD|API|LINK|REPAIR|CONF|SILENT|PLT|LEVER|DS|XCONN)(\d{1,2})\**\s*(\||\s+[^|]+\|)", line)
         if m and "–" not in line.split("|")[1]:
             out.add(f"{m.group(1)}{m.group(2)}")
         m2 = re.match(r"^P(\d{1,2})\s+", line)

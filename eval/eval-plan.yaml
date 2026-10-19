@@ -1,4 +1,4 @@
-version: v5.26
+version: v5.27
 # The evaluation plan is the machine-readable half of §5/§8.19. Every benchmark we
 # quote must appear here with n, metric, grader and evidence; every measured row
 # must carry a baseline and a POC that produced it. `poc/73/check.py` enforces it.
@@ -92,6 +92,22 @@ benchmarks:
     engines: "sqlite3 3.x, DuckDB 1.5.6, PostgreSQL 17 (PGlite 0.2, WASM)"
     guard: "poc/80/guard.py: 6 hard rules + 2 warn; on 132 comparable questions precision 100%, recall 60%, refusal 2.27% (POC-80)"
     notes: "sqlite<->duckdb: gold 78.9% runnable, self-consistency 98.2%, verdict 97.68%, 5 silent (1.3%). sqlite<->pg: gold 94.29% runnable, 96.21%, verdict 99.19%, 5 silent (3.8%). Two engines disagree with themselves at different rates, and PG drifts silently more often (POC-78/79, ADR-149/151)"
+
+  - id: E8
+    name: connector contract (PostgreSQL)
+    dataset: none (assertions, not a benchmark)
+    n: 12
+    metric: assertions passed, split into gate (adapter bug) and obligation (host responsibility)
+    grader: own
+    evidence: n/a
+    provider: none
+    status: measured
+    baseline: 12
+    result: 9
+    target: "6/6 gate assertions pass; every unmet obligation has a named owner"
+    gate: XCONN1
+    evidencePoc: POC-81
+    notes: "6/6 gates pass on PGlite (read-only, search_path, rollback, identifier folding, boolean strictness, NULL propagation). 1 of 3 obligations unmet: statement_timeout is NOT enforced under WASM (601ms vs 100ms setting), so the host must terminate the worker. 3 cluster-only assertions skipped with reasons (TLS/SCRAM, pool reuse, RLS) and owned by the pg driver per DELEG1"
 
   - id: E6
     name: Spider2-Lite (SQLite subset)
