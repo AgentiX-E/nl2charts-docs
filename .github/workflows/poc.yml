@@ -12,11 +12,12 @@ on:
         description: 'Which POC group to run'
         type: choice
         options: [deterministic, duckdb, llm, browser, chart, net, eval, all]
+        default: deterministic
       limit:
         description: 'BIRD Mini-Dev question count (0 = all 500)'
         required: false
+        type: string
         default: '50'
-        default: deterministic
 
 permissions:
   contents: read
