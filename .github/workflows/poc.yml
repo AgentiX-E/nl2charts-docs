@@ -712,7 +712,9 @@ jobs:
         if: inputs.stage == 'pglite'
         run: |
           cd poc/79 && npm init -y >/dev/null 2>&1 && npm i --silent @electric-sql/pglite@0.2 && cd -
-          python3 poc/79/run.py --dbs superhero,toxicology,student_club --out poc/79/results.json
+          python3 poc/79/run.py --dbs superhero,toxicology,student_club \
+            --data-dir "$HOME/data/bird_mini_dev" --out poc/79/results.json
+          python3 -c "import json;d=json.load(open('poc/79/results.json'))['summary'];print('pg: runnable %.2f%%, self-consistency %.2f%%, silent %d' % (d['goldRunsOnPg']*100, d['goldSelfConsistency']*100, d['n']-d['goldComparable']));assert d['n']>0 and d['goldRunsOnPg']>0.9"
 
       - name: run Spider2-Lite SQLite subset (POC-77)
         if: inputs.stage == 'spider2'

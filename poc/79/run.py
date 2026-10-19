@@ -155,6 +155,13 @@ def main() -> int:
     os.makedirs(args.tmp, exist_ok=True)
     names = {d.strip() for d in args.dbs.split(",") if d.strip()}
     dbs = find_dbs(args.data_dir, names)
+    if not dbs:
+        # CI ran this once with a sandbox-only default path and "succeeded" with
+        # n=0. Zero work is a failure, not an empty result: it is the same
+        # disease as a silent divergence, one layer up.
+        print(json.dumps({"error": "no databases found", "dataDir": args.data_dir,
+                          "wanted": sorted(names)}, ensure_ascii=False))
+        return 2
     qs = {q["question_id"]: q for q in load_questions(args.data_dir) if q["db_id"] in dbs}
     preds = {r["id"]: (r.get("winner") or {}).get("sql")
              for r in json.load(open(os.path.abspath(args.results), encoding="utf-8")).get("rows") or []
@@ -199,6 +206,9 @@ def main() -> int:
             rec["verdict_pg"] = rows_key(p_pg["rows"]) == rows_key(g_pg["rows"])
         rows.append(rec)
 
+    if not rows:
+        print(json.dumps({"error": "no questions matched", "dbs": sorted(dbs)}, ensure_ascii=False))
+        return 2
     runrate = round(sum(1 for r in rows if r["gold_pg_ok"]) / len(rows), 4) if rows else None
     load_ms = {k: v.get("loadMs") for k, v in (pg.get("dbs") or {}).items()}
     summary = summarise(rows, runrate, load_ms)
