@@ -1,0 +1,84 @@
+version: v5.20
+# The evaluation plan is the machine-readable half of §5/§8.19. Every benchmark we
+# quote must appear here with n, metric, grader and evidence; every measured row
+# must carry a baseline and a POC that produced it. `poc/73/check.py` enforces it.
+benchmarks:
+  - id: E1
+    name: BIRD Mini-Dev (SQLite)
+    dataset: birdsql/bird_mini_dev
+    n: 500
+    metric: execution match (set semantics, order ignored)
+    grader: own
+    evidence: "off"
+    provider: deepseek
+    status: measured
+    baseline: 0.466
+    result: 0.496
+    target: relative +3pp over same-model zero-shot (achieved +3.00pp)
+    gate: BIRD1
+    evidencePoc: POC-68
+    notes: 5 samples + two-stage repair; zero-shot baseline 46.6%
+
+  - id: E2
+    name: nvBench 2.0 dev (chart type)
+    dataset: HKUSTDial/nvBench-2.0 (blob f37c5844, not vendored)
+    n: 750
+    metric: top-1 mark against any gold mark
+    grader: own (not the official metric)
+    evidence: n/a
+    provider: deepseek
+    status: measured
+    baseline: null
+    result: 0.9173
+    target: "overall >=85%; queries that do not name the chart >=75%"
+    gate: LEVER1
+    evidencePoc: POC-71
+    notes: rule arm 91.73%, LLM 90.67%; unnamed subset 74.35%/75.22%
+
+  - id: E3
+    name: Text2Vis (text-to-chart)
+    dataset: unknown
+    n: null
+    metric: answer match + code execution
+    grader: own
+    evidence: n/a
+    provider: deepseek
+    status: blocked
+    baseline: null
+    result: null
+    target: ">=50% answer match once a public copy is located"
+    gate: null
+    evidencePoc: null
+    unblock: a public dataset URL that can be fetched without credentials
+
+  - id: E4
+    name: BIRD-Interact Lite
+    dataset: birdsql/bird_interact (gated)
+    n: 300
+    metric: P1 (accuracy) + P2 (efficiency)
+    grader: official
+    evidence: n/a
+    provider: deepseek
+    status: blocked
+    baseline: null
+    result: null
+    target: P1 >=54%, P2 >=40%
+    gate: HITL1
+    evidencePoc: null
+    unblock: gated HF access; the public ADK examples are agent run logs (n=10), not a task set
+
+  - id: E5
+    name: private adjudicated set
+    dataset: internal
+    n: 1300
+    metric: adjudicated semantic execution match
+    grader: own
+    evidence: on
+    provider: deepseek
+    status: planned
+    baseline: 0.833
+    result: null
+    target: paired delta >=5pp with McNemar p<0.05
+    gate: EV1
+    evidencePoc: POC-30
+    unblock: adjudication round with two annotators (kappa >=0.7)

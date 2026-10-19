@@ -1,0 +1,613 @@
+{
+ "version": "v5.20",
+ "gates": {
+  "API1": {
+   "family": "API",
+   "criterion": "A1–A5 任一非零即红；旧调用点回放失败即红；5 变异未全捕获即红",
+   "layer": [
+    "ci:pack"
+   ],
+   "source": "技术设计方案.md"
+  },
+  "BIRD1": {
+   "family": "BIRD",
+   "criterion": "九元组缺一即红；判分器 18 变异必须全捕获；500 题 EX < 45.5% 即红",
+   "layer": [
+    "ci:eval"
+   ],
+   "source": "技术设计方案.md"
+  },
+  "BIRD2": {
+   "family": "BIRD",
+   "criterion": "报 Δ 而无 p 即红；Δ≤1pp 且 p>0.05 记为\"无差异\"，不得写进目标",
+   "layer": [
+    "ci:eval"
+   ],
+   "source": "技术设计方案.md"
+  },
+  "CHART1": {
+   "family": "CHART",
+   "criterion": "| **CHART1** | 6 个非法组合（饼图双度量 / 折线接分类 / y 非数值 / 散点 x 非数值 / 未知列 / 空结果）必须**全部拒绝**，且错误码互不相同 |",
+   "layer": [
+    "ci:unit"
+   ],
+   "source": "技术设计方案.md"
+  },
+  "CHART2": {
+   "family": "CHART",
+   "criterion": "| **CHART2** | 任一合法 spec 序列化 → 反序列化 → 再渲染，输出**哈希一致**（5/5） |",
+   "layer": [
+    "ci:unit"
+   ],
+   "source": "技术设计方案.md"
+  },
+  "CONF1": {
+   "family": "CONF",
+   "criterion": "只报 accuracy 不报 coverage、或未给 95% CI 即红；`confidence` 未定义为 `support/N` 即红",
+   "layer": [
+    "ci:eval"
+   ],
+   "source": "技术设计方案.md"
+  },
+  "DELEG1": {
+   "family": "DELEG",
+   "criterion": "任一能力未分类、或委托项缺证据/探针 → 红",
+   "layer": [
+    "ci:lint"
+   ],
+   "source": "技术设计方案.md"
+  },
+  "DG1": {
+   "family": "DG",
+   "criterion": "探针结果必须与 `capabilities.dialect` **逐项一致**（不一致即门禁红）",
+   "layer": [
+    "ci:federation"
+   ],
+   "source": "技术设计方案.md"
+  },
+  "DG2": {
+   "family": "DG",
+   "criterion": "**语义差异 0**；行序差异不计（除非有 ORDER BY）",
+   "layer": [
+    "ci:federation"
+   ],
+   "source": "技术设计方案.md"
+  },
+  "DG3": {
+   "family": "DG",
+   "criterion": "解析失败必须在**编译期**报错，禁止留到运行期",
+   "layer": [
+    "ci:federation"
+   ],
+   "source": "技术设计方案.md"
+  },
+  "DG4": {
+   "family": "DG",
+   "criterion": "行集哈希 100% 一致",
+   "layer": [
+    "ci:federation"
+   ],
+   "source": "技术设计方案.md"
+  },
+  "DG5": {
+   "family": "DG",
+   "criterion": "DG1–DG4 全绿才允许合并；`buildId` 变更必须重录 diff 基线",
+   "layer": [
+    "ci:federation"
+   ],
+   "source": "技术设计方案.md"
+  },
+  "DG6": {
+   "family": "DG",
+   "criterion": "| DG6 | 31 例语义锚矩阵：**语义差异 0**（允许编码差异，但必须经归一化后相等） |",
+   "layer": [
+    "ci:federation"
+   ],
+   "source": "技术设计方案.md"
+  },
+  "DG7": {
+   "family": "DG",
+   "criterion": "| DG7 | AST 扫描：缓存/指标计划中 `random/uuid/now/current_date` **0 命中** |",
+   "layer": [
+    "ci:federation"
+   ],
+   "source": "技术设计方案.md"
+  },
+  "DG8": {
+   "family": "DG",
+   "criterion": "| DG8 | 产物编码等价：DECIMAL/UUID/LIST 经边界归一化后哈希一致 |",
+   "layer": [
+    "ci:federation"
+   ],
+   "source": "技术设计方案.md"
+  },
+  "DG9": {
+   "family": "DG",
+   "criterion": "| DG9 | 跨层传输：Parquet zstd 往返一致；`.duckdb` 仅同 storage version，否则拒绝并重建 |",
+   "layer": [
+    "ci:federation"
+   ],
+   "source": "技术设计方案.md"
+  },
+  "DG10": {
+   "family": "DG",
+   "criterion": "| **DG10** | **时区断言**：`current_setting('TimeZone') === TargetProfile.settings.timezone` 且 `timezoneVerified`；不一致**拒绝启动**（POC-26：继承默认会让结果静默差 8 小时） |",
+   "layer": [
+    "ci:federation"
+   ],
+   "source": "技术设计方案.md"
+  },
+  "DG11": {
+   "family": "DG",
+   "criterion": "| **DG11** | **AST 改写保真**：改写前后行集哈希一致、改写幂等、正反例各 1 条（ADR-087） |",
+   "layer": [
+    "ci:federation"
+   ],
+   "source": "技术设计方案.md"
+  },
+  "EV1": {
+   "family": "EV",
+   "criterion": "分层键必须写在 `eval-plan.yaml`；抽样脚本可复现（固定种子）",
+   "layer": [
+    "ci:eval"
+   ],
+   "source": "技术设计方案.md"
+  },
+  "EV2": {
+   "family": "EV",
+   "criterion": "κ<0.7 时该层结论作废，先修标注手册",
+   "layer": [
+    "ci:eval"
+   ],
+   "source": "技术设计方案.md"
+  },
+  "EV3": {
+   "family": "EV",
+   "criterion": "禁止池化校正；每层裁定数 <30 时合并相邻层并标注",
+   "layer": [
+    "ci:eval"
+   ],
+   "source": "技术设计方案.md"
+  },
+  "EV4": {
+   "family": "EV",
+   "criterion": "对外文档 / 榜单 / PR 描述均适用",
+   "layer": [
+    "ci:eval"
+   ],
+   "source": "技术设计方案.md"
+  },
+  "EV5": {
+   "family": "EV",
+   "criterion": "POC-28：真差 2pp 在 52.8% 噪声下有 **52.6%** 概率被排反（等同抛硬币）",
+   "layer": [
+    "ci:eval"
+   ],
+   "source": "技术设计方案.md"
+  },
+  "EV6": {
+   "family": "EV",
+   "criterion": "BIRD 的原始设计目标就是\"正确且不昂贵\"；一条正确的慢 10 倍查询在生产里等于坏查询（2026-10 评测方法学共识：`report both, or优化 headline 会牺牲仓库账单`）",
+   "layer": [
+    "ci:eval"
+   ],
+   "source": "技术设计方案.md"
+  },
+  "EV7": {
+   "family": "EV",
+   "criterion": "`ci:eval`（生成器检查）",
+   "layer": [
+    "ci:eval"
+   ],
+   "source": "技术设计方案.md"
+  },
+  "FG1": {
+   "family": "FG",
+   "criterion": "`ATTACH` + schema 发现 **p95 ≤ 500 ms**（实测 10–12 ms）",
+   "layer": [
+    "ci:federation"
+   ],
+   "source": "技术设计方案.md"
+  },
+  "FG2": {
+   "family": "FG",
+   "criterion": "带过滤/投影的查询，源端收到的 SQL **必须含 WHERE 与列裁剪**（`pg_debug_show_queries` 断言）",
+   "layer": [
+    "ci:federation"
+   ],
+   "source": "技术设计方案.md"
+  },
+  "FG3": {
+   "family": "FG",
+   "criterion": "`INSERT/UPDATE/DELETE/DROP` 四类语句 100% 被拒绝",
+   "layer": [
+    "ci:federation"
+   ],
+   "source": "技术设计方案.md"
+  },
+  "FG4": {
+   "family": "FG",
+   "criterion": "并发写入下，同一查询的多 worker 行数一致；`pg_export_snapshot` 被调用",
+   "layer": [
+    "ci:federation"
+   ],
+   "source": "技术设计方案.md"
+  },
+  "FG5": {
+   "family": "FG",
+   "criterion": "20 类 PG 类型逐项断言；**`jsonb` 必须由 MDL 标注语义为 `json`**，否则标注 `confidence: low`（POC-11 同源问题）",
+   "layer": [
+    "ci:federation"
+   ],
+   "source": "技术设计方案.md"
+  },
+  "FG6": {
+   "family": "FG",
+   "criterion": "wasm 上 PG 源返回 `FEDERATION_UNSUPPORTED` 并自动走 materialize，trace 可见",
+   "layer": [
+    "ci:federation"
+   ],
+   "source": "技术设计方案.md"
+  },
+  "FG7": {
+   "family": "FG",
+   "criterion": "日志/trace/错误消息中密码字段 0 命中",
+   "layer": [
+    "ci:federation"
+   ],
+   "source": "技术设计方案.md"
+  },
+  "FG8": {
+   "family": "FG",
+   "criterion": "7 条 metric 查询（fan-out / ratio / cumulative / conversion / semi-additive / 多指标）在 `src.`（联邦）与 `mat.`（物化）上**行集哈希 100% 一致**（POC-19 实测 7/7）",
+   "layer": [
+    "ci:federation"
+   ],
+   "source": "技术设计方案.md"
+  },
+  "HITL1": {
+   "family": "HITL",
+   "criterion": "`ci:eval`（M6）",
+   "layer": [
+    "ci:eval",
+    "ci:unit"
+   ],
+   "source": "技术设计方案.md"
+  },
+  "HITL2": {
+   "family": "HITL",
+   "criterion": "`ci:eval`（M6）",
+   "layer": [
+    "ci:eval",
+    "ci:unit"
+   ],
+   "source": "技术设计方案.md"
+  },
+  "HITL3": {
+   "family": "HITL",
+   "criterion": "`ci:unit`（POC-52 的 6 个链式夹具）",
+   "layer": [
+    "ci:eval",
+    "ci:unit"
+   ],
+   "source": "技术设计方案.md"
+  },
+  "LEVER1": {
+   "family": "LEVER",
+   "criterion": "未报配对 p 即红；负结果未入 §14 即红；把单臂数字写进目标即红",
+   "layer": [
+    "ci:eval"
+   ],
+   "source": "技术设计方案.md"
+  },
+  "LINK1": {
+   "family": "LINK",
+   "criterion": "recall@4 < 0.90 即红；且必须先于端到端运行",
+   "layer": [
+    "ci:eval"
+   ],
+   "source": "技术设计方案.md"
+  },
+  "OBS1": {
+   "family": "OBS",
+   "criterion": "三个正则探针（手机号/邮箱/身份证）命中数 **= 0**",
+   "layer": [
+    "ci:unit",
+    "ci:obs"
+   ],
+   "source": "技术设计方案.md"
+  },
+  "OBS2": {
+   "family": "OBS",
+   "criterion": "与 provider 账单误差 **≤2%**",
+   "layer": [
+    "ci:unit",
+    "ci:obs"
+   ],
+   "source": "技术设计方案.md"
+  },
+  "OBS3": {
+   "family": "OBS",
+   "criterion": "路由/降级场景下缺失即为缺陷",
+   "layer": [
+    "ci:unit",
+    "ci:obs"
+   ],
+   "source": "技术设计方案.md"
+  },
+  "OBS4": {
+   "family": "OBS",
+   "criterion": "span 面是 semconv 里变动最频繁的部分",
+   "layer": [
+    "ci:unit",
+    "ci:obs"
+   ],
+   "source": "技术设计方案.md"
+  },
+  "P1": {
+   "family": "P",
+   "criterion": "P1 store(k,v); read(k) == v",
+   "layer": [
+    "ci:unit"
+   ],
+   "source": "技术设计方案.md"
+  },
+  "P2": {
+   "family": "P",
+   "criterion": "P2 ∀ 变更 ∈ {snapshot, policy, principal, engine, semantic} → read(k') == miss",
+   "layer": [
+    "ci:unit"
+   ],
+   "source": "技术设计方案.md"
+  },
+  "P3": {
+   "family": "P",
+   "criterion": "P3 无持久化 → degraded == true",
+   "layer": [
+    "ci:unit"
+   ],
+   "source": "技术设计方案.md"
+  },
+  "P4": {
+   "family": "P",
+   "criterion": "P4 并发同 key → 只执行 1 次",
+   "layer": [
+    "ci:unit"
+   ],
+   "source": "技术设计方案.md"
+  },
+  "P5": {
+   "family": "P",
+   "criterion": "P5 跨主体 → 永不命中",
+   "layer": [
+    "ci:unit"
+   ],
+   "source": "技术设计方案.md"
+  },
+  "P6": {
+   "family": "P",
+   "criterion": "P6 归一化置信度 ≠ high → 不得参与命中判定（ADR-067）",
+   "layer": [
+    "ci:unit"
+   ],
+   "source": "技术设计方案.md"
+  },
+  "P7": {
+   "family": "P",
+   "criterion": "P7 两侧同为错误的查询 → 视为等价；一侧错误一侧空集 → 不得视为等价",
+   "layer": [
+    "ci:unit"
+   ],
+   "source": "技术设计方案.md"
+  },
+  "P8": {
+   "family": "P",
+   "criterion": "P8 storage version 不匹配的缓存文件 → 删除重建，不得尝试读取（DuckDB v69 双向不兼容）",
+   "layer": [
+    "ci:unit"
+   ],
+   "source": "技术设计方案.md"
+  },
+  "P9": {
+   "family": "P",
+   "criterion": "P9 缓存键必须含 `buildId` + `TargetProfile.settings`（timezone/threads/collation）——它们是语义而非配置",
+   "layer": [
+    "ci:unit"
+   ],
+   "source": "技术设计方案.md"
+  },
+  "P10": {
+   "family": "P",
+   "criterion": "P10 计划含 `random/uuid/now/current_date` → 不得写入缓存（AST 扫描拦截）",
+   "layer": [
+    "ci:unit"
+   ],
+   "source": "技术设计方案.md"
+  },
+  "PKG1": {
+   "family": "PKG",
+   "criterion": "把 `-chart` 改成 `@agentix-e/chart` → 必须红",
+   "layer": [
+    "ci:pack"
+   ],
+   "source": "技术设计方案.md"
+  },
+  "PKG2": {
+   "family": "PKG",
+   "criterion": "把 `packages/spec` 改名 `contract` → 必须红",
+   "layer": [
+    "ci:pack"
+   ],
+   "source": "技术设计方案.md"
+  },
+  "PKG3": {
+   "family": "PKG",
+   "criterion": "把 `-core` 的 `dependencies` 改成家族并集 → 必须红",
+   "layer": [
+    "ci:pack"
+   ],
+   "source": "技术设计方案.md"
+  },
+  "PKG4": {
+   "family": "PKG",
+   "criterion": "6 个变异各打红对应编号（POC-45 实测 **7/7**）：根入口 import `node:fs` → PLT1；`export { createPgConnector }` → PLT2；`export type` 驱动类型 → PLT3（消费者 TS2307）；`core` 依赖 `-node` → PLT4；平台包导出 `createAgent` → PLT5；`instanceof` / 模块级 `Map` → PLT6",
+   "layer": [
+    "ci:pack"
+   ],
+   "source": "技术设计方案.md"
+  },
+  "PLT1": {
+   "family": "PLT",
+   "criterion": "**红（PLT1）**",
+   "layer": [
+    "ci:pack"
+   ],
+   "source": "技术设计方案.md"
+  },
+  "PLT2": {
+   "family": "PLT",
+   "criterion": "**红（PLT2）**",
+   "layer": [
+    "ci:pack"
+   ],
+   "source": "技术设计方案.md"
+  },
+  "PLT3": {
+   "family": "PLT",
+   "criterion": "**红（PLT3）**：消费者 `tsc` 报 **TS2307**",
+   "layer": [
+    "ci:pack"
+   ],
+   "source": "技术设计方案.md"
+  },
+  "PLT4": {
+   "family": "PLT",
+   "criterion": "**红（PLT4）**",
+   "layer": [
+    "ci:pack"
+   ],
+   "source": "技术设计方案.md"
+  },
+  "PLT5": {
+   "family": "PLT",
+   "criterion": "**红（PLT5）**",
+   "layer": [
+    "ci:pack"
+   ],
+   "source": "技术设计方案.md"
+  },
+  "PLT6": {
+   "family": "PLT",
+   "criterion": "**红（PLT6）**，两种变异分别命中",
+   "layer": [
+    "ci:pack"
+   ],
+   "source": "技术设计方案.md"
+  },
+  "PLT7": {
+   "family": "PLT",
+   "criterion": "**红（PLT7）**（POC-49：基线 0 个 import，843 B）",
+   "layer": [
+    "ci:pack"
+   ],
+   "source": "技术设计方案.md"
+  },
+  "PLT8": {
+   "family": "PLT",
+   "criterion": "出现 `onnxruntime-gpu`/`torch`/`cuda-*`/`tensorrt` 即红；WebGPU 加速包出现在 `dependencies` 即红",
+   "layer": [
+    "ci:pack"
+   ],
+   "source": "技术设计方案.md"
+  },
+  "PRE1": {
+   "family": "PRE",
+   "criterion": "任一规则无法失败 → 红",
+   "layer": [
+    "ci:lint"
+   ],
+   "source": "技术设计方案.md"
+  },
+  "REPAIR1": {
+   "family": "REPAIR",
+   "criterion": "未报 trigger_rate / yield 即红；trigger_rate < 0.30 时不得写成主路径",
+   "layer": [
+    "ci:eval"
+   ],
+   "source": "技术设计方案.md"
+  },
+  "REPAIR2": {
+   "family": "REPAIR",
+   "criterion": "只报单臂即红；未报配对 p 即红；诊断提示含 gold 即红",
+   "layer": [
+    "ci:eval"
+   ],
+   "source": "技术设计方案.md"
+  },
+  "SILENT1": {
+   "family": "SILENT",
+   "criterion": "未报 checked 即红；`checked = 0` 的规则计入召回即红；17 个变异未全捕获即红",
+   "layer": [
+    "ci:eval",
+    "ci:unit"
+   ],
+   "source": "技术设计方案.md"
+  },
+  "TIER1": {
+   "family": "TIER",
+   "criterion": "`ci:bench`（1M 键夹具）",
+   "layer": [
+    "ci:bench"
+   ],
+   "source": "技术设计方案.md"
+  },
+  "UX1": {
+   "family": "UX",
+   "criterion": "| UX1 | 新增一个连接器（第三方包）→ 出现在 Studio 列表，无需改 Studio 代码 |",
+   "layer": [
+    "ci:unit"
+   ],
+   "source": "技术设计方案.md"
+  },
+  "UX2": {
+   "family": "UX",
+   "criterion": "| UX2 | 12 字段 PG 配置表单渲染 + 校验 **≤50 ms**（POC-24 计时） |",
+   "layer": [
+    "ci:unit"
+   ],
+   "source": "技术设计方案.md"
+  },
+  "UX3": {
+   "family": "UX",
+   "criterion": "| UX3 | 密码字段在任何前端状态、日志、错误消息中 **0 命中** |",
+   "layer": [
+    "ci:unit"
+   ],
+   "source": "技术设计方案.md"
+  },
+  "UX4": {
+   "family": "UX",
+   "criterion": "| UX4 | 测试连接失败时给出 `可行动原因`（DNS/认证/权限/超时四类），不是\"未知错误\" |",
+   "layer": [
+    "ci:unit"
+   ],
+   "source": "技术设计方案.md"
+  },
+  "UX5": {
+   "family": "UX",
+   "criterion": "| UX5 | 浏览器侧 PG 连接必须走 `host-proxied`；直接 `new` 一个 PG 连接器 → 编译期类型错误 |",
+   "layer": [
+    "ci:unit"
+   ],
+   "source": "技术设计方案.md"
+  },
+  "UX6": {
+   "family": "UX",
+   "criterion": "| UX6 | 未安装的连接器 id 无法被配置（Studio 只渲染宿主返回的 manifest 列表） |",
+   "layer": [
+    "ci:unit"
+   ],
+   "source": "技术设计方案.md"
+  }
+ }
+}
