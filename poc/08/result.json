@@ -938,7 +938,7 @@
      "refunds.reason_code",
      "refunds.refund_id",
      "refunds.tkly",
-     "shipments.order_id"
+     "refunds.refund_amt"
     ],
     "rec5": 1.0,
     "rec10": 1.0

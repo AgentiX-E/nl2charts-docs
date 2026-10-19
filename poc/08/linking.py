@@ -261,5 +261,5 @@ if __name__ == '__main__':
         if d5 > 0.01:
             print(f"  +{d5*100:5.0f}pp  {pc['q'][:22]:24s} B={pb['rec5']*100:3.0f}% C={pc['rec5']*100:3.0f}%")
 
-    json.dump(results, open('/tmp/poc8/result.json', 'w'), ensure_ascii=False, indent=1)
-    print("\n保存 /tmp/poc8/result.json")
+    json.dump(results, open('result.json', 'w'), ensure_ascii=False, indent=1)
+    print("\n保存 result.json")

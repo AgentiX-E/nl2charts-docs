@@ -1,0 +1,115 @@
+{
+  "generatedAt": "2026-10-19T00:29:31.913Z",
+  "providers": {
+    "deepseek": {
+      "model": "deepseek-flash",
+      "usage": {
+        "input": 37,
+        "output": 25,
+        "cacheRead": 0
+      },
+      "ms": 585,
+      "text": "SELECT region, SUM(revenue) AS total_revenue\nFROM orders\nWHERE status = 'complet"
+    },
+    "zhipu": {
+      "model": "glm-4-flash",
+      "usage": {
+        "input": 39,
+        "output": 31,
+        "cacheRead": 0
+      },
+      "ms": 2133,
+      "text": "```sql\nSELECT region, SUM(revenue) AS total_revenue\nFROM orders\nWHERE status = '"
+    }
+  },
+  "tests": [
+    {
+      "name": "same call site works for two vendors",
+      "pass": true,
+      "detail": {
+        "deepseek": "deepseek-flash",
+        "zhipu": "glm-4-flash"
+      }
+    },
+    {
+      "name": "response model is reported separately from request model",
+      "pass": true,
+      "detail": {
+        "requested": "deepseek-chat",
+        "served": "deepseek-flash"
+      }
+    },
+    {
+      "name": "usage is present and non-zero for both vendors",
+      "pass": true,
+      "detail": {
+        "deepseek": {
+          "input": 37,
+          "output": 25,
+          "cacheRead": 0
+        },
+        "zhipu": {
+          "input": 39,
+          "output": 31,
+          "cacheRead": 0
+        }
+      }
+    },
+    {
+      "name": "embedding dimension is stable and declared",
+      "pass": true,
+      "detail": {
+        "dimensions": 2048
+      }
+    },
+    {
+      "name": "similarity ordering is meaningful",
+      "pass": true,
+      "detail": {
+        "similar": 0.8054,
+        "unrelated": 0.5298
+      }
+    },
+    {
+      "name": "same input yields the same vector",
+      "pass": true,
+      "detail": {
+        "cosine": 0.999999
+      }
+    },
+    {
+      "name": "401 is a configuration error, not retried",
+      "pass": true,
+      "detail": {
+        "code": "LLM_HTTP_401",
+        "retryable": false,
+        "attempts": 1
+      }
+    }
+  ],
+  "embedding": {
+    "dimensions": 2048,
+    "batch": 8,
+    "usage": 53,
+    "normFirst": 1,
+    "cosSimilar": 0.8054,
+    "cosRelated": 0.8601,
+    "cosUnrelated": 0.5298,
+    "cosDeterministic": 0.999999
+  },
+  "errorTaxonomy": {
+    "code": "LLM_HTTP_401",
+    "retryable": false,
+    "attempts": 1
+  },
+  "summary": {
+    "total": 7,
+    "pass": 7,
+    "vendors": [
+      "deepseek",
+      "zhipu"
+    ],
+    "embeddingDim": 2048,
+    "switchCostLines": 9
+  }
+}

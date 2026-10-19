@@ -1,0 +1,83 @@
+{
+  "generatedAt": "2026-10-19T00:31:10.347Z",
+  "tests": [
+    {
+      "name": "request body is byte-identical to the reference",
+      "pass": true,
+      "detail": {
+        "fields": [
+          "max_tokens",
+          "messages",
+          "model",
+          "seed",
+          "stop",
+          "temperature"
+        ]
+      }
+    },
+    {
+      "name": "optional parameters pass through untouched",
+      "pass": true,
+      "detail": {
+        "sentToVendor": true,
+        "accepted": false,
+        "code": "LLM_HTTP_400"
+      }
+    },
+    {
+      "name": "streaming yields multiple chunks and joins to text",
+      "pass": true,
+      "detail": {
+        "chunks": 25,
+        "ttftMs": 735,
+        "totalMs": 948,
+        "chars": 100,
+        "text": "SELECT region, SUM(revenue) AS total_revenue\nFROM orders\nWHERE status = 'complet"
+      }
+    },
+    {
+      "name": "first token arrives well before the end",
+      "pass": true,
+      "detail": {
+        "ttft": 735,
+        "totalMs": 948,
+        "ratio": 0.775
+      }
+    },
+    {
+      "name": "vendor cache counters are surfaced",
+      "pass": true,
+      "detail": {
+        "hasCacheFields": true
+      }
+    },
+    {
+      "name": "unknown model is a non-retryable configuration error",
+      "pass": true,
+      "detail": {
+        "code": "LLM_HTTP_400",
+        "retryable": false
+      }
+    }
+  ],
+  "structuredOutput": {
+    "sentToVendor": true,
+    "accepted": false,
+    "code": "LLM_HTTP_400"
+  },
+  "stream": {
+    "chunks": 25,
+    "ttftMs": 735,
+    "totalMs": 948,
+    "chars": 100,
+    "text": "SELECT region, SUM(revenue) AS total_revenue\nFROM orders\nWHERE status = 'complet"
+  },
+  "badModel": {
+    "code": "LLM_HTTP_400",
+    "retryable": false
+  },
+  "summary": {
+    "total": 6,
+    "pass": 6
+  }
+}

@@ -146,4 +146,4 @@ if __name__ == '__main__':
     print(f"  样例值单独（D-A）:      R@10 {res['D']['avg10']*100 - res['A']['avg10']*100:+.1f}pp")
     print(f"  注释+样例 vs 仅样例（C-D）: R@10 {res['C']['avg10']*100 - res['D']['avg10']*100:+.1f}pp")
 
-    json.dump(res, open('/tmp/poc8/result_vague.json','w'), ensure_ascii=False, indent=1)
+    json.dump(res, open('result_vague.json','w'), ensure_ascii=False, indent=1)

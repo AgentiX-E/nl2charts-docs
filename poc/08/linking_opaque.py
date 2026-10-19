@@ -156,4 +156,4 @@ if __name__ == '__main__':
         mark = '✓' if p['r10'] == 1.0 else '✗'
         print(f"  {mark} {p['q'][:20]:22s} 名次={rk}  top1={p['top1']}")
 
-    json.dump(res, open('/tmp/poc8/result_opaque.json', 'w'), ensure_ascii=False, indent=1)
+    json.dump(res, open('result_opaque.json', 'w'), ensure_ascii=False, indent=1)

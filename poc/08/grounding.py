@@ -107,4 +107,4 @@ if __name__ == '__main__':
     print(f"  A 无样例值: {a['passed']}/{a['n']}")
     print(f"  B 带样例值: {b['passed']}/{b['n']}")
     print(f"  差值: {(b['passed']-a['passed'])/a['n']*100:+.0f}pp")
-    json.dump({"A": a, "B": b}, open('/tmp/poc8/grounding.json','w'), ensure_ascii=False, indent=1)
+    json.dump({"A": a, "B": b}, open('grounding.json','w'), ensure_ascii=False, indent=1)

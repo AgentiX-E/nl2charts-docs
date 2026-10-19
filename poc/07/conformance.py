@@ -218,6 +218,6 @@ if __name__ == '__main__':
             cells.append(f"{a}/{b}")
         print(f"{label:28s} {cells[0]:>7s} {cells[1]:>8s} {cells[2]:>8s} {cells[3]:>7s}")
 
-    json.dump({k: v for k, v in results.items()}, open('/tmp/poc7/result.json', 'w'),
+    json.dump({k: v for k, v in results.items()}, open('result.json', 'w'),
               ensure_ascii=False, indent=1)
-    print("\n保存到 /tmp/poc7/result.json")
+    print("\n保存到 result.json")

@@ -259,8 +259,8 @@ if __name__ == '__main__':
     for mode in ('plain', 'json_object'):
         rows = run(mode)
         res[mode] = {"summary": report(mode, rows), "rows": rows}
-    json.dump(res, open('/tmp/poc7/pressure.json', 'w'), ensure_ascii=False, indent=1)
-    print("\n保存 /tmp/poc7/pressure.json")
+    json.dump(res, open('pressure.json', 'w'), ensure_ascii=False, indent=1)
+    print("\n保存 pressure.json")
     print("\n=== E 类（同义歧义）明细 ===")
     for mode in res:
         print(f"\n[{mode}]")
