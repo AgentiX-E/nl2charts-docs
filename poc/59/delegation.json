@@ -44,6 +44,24 @@
    }
   },
   {
+   "id": "sql.repair",
+   "owner": "self",
+   "gate": "REPAIR1",
+   "benchmark": "BIRD Mini-Dev 500: one repair turn on signal-triggered failures",
+   "status": "measured",
+   "probe": "POC-64",
+   "measured": {
+    "first_ex": 0.462,
+    "final_ex": 0.486,
+    "delta_pp": 2.4,
+    "trigger_rate": 0.19,
+    "yield": 0.235,
+    "silent_wrong": 0.81,
+    "max_possible_pp": 10.2,
+    "cost_usd": 0.0825
+   }
+  },
+  {
    "id": "metadata.card",
    "owner": "self",
    "gate": "BIRD2",
