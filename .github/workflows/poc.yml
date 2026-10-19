@@ -566,15 +566,20 @@ jobs:
             --samples 3 --workers 6 --schema-mode samples --evidence off
 
       - name: summary
-        run: python3 - <<'PY'
+        run: |
+          python3 - <<'PY'
           import json
           d = json.load(open('poc/60/results.json'))
           s = d['summary']
-          print('n=%s  EX(set)=%.2f%%  pass@1=%.2f%%  vote gain=%.2fpp  cost=$%.4f'
-                % (s['n'], s['ex_set'] * 100, s['pass_at_1'] * 100, s['vote_gain_pp'], s['cost_usd']))
+          print('n=%d  EX(set)=%.2f%%  pass@1=%.2f%%  vote gain=%+.2fpp  cost=$%.4f  wall=%ss'
+                % (s['n'], s['ex_set'] * 100, s['pass_at_1'] * 100, s['vote_gain_pp'],
+                   s['cost_usd'], s['wall_s']))
+          print('by difficulty:', {k: v['ex_set'] for k, v in s['byDifficulty'].items()})
+          print('statuses:', s['statuses'])
           assert s['n'] > 0
           assert s['statuses'].get('db_missing', 0) == 0, s['statuses']
           assert s['statuses'].get('gold_error', 0) == 0, s['statuses']
+          assert s['llm_errors'] == 0, s['llm_errors']
           PY
 
       - uses: actions/upload-artifact@v4
