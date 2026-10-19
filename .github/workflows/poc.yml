@@ -35,7 +35,7 @@ on:
       stage:
         description: 'Which experiment to run'
         type: choice
-        options: [baseline, repair]
+        options: [baseline, repair, confidence]
         default: baseline
 
 permissions:
@@ -61,6 +61,11 @@ jobs:
 
       - name: POC-60 comparator selftest (18 mutations)
         run: python3 poc/60/run.py --selftest
+
+      - name: POC-65 validator selftest (16 mutations)
+        run: |
+          python3 -m pip install --quiet sqlglot==30.23.0
+          python3 poc/65/validators.py
 
       - name: POC-59 benchmark ownership
         run: python3 poc/59/check.py
@@ -601,6 +606,9 @@ jobs:
       - name: schema linking recall (offline, no model calls)
         run: python3 poc/63/measure.py "$HOME/data/bird_mini_dev"
 
+      - name: analysis dependency (POC-65 validators)
+        run: python3 -m pip install --quiet sqlglot==30.23.0
+
       - name: run BIRD Mini-Dev (baseline)
         if: inputs.stage == 'baseline'
         env:
@@ -626,6 +634,45 @@ jobs:
           print('EX %.2f%% -> %.2f%% (%+.2fpp); triggers %d/%d = %.1f%%, repair yield %.1f%%'
                 % (d['first_ex'] * 100, d['final_ex'] * 100, d['delta_pp'],
                    d['with_trigger'], d['wrong'], d['trigger_rate'] * 100, d['repair_yield'] * 100))
+          PY
+
+      - name: run confidence + validator experiment (POC-65)
+        if: inputs.stage == 'confidence'
+        env:
+          DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
+          SCHEMA: ${{ inputs.schema }}
+          EVIDENCE: ${{ inputs.evidence }}
+          SAMPLES: ${{ inputs.samples }}
+        run: |
+          python3 poc/65/run.py --data-dir "$HOME/data/bird_mini_dev" \
+            --limit "${{ inputs.limit }}" --samples "${{ inputs.samples }}" --workers 6 \
+            --schema-mode "${{ inputs.schema }}" --evidence "${{ inputs.evidence }}" \
+            --out poc/65/results.json
+          python3 poc/65/analyze.py poc/65/results.json --out poc/65/analysis.json
+
+      - name: confidence summary (POC-65)
+        if: inputs.stage == 'confidence'
+        run: |
+          python3 - <<'PY'
+          import json
+          d = json.load(open('poc/65/results.json'))['summary']
+          a = json.load(open('poc/65/analysis.json'))
+          print('n=%d  EX=%.2f%%  cost=$%.4f  wall=%ss'
+                % (d['n'], d['ex_set'] * 100, d['cost_usd'], d['wall_s']))
+          print('statuses:', d['statuses'])
+          print('silent share of wrong: %.1f%%' % (100 * a['baseline']['silentShareOfWrong']))
+          for p in a['confidenceCurve']:
+              print('unanimity>=%d: coverage %.1f%%  accuracy %s'
+                    % (p['minSupport'], 100 * p['coverage'],
+                       'n/a' if p['accuracy'] is None else '%.1f%%' % (100 * p['accuracy'])))
+          for k, v in a['rules'].items():
+              print('%-11s flagged %3d  precision %s  recall(wrong) %s'
+                    % (k, v['flagged'],
+                       'n/a' if v['precision'] is None else '%.0f%%' % (100 * v['precision']),
+                       'n/a' if v['recallAllWrong'] is None else '%.0f%%' % (100 * v['recallAllWrong'])))
+          assert d['statuses'].get('db_missing', 0) == 0, d['statuses']
+          assert d['statuses'].get('gold_error', 0) <= 5, d['statuses']
+          assert a['n'] > 0
           PY
 
       - name: summary
@@ -667,6 +714,8 @@ jobs:
             poc/60/selftest.json
             poc/63/results.json
             poc/64/results.json
+            poc/65/results.json
+            poc/65/analysis.json
 
   llm:
     name: LLM / embedding POCs (manual, needs secrets)
