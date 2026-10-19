@@ -68,6 +68,18 @@ def check(a, doc):
     return missing, len(checks) + len(ints)
 
 
+def check68(doc, r=None):
+    i = doc.index("### 8.24"); j = doc.index("## 9. 发布工程", i)
+    k = doc.index("### 14.68"); m = doc.index("### 14.69", k)
+    seg = doc[i:j] + doc[k:m]
+    if r is None:
+        r = json.load(open(HERE.parent / "68" / "results.json"))["summary"]
+    need = ["%.2f%%" % (r["final"]["ex"] * 100),
+            "%+.2fpp" % r["deltaPp"],
+            "%.1f%%" % (r["stage2"]["fixed"] / max(1, r["stage2"]["attempted"]) * 100)]
+    return [(n, n in seg) for n in need]
+
+
 def check66(doc, r=None):
     """POC-66 headline numbers, checked inside its own two sections only."""
     i = doc.index("### 8.23"); j = doc.index("## 9. 发布工程", i)
@@ -107,12 +119,18 @@ def main():
         r66_bad["reason"]["yield"] = 0.999
         ok66 = any(not hit for _n, hit in check66(doc, r66_bad))
         mutations.append({"mutation": "poc66 reason yield", "caught": ok66})
+        r68 = json.load(open(HERE.parent / "68" / "results.json"))["summary"]
+        r68_bad = _c.deepcopy(r68)
+        r68_bad["final"]["ex"] = 0.999
+        ok68 = any(not hit for _n, hit in check68(doc, r68_bad))
+        mutations.append({"mutation": "poc68 final ex", "caught": ok68})
         ok = all(m["caught"] for m in mutations)
         print(json.dumps({"selftest": mutations, "ok": ok}, ensure_ascii=False))
         return 0 if ok else 1
 
     missing, n = check(a, doc)
     missing += [{"poc66": n} for n, hit in check66(doc) if not hit]
+    missing += [{"poc68": n} for n, hit in check68(doc) if not hit]
     ok = not missing
     print(json.dumps({"ok": ok, "checked": n, "missing": missing},
                      ensure_ascii=False, indent=1))

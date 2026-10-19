@@ -35,7 +35,7 @@ on:
       stage:
         description: 'Which experiment to run'
         type: choice
-        options: [baseline, repair, confidence, repair-flags]
+        options: [baseline, repair, confidence, repair-flags, pipeline]
         default: baseline
 
 permissions:
@@ -75,6 +75,9 @@ jobs:
       - name: POC-66 diagnosis vs generic repair (9 mutations)
         run: python3 poc/66/run.py --selftest
 
+      - name: POC-68 repair pipeline (4 mutations)
+        run: python3 poc/68/pipeline.py --selftest
+
       - name: POC-67 CPU-only dependency guard (5 mutations)
         run: |
           python3 poc/67/no_gpu_deps.py --selftest
@@ -97,8 +100,8 @@ jobs:
           assert d['P1_index_matches_sections'], d
           a, b = d['P2_pass_rate'].split('/')
           assert a == b, d
-          assert d['sections'] == 67, d
-          assert d['P4_assumption_rows'] == 105, d
+          assert d['sections'] == 68, d
+          assert d['P4_assumption_rows'] == 106, d
           print('POC-35 ok:', d['sections'], 'sections,', d['P2_pass_rate'], 'five-part,', d['P4_assumption_rows'], 'assumptions')
           PY
 
@@ -649,6 +652,15 @@ jobs:
                    d['with_trigger'], d['wrong'], d['trigger_rate'] * 100, d['repair_yield'] * 100))
           PY
 
+      - name: run repair pipeline (POC-68)
+        if: inputs.stage == 'pipeline'
+        env:
+          DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
+        run: |
+          python3 poc/68/pipeline.py --data-dir "$HOME/data/bird_mini_dev" \
+            --results poc/65/results.json --workers 6 --out poc/68/results.json
+          python3 -c "import json;d=json.load(open('poc/68/results.json'))['summary'];print('pipeline: %.2f%% -> %.2f%% (%+.2fpp)' % (d['base']['ex']*100, d['final']['ex']*100, d['deltaPp']))"
+
       - name: run diagnosis-driven repair (POC-66)
         if: inputs.stage == 'repair-flags'
         env:
@@ -740,6 +752,7 @@ jobs:
             poc/65/results.json
             poc/65/analysis.json
             poc/66/results.json
+            poc/68/results.json
 
   llm:
     name: LLM / embedding POCs (manual, needs secrets)
