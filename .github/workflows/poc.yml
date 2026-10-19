@@ -35,7 +35,7 @@ on:
       stage:
         description: 'Which experiment to run'
         type: choice
-        options: [baseline, repair, confidence, repair-flags, pipeline, plan, judge, nvbench]
+        options: [baseline, repair, confidence, repair-flags, pipeline, plan, judge, nvbench, alphasql]
         default: baseline
 
 permissions:
@@ -87,6 +87,9 @@ jobs:
       - name: POC-71 chart-type rule/LLM scoring (10 mutations)
         run: python3 poc/71/run.py --selftest
 
+      - name: POC-72 Alpha-SQL replication harness (8 mutations)
+        run: python3 poc/72/run.py --selftest
+
       - name: POC-67 CPU-only dependency guard (5 mutations)
         run: |
           python3 poc/67/no_gpu_deps.py --selftest
@@ -109,8 +112,8 @@ jobs:
           assert d['P1_index_matches_sections'], d
           a, b = d['P2_pass_rate'].split('/')
           assert a == b, d
-          assert d['sections'] == 71, d
-          assert d['P4_assumption_rows'] == 110, d
+          assert d['sections'] == 72, d
+          assert d['P4_assumption_rows'] == 111, d
           print('POC-35 ok:', d['sections'], 'sections,', d['P2_pass_rate'], 'five-part,', d['P4_assumption_rows'], 'assumptions')
           PY
 
@@ -661,6 +664,14 @@ jobs:
                    d['with_trigger'], d['wrong'], d['trigger_rate'] * 100, d['repair_yield'] * 100))
           PY
 
+      - name: run Alpha-SQL replication (POC-72)
+        if: inputs.stage == 'alphasql'
+        env:
+          DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
+        run: |
+          python3 poc/72/run.py --data-dir "$HOME/data/bird_mini_dev" \
+            --results poc/65/results.json --workers 8 --out poc/72/results.json
+
       - name: run nvBench 2.0 chart-type evaluation (POC-71)
         if: inputs.stage == 'nvbench'
         env:
@@ -790,6 +801,7 @@ jobs:
             poc/69/results.json
             poc/70/results.json
             poc/71/results.json
+            poc/72/results.json
 
   llm:
     name: LLM / embedding POCs (manual, needs secrets)
