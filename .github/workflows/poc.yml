@@ -32,6 +32,8 @@ jobs:
         with:
           python-version: ${{ env.PYTHON_VERSION }}
 
+      - name: POC-59 benchmark ownership
+        run: python3 poc/59/check.py
       - name: POC-56 preflight (portable paths, live entries, current constants)
         run: python3 poc/56/preflight.py
 
@@ -47,8 +49,8 @@ jobs:
           assert d['P1_index_matches_sections'], d
           a, b = d['P2_pass_rate'].split('/')
           assert a == b, d
-          assert d['sections'] == 58, d
-          assert d['P4_assumption_rows'] == 80, d
+          assert d['sections'] == 59, d
+          assert d['P4_assumption_rows'] == 82, d
           print('POC-35 ok:', d['sections'], 'sections,', d['P2_pass_rate'], 'five-part,', d['P4_assumption_rows'], 'assumptions')
           PY
 

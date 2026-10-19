@@ -1,0 +1,41 @@
+{
+ "counts": {
+  "total": 18,
+  "platform": 2,
+  "self": 12,
+  "delegated": 4,
+  "selfMeasured": 8,
+  "selfPlanned": 4
+ },
+ "violations": {
+  "D1": [],
+  "D2": [],
+  "D3": [],
+  "D4": [],
+  "D5": []
+ },
+ "planned": [
+  "sql.generate",
+  "chart.recommend",
+  "text2chart",
+  "hitl.quality"
+ ],
+ "ok": true,
+ "selftest": [
+  {
+   "mutation": "M1 delegated without evidence",
+   "caught": true,
+   "rule": "D2"
+  },
+  {
+   "mutation": "M2 self measured without probe",
+   "caught": true,
+   "rule": "D3"
+  },
+  {
+   "mutation": "M3 unknown owner",
+   "caught": true,
+   "rule": "D1"
+  }
+ ]
+}
