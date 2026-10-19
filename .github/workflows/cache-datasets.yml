@@ -42,18 +42,28 @@ jobs:
           pip install --quiet huggingface_hub
           python3 - <<'PY'
           import os
-          from huggingface_hub import snapshot_download
+          from huggingface_hub import list_repo_files, snapshot_download
+          repo = 'birdsql/bird_mini_dev'
+          token = os.environ.get('HF_TOKEN') or None
+          files = list_repo_files(repo, repo_type='dataset', token=token)
+          print('repo files:', len(files))
+          for f in files[:40]:
+              print('  ', f)
+          keep = [f for f in files if f.lower().endswith(('.sqlite', '.db', '.json', '.jsonl', '.zip', '.tar.gz', '.tgz', '.csv'))]
+          print('selected:', len(keep))
           root = os.path.expanduser('~/data/bird_mini_dev')
           os.makedirs(root, exist_ok=True)
-          snapshot_download(
-              repo_id='birdsql/bird_mini_dev',
-              repo_type='dataset',
-              local_dir=root,
-              token=os.environ.get('HF_TOKEN') or None,
-              allow_patterns=['mini_dev_sqlite.json', 'databases/*.sqlite', 'databases/**/*.sqlite'],
-          )
+          snapshot_download(repo_id=repo, repo_type='dataset', local_dir=root,
+                            token=token, allow_patterns=keep)
           print('downloaded to', root)
           PY
+
+      - name: unpack archives if any
+        run: |
+          cd ~/data/bird_mini_dev
+          find . -name '*.tar.gz' -o -name '*.tgz' | while read -r f; do echo "extract $f"; tar -xzf "$f" -C . ; done
+          find . -name '*.zip' | while read -r f; do echo "unzip $f"; unzip -q -o "$f" -d . ; done
+          find . -name '*.sqlite' | head -20
 
       - name: verify the cache is usable
         run: |
