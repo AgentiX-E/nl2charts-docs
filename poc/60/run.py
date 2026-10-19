@@ -126,12 +126,17 @@ def schema_card(db_path: str, db_id: str, mode: str, data_dir: str = "", questio
         return SCHEMA_CACHE[key]
     import sqlite3
 
+    only_tables = None
     if mode == "link_lex":
         stats = link.table_stats(db_path)
-        picked, _scores = link.select(stats, question, k=K_TABLES, with_fk=True)
-        card = link.render_linked(stats, picked)
-        SCHEMA_CACHE[key] = card
-        return card
+        only_tables, _scores = link.select(stats, question, k=K_TABLES, with_fk=True)
+        # Same format as `samples`, restricted to the selected tables. Changing
+        # pruning AND formatting at once would confound the ablation -- the exact
+        # mistake POC-61 taught us to avoid.
+        mode = "samples"
+        key = f"{db_path}|samples|{data_dir}|{'|'.join(sorted(only_tables))}"
+        if key in SCHEMA_CACHE:
+            return SCHEMA_CACHE[key]
 
     if mode in ("profile", "profile_lite"):
         info = metadata.profile(
@@ -156,6 +161,8 @@ def schema_card(db_path: str, db_id: str, mode: str, data_dir: str = "", questio
             )
         ]
         for t in tables:
+            if only_tables is not None and t not in only_tables:
+                continue
             cols = list(conn.execute(f'PRAGMA table_info("{t}")'))
             lines.append(f"Table: {t}")
             descs = load_descriptions(db_id, data_dir) if mode in ("desc", "full") else {}
