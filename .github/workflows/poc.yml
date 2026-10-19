@@ -498,28 +498,58 @@ jobs:
         uses: actions/cache@v4
         with:
           path: ~/data/bird_mini_dev
-          key: bird-mini-dev-sqlite-v1
+          key: bird-mini-dev-sqlite-v2
 
-      - name: download on cache miss
-        if: steps.ds.outputs.cache-hit != 'true'
+      # A cache is an optimisation, never a contract. GitHub saves the entry in
+      # the post-job step even when the job failed, so an early broken run can
+      # poison the key with a half-downloaded tree. Verify, then repair.
+      - name: ensure dataset (repair an incomplete cache)
         run: |
-          pip install --quiet huggingface_hub
           python3 - <<'PY'
-          import json, os
-          from huggingface_hub import hf_hub_download, snapshot_download
+          import glob, json, os, subprocess, sys
+
           root = os.path.expanduser('~/data/bird_mini_dev')
-          os.makedirs(root, exist_ok=True)
-          q = hf_hub_download('birdsql/bird_mini_dev', 'data/mini_dev_sqlite-00000-of-00001.json',
-                              repo_type='dataset', local_dir=root)
-          db_ids = sorted({r['db_id'] for r in json.load(open(q, encoding='utf-8'))})
-          repo_db = 'birdsql/bird-critic-1.0-sqlite'
-          from huggingface_hub import list_repo_files
-          keep = [f for f in list_repo_files(repo_db, repo_type='dataset')
-                  if f.lower().endswith('.sqlite') and any(d in f for d in db_ids)]
-          snapshot_download(repo_db, repo_type='dataset',
-                            local_dir=os.path.join(root, 'databases'), allow_patterns=keep)
-          print('downloaded', len(keep), 'sqlite files')
+
+          def dbs():
+              return sorted(glob.glob(os.path.join(root, '**', '*.sqlite'), recursive=True))
+
+          def qfile():
+              for f in glob.glob(os.path.join(root, '**', '*.json'), recursive=True):
+                  if 'mini_dev' in os.path.basename(f):
+                      return f
+              return None
+
+          before = len(dbs())
+          print('cache-hit=%s  sqlite_before=%d  question_file=%s'
+                % (os.environ.get('CACHE_HIT'), before, qfile()))
+          for d in sorted(os.listdir(root))[:10] if os.path.isdir(root) else []:
+              print('  ', d)
+
+          if before < 11 or qfile() is None:
+              print('dataset unusable -> downloading')
+              subprocess.run([sys.executable, '-m', 'pip', 'install', '--quiet', 'huggingface_hub'], check=True)
+              from huggingface_hub import hf_hub_download, list_repo_files, snapshot_download
+              os.makedirs(root, exist_ok=True)
+              q = hf_hub_download('birdsql/bird_mini_dev',
+                                  'data/mini_dev_sqlite-00000-of-00001.json',
+                                  repo_type='dataset', local_dir=root)
+              ids = sorted({r['db_id'] for r in json.load(open(q, encoding='utf-8'))})
+              repo_db = 'birdsql/bird-critic-1.0-sqlite'
+              keep = [f for f in list_repo_files(repo_db, repo_type='dataset')
+                      if f.lower().endswith('.sqlite') and any(i in f for i in ids)]
+              snapshot_download(repo_db, repo_type='dataset',
+                                local_dir=os.path.join(root, 'databases'), allow_patterns=keep)
+              print('downloaded', len(keep), 'files')
+
+          after = dbs()
+          total = sum(os.path.getsize(p) for p in after)
+          print('sqlite_after=%d  bytes=%d (%.2f GB)' % (len(after), total, total / 1e9))
+          assert len(after) >= 11, after
+          assert total > 1.0e9, total
           PY
+        env:
+          CACHE_HIT: ${{ steps.ds.outputs.cache-hit }}
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
 
       - name: comparator selftest (must pass before any number is reported)
         run: python3 poc/60/run.py --selftest

@@ -32,7 +32,7 @@ jobs:
         uses: actions/cache@v4
         with:
           path: ~/data/bird_mini_dev
-          key: bird-mini-dev-sqlite-v1
+          key: bird-mini-dev-sqlite-v2
 
       - name: download from Hugging Face
         if: steps.cache.outputs.cache-hit != 'true'
