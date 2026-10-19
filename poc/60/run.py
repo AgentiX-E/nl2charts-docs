@@ -367,7 +367,9 @@ def probe(data_dir, db_dir, limit=0):
         db_id = os.path.basename(os.path.dirname(first)) or os.path.basename(first).split(".")[0]
         info = metadata.profile(first)
         card = metadata.render(info, db_id)
-        out["cardSample"] = {"dbId": db_id, "chars": len(card), "text": card[:1800]}
+        fks = sum(1 for t in info.values() for c in t["cols"] if c.get("fk"))
+        out["cardSample"] = {"dbId": db_id, "chars": len(card), "fks": fks,
+                             "tables": len(info), "text": card[:1800]}
     return out
 
 
