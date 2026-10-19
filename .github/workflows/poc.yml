@@ -21,7 +21,7 @@ on:
       schema:
         description: 'Schema card mode'
         type: choice
-        options: [profile, profile_lite, full, desc, samples, names]
+        options: [link_lex, profile, profile_lite, full, desc, samples, names]
         default: full
       evidence:
         description: 'Use the BIRD hint field'
@@ -593,6 +593,9 @@ jobs:
       - name: comparator selftest (must pass before any number is reported)
         run: python3 poc/60/run.py --selftest
 
+      - name: schema linking recall (offline, no model calls)
+        run: python3 poc/63/measure.py "$HOME/data/bird_mini_dev"
+
       - name: run BIRD Mini-Dev
         env:
           DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
@@ -635,6 +638,7 @@ jobs:
           path: |
             poc/60/results-*.json
             poc/60/selftest.json
+            poc/63/results.json
 
   llm:
     name: LLM / embedding POCs (manual, needs secrets)

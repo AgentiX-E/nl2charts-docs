@@ -137,8 +137,8 @@
    "pass": true
   }
  ],
- "pass": 28,
- "total": 28,
+ "pass": 34,
+ "total": 34,
  "ok": true,
  "metadata": {
   "checks": [
@@ -206,6 +206,51 @@
   ],
   "pass": 10,
   "total": 10,
+  "ok": true
+ },
+ "link": {
+  "checks": [
+   {
+    "case": "picks orders+customers",
+    "pass": true,
+    "got": [
+     "orders",
+     "customers"
+    ]
+   },
+   {
+    "case": "fk closure adds customers from orders",
+    "pass": true
+   },
+   {
+    "case": "k=1 honours the budget",
+    "pass": true,
+    "got": [
+     "products"
+    ]
+   },
+   {
+    "case": "enum value beats container word",
+    "pass": true
+   },
+   {
+    "case": "gold table extraction",
+    "pass": true,
+    "got": [
+     "customers",
+     "orders"
+    ]
+   },
+   {
+    "case": "string literal does not fake a table",
+    "pass": true,
+    "got": [
+     "products"
+    ]
+   }
+  ],
+  "pass": 6,
+  "total": 6,
   "ok": true
  }
 }

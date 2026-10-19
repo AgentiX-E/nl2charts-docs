@@ -31,6 +31,7 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
 import ex  # noqa: E402
 import metadata  # noqa: E402
+import link  # noqa: E402
 
 # DeepSeek list price, USD per million tokens (2026-10). Cache-hit input is
 # billed at 1/10 of a miss (POC-53), so cost is reported both ways.
@@ -38,6 +39,7 @@ PRICE = {"in_miss": 0.27, "in_hit": 0.027, "out": 1.10}
 
 API = "https://api.deepseek.com/chat/completions"
 MODEL = os.environ.get("POC60_MODEL", "deepseek-chat")
+K_TABLES = int(os.environ.get("POC63_K", "4"))
 
 
 # ---------------------------------------------------------------- data
@@ -118,11 +120,18 @@ def load_descriptions(db_id: str, data_dir: str) -> dict[str, str]:
 SCHEMA_CACHE: dict[str, str] = {}
 
 
-def schema_card(db_path: str, db_id: str, mode: str, data_dir: str = "") -> str:
+def schema_card(db_path: str, db_id: str, mode: str, data_dir: str = "", question: str = "") -> str:
     key = f"{db_path}|{mode}|{data_dir}"
     if key in SCHEMA_CACHE:
         return SCHEMA_CACHE[key]
     import sqlite3
+
+    if mode == "link_lex":
+        stats = link.table_stats(db_path)
+        picked, _scores = link.select(stats, question, k=K_TABLES, with_fk=True)
+        card = link.render_linked(stats, picked)
+        SCHEMA_CACHE[key] = card
+        return card
 
     if mode in ("profile", "profile_lite"):
         info = metadata.profile(
@@ -270,8 +279,11 @@ def run_question(q, db_dir, samples, mode, evidence, data_dir=""):
         return out
     out["gold_ms"] = round(gold.ms, 3)
 
-    card = schema_card(db_path, q["db_id"], mode, data_dir)
+    card = schema_card(db_path, q["db_id"], mode, data_dir, q["question"])
     out["cardChars"] = len(card)
+    if mode == "link_lex":
+        stats = link.table_stats(db_path)
+        out["pickedTables"], _ = link.select(stats, q["question"], k=K_TABLES, with_fk=True)
     msgs = build_prompt(q, card, evidence)
 
     got = []
@@ -458,7 +470,7 @@ def main():
     ap.add_argument("--samples", type=int, default=3)
     ap.add_argument("--workers", type=int, default=6)
     ap.add_argument("--schema-mode",
-                    choices=["names", "samples", "desc", "full", "profile", "profile_lite"],
+                    choices=["names", "samples", "desc", "full", "profile", "profile_lite", "link_lex"],
                     default="profile")
     ap.add_argument("--evidence", choices=["on", "off"], default="off")
     ap.add_argument("--seed", type=int, default=0)
@@ -474,6 +486,11 @@ def main():
         r["pass"] += m["pass"]
         r["total"] += m["total"]
         r["ok"] = r["ok"] and m["ok"]
+        lk = link.selftest()
+        r["link"] = lk
+        r["pass"] += lk["pass"]
+        r["total"] += lk["total"]
+        r["ok"] = r["ok"] and lk["ok"]
         print(json.dumps({"selftest": {"pass": r["pass"], "total": r["total"], "ok": r["ok"]}},
                          ensure_ascii=False))
         json.dump(r, open(os.path.join(HERE, "selftest.json"), "w"), indent=1)
