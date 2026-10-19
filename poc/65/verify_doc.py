@@ -68,6 +68,17 @@ def check(a, doc):
     return missing, len(checks) + len(ints)
 
 
+def check69(doc, r=None):
+    i = doc.index("### 8.25"); j = doc.index("## 9. 发布工程", i)
+    k = doc.index("### 14.69"); m = doc.index("### 14.70", k)
+    seg = doc[i:j] + doc[k:m]
+    if r is None:
+        r = json.load(open(HERE.parent / "69" / "results.json"))["summary"]
+    need = ["%.2f%%" % (r["direct"]["ex"] * 100), "%.2f%%" % (r["plan"]["ex"] * 100),
+            "p=%.3f" % r["mcnemar"]["p"]]
+    return [(n, n in seg) for n in need]
+
+
 def check68(doc, r=None):
     i = doc.index("### 8.24"); j = doc.index("## 9. 发布工程", i)
     k = doc.index("### 14.68"); m = doc.index("### 14.69", k)
@@ -124,6 +135,11 @@ def main():
         r68_bad["final"]["ex"] = 0.999
         ok68 = any(not hit for _n, hit in check68(doc, r68_bad))
         mutations.append({"mutation": "poc68 final ex", "caught": ok68})
+        r69 = json.load(open(HERE.parent / "69" / "results.json"))["summary"]
+        r69_bad = _c.deepcopy(r69)
+        r69_bad["plan"]["ex"] = 0.999
+        ok69 = any(not hit for _n, hit in check69(doc, r69_bad))
+        mutations.append({"mutation": "poc69 plan ex", "caught": ok69})
         ok = all(m["caught"] for m in mutations)
         print(json.dumps({"selftest": mutations, "ok": ok}, ensure_ascii=False))
         return 0 if ok else 1
@@ -131,6 +147,7 @@ def main():
     missing, n = check(a, doc)
     missing += [{"poc66": n} for n, hit in check66(doc) if not hit]
     missing += [{"poc68": n} for n, hit in check68(doc) if not hit]
+    missing += [{"poc69": n} for n, hit in check69(doc) if not hit]
     ok = not missing
     print(json.dumps({"ok": ok, "checked": n, "missing": missing},
                      ensure_ascii=False, indent=1))
