@@ -133,9 +133,20 @@
    "id": "chart.recommend",
    "owner": "self",
    "gate": "E2",
-   "benchmark": "nvBench (chart-type)",
-   "status": "planned",
-   "plan": "P1: 500-question subset after flint-chart dist is vendored"
+   "benchmark": "nvBench 2.0 dev (750), chart-type top-1 vs gold mark set",
+   "status": "measured",
+   "plan": "P0: nvBench 2.0 dev 750, rule vs LLM, CPU-only via API provider",
+   "probe": "POC-71",
+   "measured": {
+    "rule_accuracy": 0.9173,
+    "llm_accuracy": 0.9067,
+    "named_rate": 0.6933,
+    "not_named": {
+     "rule": 0.7435,
+     "llm": 0.7522
+    },
+    "grader": "own (top-1 against any gold mark); not the official metric"
+   }
   },
   {
    "id": "text2chart",

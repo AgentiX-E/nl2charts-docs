@@ -1,11 +1,11 @@
 {
  "counts": {
   "total": 21,
-  "self": 15,
   "platform": 2,
   "delegated": 4,
-  "selfMeasured": 12,
-  "selfPlanned": 3
+  "self": 15,
+  "selfMeasured": 13,
+  "selfPlanned": 2
  },
  "violations": {
   "D1": [],
@@ -15,7 +15,6 @@
   "D5": []
  },
  "planned": [
-  "chart.recommend",
   "text2chart",
   "hitl.quality"
  ],

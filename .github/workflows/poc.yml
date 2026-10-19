@@ -35,7 +35,7 @@ on:
       stage:
         description: 'Which experiment to run'
         type: choice
-        options: [baseline, repair, confidence, repair-flags, pipeline, plan, judge]
+        options: [baseline, repair, confidence, repair-flags, pipeline, plan, judge, nvbench]
         default: baseline
 
 permissions:
@@ -84,6 +84,9 @@ jobs:
       - name: POC-70 judge candidate selection (9 mutations)
         run: python3 poc/70/run.py --selftest
 
+      - name: POC-71 chart-type rule/LLM scoring (10 mutations)
+        run: python3 poc/71/run.py --selftest
+
       - name: POC-67 CPU-only dependency guard (5 mutations)
         run: |
           python3 poc/67/no_gpu_deps.py --selftest
@@ -106,8 +109,8 @@ jobs:
           assert d['P1_index_matches_sections'], d
           a, b = d['P2_pass_rate'].split('/')
           assert a == b, d
-          assert d['sections'] == 70, d
-          assert d['P4_assumption_rows'] == 109, d
+          assert d['sections'] == 71, d
+          assert d['P4_assumption_rows'] == 110, d
           print('POC-35 ok:', d['sections'], 'sections,', d['P2_pass_rate'], 'five-part,', d['P4_assumption_rows'], 'assumptions')
           PY
 
@@ -658,6 +661,15 @@ jobs:
                    d['with_trigger'], d['wrong'], d['trigger_rate'] * 100, d['repair_yield'] * 100))
           PY
 
+      - name: run nvBench 2.0 chart-type evaluation (POC-71)
+        if: inputs.stage == 'nvbench'
+        env:
+          DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          python3 poc/71/fetch.py --out /tmp/nvbench_dev.json
+          python3 poc/71/run.py --data /tmp/nvbench_dev.json --workers 8 --out poc/71/results.json
+
       - name: run plan-first ablation (POC-69)
         if: inputs.stage == 'plan'
         env:
@@ -777,6 +789,7 @@ jobs:
             poc/68/results.json
             poc/69/results.json
             poc/70/results.json
+            poc/71/results.json
 
   llm:
     name: LLM / embedding POCs (manual, needs secrets)
