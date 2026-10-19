@@ -112,7 +112,9 @@ jobs:
       - name: POC-41 single package, two runtimes
         working-directory: poc/41
         run: |
-          npm install --no-audit --no-fund
+          # Use the toolchain that ships with the repo. A second `npm install`
+          # here only adds esbuild's postinstall as another failure mode
+          # (observed once: spawnSync in install.js), and buys nothing.
           node bundle.mjs
           python3 - <<'PY'
           import json
