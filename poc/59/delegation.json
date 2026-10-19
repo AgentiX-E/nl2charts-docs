@@ -67,6 +67,22 @@
    "decision": "default card = names + 3 sample values (ADR-129)"
   },
   {
+   "id": "api.compat",
+   "owner": "self",
+   "gate": "API1",
+   "benchmark": "two API manifests (M-A/M-B) + 9 consumer call sites",
+   "status": "measured",
+   "probe": "POC-62",
+   "measured": {
+    "exports_m_a": 15,
+    "exports_m_b": 18,
+    "violations": 0,
+    "consumer_sites": 9,
+    "consumer_passing": 9,
+    "mutations": "5/5"
+   }
+  },
+  {
    "id": "schema.linking",
    "owner": "self",
    "gate": "E1",

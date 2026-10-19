@@ -1,10 +1,10 @@
 {
  "counts": {
-  "total": 19,
-  "self": 13,
-  "platform": 2,
+  "total": 20,
   "delegated": 4,
-  "selfMeasured": 10,
+  "platform": 2,
+  "self": 14,
+  "selfMeasured": 11,
   "selfPlanned": 3
  },
  "violations": {

@@ -51,6 +51,9 @@ jobs:
         with:
           python-version: ${{ env.PYTHON_VERSION }}
 
+      - name: POC-62 milestone API compatibility
+        run: python3 poc/62/check.py
+
       - name: POC-60 comparator selftest (18 mutations)
         run: python3 poc/60/run.py --selftest
 
@@ -71,8 +74,8 @@ jobs:
           assert d['P1_index_matches_sections'], d
           a, b = d['P2_pass_rate'].split('/')
           assert a == b, d
-          assert d['sections'] == 61, d
-          assert d['P4_assumption_rows'] == 90, d
+          assert d['sections'] == 62, d
+          assert d['P4_assumption_rows'] == 93, d
           print('POC-35 ok:', d['sections'], 'sections,', d['P2_pass_rate'], 'five-part,', d['P4_assumption_rows'], 'assumptions')
           PY
 

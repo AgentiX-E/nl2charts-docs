@@ -1,0 +1,25 @@
+{
+ "milestoneA": "1.0.0",
+ "milestoneB": "1.1.0",
+ "exportsA": 15,
+ "exportsB": 18,
+ "violations": {
+  "A1": 0,
+  "A2": 0,
+  "A3": 0,
+  "A4": 0,
+  "A5": 0
+ },
+ "details": {},
+ "consumer": {
+  "sites": 9,
+  "passing": 9,
+  "failed": []
+ },
+ "selftest": {
+  "pass": 5,
+  "total": 5,
+  "ok": true
+ },
+ "ok": true
+}
