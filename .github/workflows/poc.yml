@@ -32,6 +32,9 @@ jobs:
         with:
           python-version: ${{ env.PYTHON_VERSION }}
 
+      - name: POC-56 preflight (portable paths, live entries, current constants)
+        run: python3 poc/56/preflight.py
+
       - name: POC-25 terminology lint (must be zero)
         run: python3 poc/25/check_terms.py
 
@@ -44,8 +47,8 @@ jobs:
           assert d['P1_index_matches_sections'], d
           a, b = d['P2_pass_rate'].split('/')
           assert a == b, d
-          assert d['sections'] == 55, d
-          assert d['P4_assumption_rows'] == 74, d
+          assert d['sections'] == 56, d
+          assert d['P4_assumption_rows'] == 76, d
           print('POC-35 ok:', d['sections'], 'sections,', d['P2_pass_rate'], 'five-part,', d['P4_assumption_rows'], 'assumptions')
           PY
 
@@ -77,10 +80,12 @@ jobs:
         with:
           node-version: ${{ env.NODE_VERSION }}
 
+      - name: verify offline toolchain (no npm registry access on runners)
+        run: node -e "import('esbuild').then(m => console.log('esbuild', m.version))"
+
       - name: POC-41 single package, two runtimes
         working-directory: poc/41
         run: |
-          npm install --no-audit --no-fund --fetch-retries=5 --fetch-retry-mintimeout=3000 --fetch-retry-maxtimeout=60000 || npm install --no-audit --no-fund --registry=https://registry.npmmirror.com || (sleep 15 && npm install --no-audit --no-fund)
           node bundle.mjs
           python3 - <<'PY'
           import json
@@ -96,7 +101,6 @@ jobs:
       - name: POC-42 admin handler is framework-agnostic
         working-directory: poc/42
         run: |
-          npm install --no-audit --no-fund --fetch-retries=5 --fetch-retry-mintimeout=3000 --fetch-retry-maxtimeout=60000 || npm install --no-audit --no-fund --registry=https://registry.npmmirror.com || (sleep 15 && npm install --no-audit --no-fund)
           node run.mjs
           python3 - <<'PY'
           import json
@@ -111,7 +115,6 @@ jobs:
       - name: POC-43 tree-shaking holds
         working-directory: poc/43
         run: |
-          npm install --no-audit --no-fund --fetch-retries=5 --fetch-retry-mintimeout=3000 --fetch-retry-maxtimeout=60000 || npm install --no-audit --no-fund --registry=https://registry.npmmirror.com || (sleep 15 && npm install --no-audit --no-fund)
           node run.mjs
           python3 - <<'PY'
           import json
@@ -137,7 +140,6 @@ jobs:
       - name: POC-2 chart output renders
         working-directory: poc/02
         run: |
-          npm install --no-audit --no-fund --fetch-retries=5 --fetch-retry-mintimeout=3000 --fetch-retry-maxtimeout=60000 || npm install --no-audit --no-fund --registry=https://registry.npmmirror.com || (sleep 15 && npm install --no-audit --no-fund)
           node main.mjs
           python3 - <<'PY'
           import json
@@ -151,7 +153,6 @@ jobs:
       - name: POC-45 single package vs three packages
         working-directory: poc/45
         run: |
-          npm install --no-audit --no-fund --fetch-retries=5 --fetch-retry-mintimeout=3000 --fetch-retry-maxtimeout=60000 || npm install --no-audit --no-fund --registry=https://registry.npmmirror.com || (sleep 15 && npm install --no-audit --no-fund)
           node run.mjs
           python3 - <<'PY'
           import json
@@ -179,7 +180,6 @@ jobs:
       - name: POC-47 browser tiering over plain HTTP
         working-directory: poc/47
         run: |
-          npm install --no-audit --no-fund --fetch-retries=5 --fetch-retry-mintimeout=3000 --fetch-retry-maxtimeout=60000 || npm install --no-audit --no-fund --registry=https://registry.npmmirror.com || (sleep 15 && npm install --no-audit --no-fund)
           node run.mjs
           node survey.mjs
           python3 - <<'PY'
@@ -200,7 +200,6 @@ jobs:
       - name: POC-48 split only the Node side
         working-directory: poc/48
         run: |
-          npm install --no-audit --no-fund --fetch-retries=5 --fetch-retry-mintimeout=3000 --fetch-retry-maxtimeout=60000 || npm install --no-audit --no-fund --registry=https://registry.npmmirror.com || (sleep 15 && npm install --no-audit --no-fund)
           node run.mjs
           python3 - <<'PY'
           import json
@@ -216,7 +215,6 @@ jobs:
       - name: POC-49 SQL-first without any model
         working-directory: poc/49
         run: |
-          npm install --no-audit --no-fund --fetch-retries=5 --fetch-retry-mintimeout=3000 --fetch-retry-maxtimeout=60000 || npm install --no-audit --no-fund --registry=https://registry.npmmirror.com || (sleep 15 && npm install --no-audit --no-fund)
           node run.mjs
           python3 - <<'PY'
           import json
@@ -323,7 +321,6 @@ jobs:
       - name: POC-55 explicit chart spec without a model
         working-directory: poc/55
         run: |
-          npm install --no-audit --no-fund --fetch-retries=5 --fetch-retry-mintimeout=3000 --fetch-retry-maxtimeout=60000 || npm install --no-audit --no-fund --registry=https://registry.npmmirror.com || (sleep 15 && npm install --no-audit --no-fund)
           node spec.mjs > /dev/null
           node bundle.mjs
           python3 - <<'PY'
@@ -342,7 +339,6 @@ jobs:
       - name: POC-3 compile latency budget
         working-directory: poc/03
         run: |
-          npm install --no-audit --no-fund --fetch-retries=5 --fetch-retry-mintimeout=3000 --fetch-retry-maxtimeout=60000 || npm install --no-audit --no-fund --registry=https://registry.npmmirror.com || (sleep 15 && npm install --no-audit --no-fund)
           node main.mjs
           python3 - <<'PY'
           import json
@@ -413,7 +409,6 @@ jobs:
       - name: POC-12 attach PostgreSQL and prove pushdown
         working-directory: poc/12
         run: |
-          npm install --no-audit --no-fund --fetch-retries=5 --fetch-retry-mintimeout=3000 --fetch-retry-maxtimeout=60000 || npm install --no-audit --no-fund --registry=https://registry.npmmirror.com || (sleep 15 && npm install --no-audit --no-fund)
           python3 - <<'PY'
           import sqlite3
           c = sqlite3.connect('small.sqlite')

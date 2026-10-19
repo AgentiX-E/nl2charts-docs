@@ -1,0 +1,48 @@
+{
+ "ciDirs": [
+  "poc/02",
+  "poc/03",
+  "poc/41",
+  "poc/42",
+  "poc/43",
+  "poc/44",
+  "poc/45",
+  "poc/46",
+  "poc/47",
+  "poc/48",
+  "poc/49",
+  "poc/50",
+  "poc/51",
+  "poc/52",
+  "poc/53",
+  "poc/54",
+  "poc/55"
+ ],
+ "entryCommands": 19,
+ "P1_absolutePaths": [],
+ "P2_missingEntries": [],
+ "P3_constantMismatch": [],
+ "docs": {
+  "sections": 56,
+  "assumptions": 76,
+  "adrs": 123
+ },
+ "selftest": [
+  {
+   "mutation": "M1 absolute path",
+   "caught": true,
+   "rule": "P1"
+  },
+  {
+   "mutation": "M2 missing entry",
+   "caught": true,
+   "rule": "P2"
+  },
+  {
+   "mutation": "M3 stale constant",
+   "caught": true,
+   "rule": "P3"
+  }
+ ],
+ "ok": true
+}
