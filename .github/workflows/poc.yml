@@ -539,7 +539,10 @@ jobs:
           for d in sorted(os.listdir(root))[:10] if os.path.isdir(root) else []:
               print('  ', d)
 
-          if before < 11 or qfile() is None:
+          desc = glob.glob(os.path.join(root, '**', 'database_description', '*.csv'), recursive=True)
+          print('description_csv_before=%d' % len(desc))
+
+          if before < 11 or qfile() is None or not desc:
               print('dataset unusable -> downloading')
               subprocess.run([sys.executable, '-m', 'pip', 'install', '--quiet', 'huggingface_hub'], check=True)
               from huggingface_hub import hf_hub_download, list_repo_files, snapshot_download
@@ -555,8 +558,19 @@ jobs:
                                 local_dir=os.path.join(root, 'databases'), allow_patterns=keep)
               print('downloaded', len(keep), 'sqlite files')
               # column descriptions live next to the questions, not next to the dbs
-              snapshot_download('birdsql/bird_mini_dev', repo_type='dataset', local_dir=root,
-                                allow_patterns=['**/database_description/*.csv'])
+              for repo in ('birdsql/bird_mini_dev', 'birdsql/bird'):
+                  try:
+                      files = list_repo_files(repo, repo_type='dataset')
+                      hits = [f for f in files if 'description' in f.lower() and f.lower().endswith('.csv')]
+                      print('%s: %d csv files, %d description-like' % (repo, len([f for f in files if f.endswith('.csv')]), len(hits)))
+                      if hits:
+                          snapshot_download(repo, repo_type='dataset', local_dir=root, allow_patterns=hits[:200])
+                          print('  fetched', len(hits[:200]), 'description files from', repo)
+                          break
+                  except Exception as e:  # noqa: BLE001
+                      print('  ', repo, 'unavailable:', str(e)[:120])
+              desc = glob.glob(os.path.join(root, '**', 'database_description', '*.csv'), recursive=True)
+              print('description_csv_after=%d' % len(desc))
 
           after = dbs()
           total = sum(os.path.getsize(p) for p in after)
@@ -604,7 +618,6 @@ jobs:
           print('statuses:', s['statuses'])
           assert s['n'] > 0
           assert s['statuses'].get('db_missing', 0) == 0, s['statuses']
-          assert s['statuses'].get('gold_error', 0) == 0, s['statuses']
           assert s['llm_errors'] == 0, s['llm_errors']
           # BIRD Mini-Dev has a few broken gold queries; tolerate them, do not hide them
           assert s['statuses'].get('gold_error', 0) <= max(2, 0.01 * s['n']), s['statuses']
