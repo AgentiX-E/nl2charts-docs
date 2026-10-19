@@ -1,0 +1,65 @@
+{
+ "tokenPresent": true,
+ "identity": "user:Lambertyan orgs=['UCAS']",
+ "endpoint": "https://huggingface.co",
+ "repos": {
+  "birdsql/bird-interact-lite": {
+   "status": 200,
+   "verdict": "accessible",
+   "gated": false,
+   "private": false,
+   "files": 57,
+   "error": ""
+  },
+  "xlangai/spider2-lite": {
+   "status": 200,
+   "verdict": "accessible",
+   "gated": false,
+   "private": false,
+   "files": 3,
+   "error": ""
+  },
+  "xlangai/spider2-localdb": {
+   "status": 200,
+   "verdict": "accessible",
+   "gated": false,
+   "private": false,
+   "files": 3,
+   "error": ""
+  },
+  "mizanurr/Text2Vis": {
+   "status": 200,
+   "verdict": "accessible",
+   "gated": false,
+   "private": false,
+   "files": 3,
+   "error": ""
+  },
+  "birdsql/bird_mini_dev": {
+   "status": 200,
+   "verdict": "accessible",
+   "gated": false,
+   "private": false,
+   "files": 5,
+   "error": ""
+  }
+ },
+ "secrets": {
+  "HF_TOKEN": {
+   "set": true,
+   "len": 37
+  },
+  "HUGGINGFACE_TOKEN": {
+   "set": false,
+   "len": 0
+  },
+  "HF_API_TOKEN": {
+   "set": false,
+   "len": 0
+  },
+  "HUGGING_FACE_TOKEN": {
+   "set": false,
+   "len": 0
+  }
+ }
+}
