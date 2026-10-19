@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-19T00:31:10.347Z",
+  "generatedAt": "2026-10-19T00:39:04.725Z",
   "tests": [
     {
       "name": "request body is byte-identical to the reference",
@@ -16,12 +16,27 @@
       }
     },
     {
-      "name": "optional parameters pass through untouched",
+      "name": "json_object is passed through and honoured",
       "pass": true,
       "detail": {
-        "sentToVendor": true,
-        "accepted": false,
-        "code": "LLM_HTTP_400"
+        "sent": true,
+        "parsed": true
+      }
+    },
+    {
+      "name": "json_object without the word json is a vendor precondition, not a layer bug",
+      "pass": true,
+      "detail": {
+        "code": "LLM_HTTP_400",
+        "body": "{\"error\":{\"message\":\"Prompt must contain the word 'json' in some form to use 'response_format' of type 'json_object'. (request_id: 0e68dcfc-fbd3-48d9-8c6b-893dbc49928c)\",\"type\":\"invalid_request_error\""
+      }
+    },
+    {
+      "name": "json_schema is unavailable at the vendor",
+      "pass": true,
+      "detail": {
+        "code": "LLM_HTTP_400",
+        "body": "{\"error\":{\"message\":\"This response_format type is unavailable now (request_id: 79ff8549-5878-44a1-aafc-6304c39d64db)\",\"type\":\"invalid_request_error\",\"param\":null,\"code\":\"invalid_request_error\"}}"
       }
     },
     {
@@ -29,8 +44,8 @@
       "pass": true,
       "detail": {
         "chunks": 25,
-        "ttftMs": 735,
-        "totalMs": 948,
+        "ttftMs": 723,
+        "totalMs": 907,
         "chars": 100,
         "text": "SELECT region, SUM(revenue) AS total_revenue\nFROM orders\nWHERE status = 'complet"
       }
@@ -39,9 +54,9 @@
       "name": "first token arrives well before the end",
       "pass": true,
       "detail": {
-        "ttft": 735,
-        "totalMs": 948,
-        "ratio": 0.775
+        "ttft": 723,
+        "totalMs": 907,
+        "ratio": 0.797
       }
     },
     {
@@ -60,15 +75,18 @@
       }
     }
   ],
-  "structuredOutput": {
-    "sentToVendor": true,
-    "accepted": false,
-    "code": "LLM_HTTP_400"
+  "jsonObjectPrecondition": {
+    "code": "LLM_HTTP_400",
+    "body": "{\"error\":{\"message\":\"Prompt must contain the word 'json' in some form to use 'response_format' of type 'json_object'. (request_id: 0e68dcfc-fbd3-48d9-8c6b-893dbc49928c)\",\"type\":\"invalid_request_error\""
+  },
+  "jsonSchema": {
+    "code": "LLM_HTTP_400",
+    "body": "{\"error\":{\"message\":\"This response_format type is unavailable now (request_id: 79ff8549-5878-44a1-aafc-6304c39d64db)\",\"type\":\"invalid_request_error\",\"param\":null,\"code\":\"invalid_request_error\"}}"
   },
   "stream": {
     "chunks": 25,
-    "ttftMs": 735,
-    "totalMs": 948,
+    "ttftMs": 723,
+    "totalMs": 907,
     "chars": 100,
     "text": "SELECT region, SUM(revenue) AS total_revenue\nFROM orders\nWHERE status = 'complet"
   },
@@ -77,7 +95,7 @@
     "retryable": false
   },
   "summary": {
-    "total": 6,
-    "pass": 6
+    "total": 8,
+    "pass": 8
   }
 }

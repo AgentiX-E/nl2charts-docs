@@ -43,7 +43,7 @@ function provider({ url, key, model, sent }) {
         body: JSON.stringify(body),
       });
       const text = await res.text();
-      if (!res.ok) { const e = new Error(`LLM_HTTP_${res.status}`); e.code = `LLM_HTTP_${res.status}`; e.retryable = res.status === 429 || res.status >= 500; throw e; }
+      if (!res.ok) { const e = new Error(`LLM_HTTP_${res.status}`); e.code = `LLM_HTTP_${res.status}`; e.body = text.slice(0, 200); e.retryable = res.status === 429 || res.status >= 500; throw e; }
       const j = JSON.parse(text);
       return { text: j.choices?.[0]?.message?.content ?? '', usage: j.usage ?? {} };
     },
@@ -110,17 +110,39 @@ await check('request body is byte-identical to the reference', async () => {
   return { fields: Object.keys(sent[0]).sort() };
 });
 
-// 2) passthrough: optional params are not dropped
-await check('optional parameters pass through untouched', async () => {
+// 2) passthrough + the exact precondition the vendor imposes
+await check('json_object is passed through and honoured', async () => {
   sent.length = 0;
-  let vendorError = null;
-  try { await ds.complete({ messages, maxTokens: 64, responseFormat: { type: 'json_object' } }); }
-  catch (e) { vendorError = e.code; }
+  const r = await ds.complete({
+    messages: [{ role: 'user', content: 'Return json like {"a":1}' }],
+    maxTokens: 20, responseFormat: { type: 'json_object' },
+  });
   if (!sent[0].response_format) throw new Error('response_format dropped by the layer');
-  // Passthrough and vendor support are different claims: the layer must send it,
-  // the vendor may still reject it (POC-7 found DeepSeek does).
-  out.structuredOutput = { sentToVendor: true, accepted: vendorError === null, code: vendorError };
-  return out.structuredOutput;
+  JSON.parse(r.text);
+  return { sent: true, parsed: true };
+});
+
+await check('json_object without the word json is a vendor precondition, not a layer bug', async () => {
+  let err = null;
+  try {
+    await ds.complete({ messages: [{ role: 'user', content: 'Return {"a":1}' }], maxTokens: 20,
+      responseFormat: { type: 'json_object' } });
+  } catch (e) { err = e; }
+  if (!err || err.code !== 'LLM_HTTP_400') throw new Error(String(err && err.code));
+  if (!/json/i.test(err.body || '')) throw new Error('missing vendor explanation: ' + err.body);
+  out.jsonObjectPrecondition = { code: err.code, body: err.body };
+  return out.jsonObjectPrecondition;
+});
+
+await check('json_schema is unavailable at the vendor', async () => {
+  let err = null;
+  try {
+    await ds.complete({ messages: [{ role: 'user', content: 'Return json {"a":1}' }], maxTokens: 20,
+      responseFormat: { type: 'json_schema', json_schema: { name: 'x', schema: { type: 'object' } } } });
+  } catch (e) { err = e; }
+  if (!err || err.code !== 'LLM_HTTP_400') throw new Error(String(err && err.code));
+  out.jsonSchema = { code: err.code, body: err.body };
+  return out.jsonSchema;
 });
 
 // 3) streaming: chunks, concatenation, TTFT
