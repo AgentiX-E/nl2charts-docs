@@ -360,6 +360,14 @@ def probe(data_dir, db_dir, limit=0):
             entry["error"] = str(e)[:80]
         out["dbs"].append(entry)
     out["emptyDbs"] = sum(1 for d in out["dbs"] if sum(d.get("rows", {}).values()) == 0)
+    # one real card, so a bad prompt is visible in the CI log instead of being
+    # inferred from a score
+    if files:
+        first = files[0]
+        db_id = os.path.basename(os.path.dirname(first)) or os.path.basename(first).split(".")[0]
+        info = metadata.profile(first)
+        card = metadata.render(info, db_id)
+        out["cardSample"] = {"dbId": db_id, "chars": len(card), "text": card[:1800]}
     return out
 
 

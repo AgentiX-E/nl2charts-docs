@@ -109,7 +109,7 @@ def _profile_column(conn, table, col, with_enums, with_ranges):
     vals = _sample(conn, table, name)
     if not vals:
         return
-    if with_ranges and numeric and not col["pk"]:
+    if with_ranges and numeric and not col["pk"] and not col.get("fk"):
         try:
             nums = [float(v) for v in vals if isinstance(v, (int, float))]
         except (TypeError, ValueError):
@@ -157,6 +157,7 @@ def _infer_fks(conn, info):
                 hit = sum(1 for v in src if str(v) in {str(x) for x in dst})
                 if hit / len(src) >= 0.8:
                     c["fk"] = "%s.%s" % (target, pk_of[target])
+                    c.pop("range", None)
                     break
 
 
@@ -181,7 +182,9 @@ def render(info: dict, db_id: str, with_enums: bool = True, with_ranges: bool = 
                 lo, hi = c["range"]
                 bits.append("range %s .. %s" % (lo, hi))
             human = humanize(c["name"])
-            label = human if human.replace(" ", "_") != c["name"].lower() else ""
+            label = ""
+            if not c.get("pk") and human.replace(" ", "_") != c["name"].lower():
+                label = human
             tail = ("  -- " + "; ".join(bits)) if bits else ""
             name_part = "%s %s" % (c["name"], c["type"] or "TEXT")
             if label:
