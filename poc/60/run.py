@@ -43,19 +43,29 @@ MODEL = os.environ.get("POC60_MODEL", "deepseek-chat")
 
 
 def find_db(db_dir: str, db_id: str) -> str | None:
-    for cand in (
+    """Locate one database file.
+
+    The upstream layout is not ours to choose and it changes: BIRD ships
+    `databases/database/<db_id>/<db_id>_template.sqlite` in one repo and a flat
+    `<db_id>.sqlite` in another. Matching on a prefix is the only rule that
+    survives both, and it is still unambiguous because `db_id` is a full name.
+    """
+    import glob
+
+    preferred = [
         os.path.join(db_dir, db_id, f"{db_id}.sqlite"),
         os.path.join(db_dir, db_id, "sqlite", f"{db_id}.sqlite"),
         os.path.join(db_dir, f"{db_id}.sqlite"),
-        os.path.join(db_dir, db_id, f"{db_id}.db"),
-    ):
+        os.path.join(db_dir, db_id, f"{db_id}_template.sqlite"),
+    ]
+    for cand in preferred:
         if os.path.exists(cand):
             return cand
-    # last resort: walk one level deeper, the download layout is not ours
-    for root, _dirs, files in os.walk(db_dir):
-        for f in files:
-            if f in (f"{db_id}.sqlite", f"{db_id}.db"):
-                return os.path.join(root, f)
+    hits = sorted(glob.glob(os.path.join(db_dir, "**", f"{db_id}*.sqlite"), recursive=True))
+    if hits:
+        # prefer an exact stem over a prefixed sibling (region vs region_2)
+        exact = [h for h in hits if os.path.basename(h) in (f"{db_id}.sqlite", f"{db_id}_template.sqlite")]
+        return (exact or hits)[0]
     return None
 
 
@@ -266,6 +276,31 @@ def run_question(q, db_dir, samples, mode, evidence):
     return out
 
 
+def probe(data_dir, db_dir, limit=0):
+    """Print what the cache actually contains. Cheap, and it settles arguments."""
+    import glob
+    import sqlite3
+
+    files = sorted(glob.glob(os.path.join(db_dir, "**", "*.sqlite"), recursive=True))
+    out = {"dbFiles": len(files), "totalBytes": sum(os.path.getsize(f) for f in files), "dbs": []}
+    for f in files:
+        entry = {"file": os.path.relpath(f, db_dir), "bytes": os.path.getsize(f)}
+        try:
+            conn = sqlite3.connect("file:%s?mode=ro" % f, uri=True)
+            tabs = [r[0] for r in conn.execute(
+                "SELECT name FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%'")]
+            entry["tables"] = len(tabs)
+            entry["rows"] = {
+                t: conn.execute('SELECT count(*) FROM "%s"' % t).fetchone()[0] for t in tabs[:3]
+            }
+            conn.close()
+        except Exception as e:  # noqa: BLE001
+            entry["error"] = str(e)[:80]
+        out["dbs"].append(entry)
+    out["emptyDbs"] = sum(1 for d in out["dbs"] if sum(d.get("rows", {}).values()) == 0)
+    return out
+
+
 # ---------------------------------------------------------------- selftest
 
 
@@ -355,6 +390,7 @@ def main():
     ap.add_argument("--seed", type=int, default=0)
     ap.add_argument("--out", default=os.path.join(HERE, "results.json"))
     ap.add_argument("--selftest", action="store_true")
+    ap.add_argument("--probe", action="store_true")
     a = ap.parse_args()
 
     if a.selftest:
@@ -363,6 +399,11 @@ def main():
                          ensure_ascii=False))
         json.dump(r, open(os.path.join(HERE, "selftest.json"), "w"), indent=1)
         return 0 if r["ok"] else 1
+
+    if a.probe:
+        r = probe(a.data_dir, a.db_dir or os.path.join(a.data_dir, "databases"))
+        print(json.dumps(r, ensure_ascii=False, indent=1)[:4000])
+        return 0 if r["emptyDbs"] == 0 else 1
 
     if not (os.environ.get("DEEPSEEK_API_KEY") or os.environ.get("DEEPSEEK_KEY")):
         print("DEEPSEEK_API_KEY is not set", file=sys.stderr)

@@ -551,6 +551,9 @@ jobs:
           CACHE_HIT: ${{ steps.ds.outputs.cache-hit }}
           HF_TOKEN: ${{ secrets.HF_TOKEN }}
 
+      - name: dataset probe (fails fast on an empty or misplaced cache)
+        run: python3 poc/60/run.py --data-dir "$HOME/data/bird_mini_dev" --probe
+
       - name: comparator selftest (must pass before any number is reported)
         run: python3 poc/60/run.py --selftest
 
