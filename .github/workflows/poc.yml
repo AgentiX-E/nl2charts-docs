@@ -59,7 +59,7 @@ jobs:
       - name: POC-62 milestone API compatibility
         run: python3 poc/62/check.py
 
-      - name: POC-60 comparator selftest (18 mutations)
+      - name: POC-60 comparator selftest (35 mutations)
         run: python3 poc/60/run.py --selftest
 
       - name: POC-65 validator selftest (17 mutations)
@@ -649,6 +649,7 @@ jobs:
             --schema-mode "${{ inputs.schema }}" --evidence "${{ inputs.evidence }}" \
             --out poc/65/results.json
           python3 poc/65/analyze.py poc/65/results.json --out poc/65/analysis.json
+          python3 poc/65/de_score.py poc/65/results.json
 
       - name: confidence summary (POC-65)
         if: inputs.stage == 'confidence'
