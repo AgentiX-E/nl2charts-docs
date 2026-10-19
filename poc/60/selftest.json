@@ -137,8 +137,8 @@
    "pass": true
   }
  ],
- "pass": 34,
- "total": 34,
+ "pass": 35,
+ "total": 35,
  "ok": true,
  "metadata": {
   "checks": [
@@ -214,8 +214,9 @@
     "case": "picks orders+customers",
     "pass": true,
     "got": [
+     "customers",
      "orders",
-     "customers"
+     "products"
     ]
    },
    {
@@ -226,6 +227,15 @@
     "case": "k=1 honours the budget",
     "pass": true,
     "got": [
+     "products"
+    ]
+   },
+   {
+    "case": "small schema is not pruned",
+    "pass": true,
+    "got": [
+     "customers",
+     "orders",
      "products"
     ]
    },
@@ -249,8 +259,8 @@
     ]
    }
   ],
-  "pass": 6,
-  "total": 6,
+  "pass": 7,
+  "total": 7,
   "ok": true
  }
 }

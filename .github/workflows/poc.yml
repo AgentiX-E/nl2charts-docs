@@ -627,6 +627,12 @@ jobs:
           assert s['n'] > 0
           assert s['statuses'].get('db_missing', 0) == 0, s['statuses']
           assert s['llm_errors'] == 0, s['llm_errors']
+          # LINK1: only meaningful when the schema was actually pruned
+          if os.environ.get('SCHEMA', '').startswith('link'):
+              link = json.load(open('poc/63/results.json'))
+              g = link['gate']
+              print('link recall@4=%.4f coverage@4=%.4f' % (g['recallAt4'], g['coverageAt4']))
+              assert g['recallAt4'] >= g['threshold'], g
           # BIRD Mini-Dev has a few broken gold queries; tolerate them, do not hide them
           assert s['statuses'].get('gold_error', 0) <= max(2, 0.01 * s['n']), s['statuses']
           PY

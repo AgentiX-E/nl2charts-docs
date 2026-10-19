@@ -55,6 +55,10 @@ def table_stats(db_path: str):
     return out
 
 
+def compact(text: str) -> str:
+    return re.sub(r"[^a-z0-9]", "", text.lower())
+
+
 def score_tables(stats, question):
     """idf-weighted lexical score per table."""
     qt = set(tokens(question))
@@ -75,6 +79,7 @@ def score_tables(stats, question):
             if tok in bag:
                 df[tok] += 1
     scores = {}
+    qcompact = compact(question)
     for t, meta in stats.items():
         s = 0.0
         name_bag = set(tokens(t))
@@ -93,11 +98,37 @@ def score_tables(stats, question):
                 s += 1.0 * idf
             if tok in val_bag:
                 s += 0.6 * idf
+        # Compound names: "gas stations" must match `gasstations`. Token
+        # equality cannot see that, and BIRD is full of such names.
+        qc = qcompact
+        for name in [t] + meta["cols"]:
+            nc = compact(name)
+            if len(nc) >= 6 and nc in qc:
+                s += 2.5
+        # Literal grounding: an enum value quoted in the question is the
+        # strongest cheap signal there is ("in Alameda" -> County Name).
+        for col, vals in meta["values"].items():
+            for v in vals:
+                vc = compact(v)
+                if len(vc) >= 4 and vc in qc:
+                    s += 2.0
         scores[t] = s
     return scores
 
 
-def select(stats, question, k=K_DEFAULT, with_fk=True):
+MIN_TABLES_TO_LINK = 6
+
+
+def select(stats, question, k=K_DEFAULT, with_fk=True, min_tables=MIN_TABLES_TO_LINK):
+    """Return the tables to put in the prompt.
+
+    On a schema that already fits, pruning is pure risk: every dropped table is a
+    chance to make the question unanswerable, and the token saving is irrelevant.
+    So linking only engages above `min_tables`, which is also the only regime the
+    product claims to help (large enterprise schemas).
+    """
+    if len(stats) <= min_tables:
+        return list(stats), {t: 0.0 for t in stats}
     scores = score_tables(stats, question)
     ranked = [t for t, s in sorted(scores.items(), key=lambda kv: (-kv[1], kv[0])) if s > 0]
     picked = ranked[:k]
@@ -164,8 +195,13 @@ def selftest():
     out.append({"case": "fk closure adds customers from orders",
                 "pass": "customers" in picked})
 
-    picked2, _ = select(stats, "which products exist", k=1, with_fk=False)
+    picked2, _ = select(stats, "which products exist", k=1, with_fk=False, min_tables=0)
     out.append({"case": "k=1 honours the budget", "pass": len(picked2) == 1, "got": picked2})
+
+    # On a schema that already fits, pruning is risk without benefit.
+    picked_small, _ = select(stats, "which products exist", k=1, with_fk=False)
+    out.append({"case": "small schema is not pruned",
+                "pass": set(picked_small) == set(stats), "got": picked_small})
 
     # a token that appears in every table must not dominate (idf)
     s = score_tables(stats, "status")
