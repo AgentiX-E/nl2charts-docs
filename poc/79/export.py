@@ -31,11 +31,17 @@ PG = {
 }
 
 
-def pg_type(decl: str, values: list) -> str:
+def pg_type(decl: str, values: list, numeric: bool = False) -> str:
     """Declared affinity wins; otherwise infer from the values we actually saw."""
     d = (decl or "").split("(")[0].strip().upper()
     if d:
-        return PG.get(d, "text")
+        t = PG.get(d, "text")
+        # The only knob this experiment turns: float -> arbitrary precision.
+        # POC-78/79 blamed type commitment for 3.8% silent divergence; this is
+        # the cheapest way to test whether the precision is the cause.
+        if numeric and t in ("double precision", "numeric"):
+            return "numeric"
+        return t
     seen = set()
     for v in values:
         if v is None:
@@ -52,12 +58,14 @@ def pg_type(decl: str, values: list) -> str:
             seen.add("str")
     if not seen:
         return "text"
+    if numeric and seen <= {"int", "real"}:
+        return "numeric"
     # Mixed types must degrade to text: bigint would reject 'N/A' later.
     return {"int": "bigint", "real": "double precision", "str": "text",
             "bool": "boolean", "blob": "bytea"}.get(sorted(seen)[0], "text") if len(seen) == 1 else "text"
 
 
-def dump(db_path: str, max_rows: int = 0) -> dict:
+def dump(db_path: str, max_rows: int = 0, numeric: bool = False) -> dict:
     con = sqlite3.connect("file:%s?mode=ro" % db_path, uri=True)
     con.text_factory = lambda b: b.decode("utf-8", "replace")
     out = {"path": db_path, "tables": {}, "types": {}, "lossy": []}
@@ -72,7 +80,7 @@ def dump(db_path: str, max_rows: int = 0) -> dict:
         typed = []
         for i, (name, decl) in enumerate(cols):
             vals = [r[i] for r in rows]
-            ty = pg_type(decl, vals)
+            ty = pg_type(decl, vals, numeric)
             typed.append({"name": name, "decl": decl, "pg": ty})
             nonnull = [v for v in vals if v is not None]
             if ty == "bigint" and any(isinstance(v, str) for v in nonnull):
@@ -88,9 +96,10 @@ def main() -> int:
     ap.add_argument("--db", required=True)
     ap.add_argument("--out", required=True)
     ap.add_argument("--max-rows", type=int, default=0)
+    ap.add_argument("--numeric", action="store_true")
     args = ap.parse_args()
     os.makedirs(os.path.dirname(args.out) or ".", exist_ok=True)
-    d = dump(args.db, args.max_rows)
+    d = dump(args.db, args.max_rows, args.numeric)
     with open(args.out, "w", encoding="utf-8") as f:
         json.dump(d, f, ensure_ascii=False)
     n = sum(len(v["rows"]) for v in d["tables"].values())

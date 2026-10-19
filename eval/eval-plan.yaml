@@ -1,4 +1,4 @@
-version: v5.25
+version: v5.26
 # The evaluation plan is the machine-readable half of §5/§8.19. Every benchmark we
 # quote must appear here with n, metric, grader and evidence; every measured row
 # must carry a baseline and a POC that produced it. `poc/73/check.py` enforces it.
@@ -90,6 +90,7 @@ benchmarks:
     gate: EV9
     evidencePoc: POC-78
     engines: "sqlite3 3.x, DuckDB 1.5.6, PostgreSQL 17 (PGlite 0.2, WASM)"
+    guard: "poc/80/guard.py: 6 hard rules + 2 warn; on 132 comparable questions precision 100%, recall 60%, refusal 2.27% (POC-80)"
     notes: "sqlite<->duckdb: gold 78.9% runnable, self-consistency 98.2%, verdict 97.68%, 5 silent (1.3%). sqlite<->pg: gold 94.29% runnable, 96.21%, verdict 99.19%, 5 silent (3.8%). Two engines disagree with themselves at different rates, and PG drifts silently more often (POC-78/79, ADR-149/151)"
 
   - id: E6

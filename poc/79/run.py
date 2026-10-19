@@ -146,6 +146,8 @@ def main() -> int:
     ap.add_argument("--results", default=os.path.join(HERE, "..", "65", "results.json"))
     ap.add_argument("--tmp", default="/tmp/poc79")
     ap.add_argument("--out", default="")
+    ap.add_argument("--numeric", action="store_true",
+                    help="export floats as arbitrary-precision numeric instead of double")
     ap.add_argument("--selftest", action="store_true")
     args = ap.parse_args()
 
@@ -171,8 +173,10 @@ def main() -> int:
     dumps = {}
     for name, path in dbs.items():
         out = os.path.join(args.tmp, f"{name}.json")
-        subprocess.run([sys.executable, os.path.join(HERE, "export.py"),
-                        "--db", path, "--out", out], check=True, capture_output=True)
+        cmd = [sys.executable, os.path.join(HERE, "export.py"), "--db", path, "--out", out]
+        if args.numeric:
+            cmd.append("--numeric")
+        subprocess.run(cmd, check=True, capture_output=True)
         dumps[name] = out
 
     jobs, meta = [], []
@@ -213,6 +217,7 @@ def main() -> int:
     load_ms = {k: v.get("loadMs") for k, v in (pg.get("dbs") or {}).items()}
     summary = summarise(rows, runrate, load_ms)
     summary["dbs"] = sorted(dbs)
+    summary["numericPolicy"] = "numeric" if args.numeric else "double precision"
     print(json.dumps(summary, ensure_ascii=False, indent=1))
     if args.out:
         json.dump({"summary": summary, "rows": rows}, open(args.out, "w", encoding="utf-8"),

@@ -115,6 +115,9 @@ jobs:
       - name: POC-79 PostgreSQL-as-WASM normalisation (9 mutations, no network)
         run: python3 poc/79/run.py --selftest
 
+      - name: POC-80 divergence guard (11 mutations, no network)
+        run: python3 poc/80/guard.py --selftest
+
       - name: POC-67 CPU-only dependency guard (5 mutations)
         run: |
           python3 poc/67/no_gpu_deps.py --selftest
@@ -139,8 +142,8 @@ jobs:
           assert d['P1_index_matches_sections'], d
           a, b = d['P2_pass_rate'].split('/')
           assert a == b, d
-          assert d['sections'] == 79, d
-          assert d['P4_assumption_rows'] == 118, d
+          assert d['sections'] == 80, d
+          assert d['P4_assumption_rows'] == 119, d
           print('POC-35 ok:', d['sections'], 'sections,', d['P2_pass_rate'], 'five-part,', d['P4_assumption_rows'], 'assumptions')
           PY
 
@@ -857,6 +860,7 @@ jobs:
             poc/77/results.json
             poc/77/linked-results.json
             poc/79/results.json
+            poc/80/results.json
 
   llm:
     name: LLM / embedding POCs (manual, needs secrets)
