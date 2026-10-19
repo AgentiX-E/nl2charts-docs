@@ -1,0 +1,75 @@
+name: Cache benchmark datasets
+
+# Download once, evaluate many times. GitHub Actions cache holds 10 GB per
+# repository; BIRD Mini-Dev (SQLite) is 1.49 GB, so the whole split fits with
+# room to spare. The key is dataset-versioned: bump it when the upstream
+# revision changes, never when only our code changes.
+
+on:
+  workflow_dispatch:
+  push:
+    paths: ['.github/workflows/cache-datasets.yml']
+  schedule:
+    - cron: '0 3 * * 1'   # weekly refresh (Monday 03:00 UTC)
+
+permissions:
+  contents: read
+  actions: write
+
+jobs:
+  bird-mini-dev:
+    name: cache BIRD Mini-Dev (SQLite, 500 q / 11 DB)
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: restore cache
+        id: cache
+        uses: actions/cache@v4
+        with:
+          path: ~/data/bird_mini_dev
+          key: bird-mini-dev-sqlite-v1
+
+      - name: download from Hugging Face
+        if: steps.cache.outputs.cache-hit != 'true'
+        env:
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
+        run: |
+          pip install --quiet huggingface_hub
+          python3 - <<'PY'
+          import os
+          from huggingface_hub import snapshot_download
+          root = os.path.expanduser('~/data/bird_mini_dev')
+          os.makedirs(root, exist_ok=True)
+          snapshot_download(
+              repo_id='birdsql/bird_mini_dev',
+              repo_type='dataset',
+              local_dir=root,
+              token=os.environ.get('HF_TOKEN') or None,
+              allow_patterns=['mini_dev_sqlite.json', 'databases/*.sqlite', 'databases/**/*.sqlite'],
+          )
+          print('downloaded to', root)
+          PY
+
+      - name: verify the cache is usable
+        run: |
+          python3 - <<'PY'
+          import glob, json, os
+          root = os.path.expanduser('~/data/bird_mini_dev')
+          dbs = glob.glob(os.path.join(root, '**', '*.sqlite'), recursive=True)
+          total = sum(os.path.getsize(p) for p in dbs)
+          print('sqlite dbs:', len(dbs))
+          print('bytes:', total, f'({total/1e9:.2f} GB)')
+          assert len(dbs) >= 11, dbs
+          assert total > 1.0e9, total
+          qfile = glob.glob(os.path.join(root, '**', 'mini_dev_sqlite.json'), recursive=True)
+          if qfile:
+              q = json.load(open(qfile[0], encoding='utf-8'))
+              print('questions:', len(q))
+              assert len(q) >= 500, len(q)
+          print('CACHE_OK')
+          PY

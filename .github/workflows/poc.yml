@@ -82,14 +82,15 @@ jobs:
         with:
           node-version: ${{ env.NODE_VERSION }}
 
-      - name: verify offline toolchain (no npm registry access on runners)
+      - name: verify toolchain
         run: |
-          chmod +x node_modules/@esbuild/linux-x64/bin/esbuild
+          chmod +x node_modules/@esbuild/linux-x64/bin/esbuild || true
           node -e "import('esbuild').then(m => console.log('esbuild', m.version))"
 
       - name: POC-41 single package, two runtimes
         working-directory: poc/41
         run: |
+          npm install --no-audit --no-fund
           node bundle.mjs
           python3 - <<'PY'
           import json
