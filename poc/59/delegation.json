@@ -86,9 +86,22 @@
    "id": "schema.linking",
    "owner": "self",
    "gate": "E1",
-   "benchmark": "self-built opaque schema (35 cols / 20 q)",
+   "benchmark": "BIRD Mini-Dev 500: offline recall@k + end-to-end EX (paired)",
    "status": "measured",
-   "probe": "POC-8"
+   "probe": "POC-63",
+   "measured": {
+    "recall_at_4": 0.83,
+    "recall_at_4_small": 1.0,
+    "recall_at_4_large": 0.73,
+    "ex_baseline": 0.454,
+    "ex_linked": 0.422,
+    "delta_pp": -3.2,
+    "mcnemar_p": 0.033,
+    "token_change_pct": -40.0,
+    "cache_hit_change_pp": -19.4,
+    "cost_change_pct": 3.0
+   },
+   "decision": "do not prune when the schema already fits; LINK1 requires recall@4 >= 0.90 (ADR-132)"
   },
   {
    "id": "chart.explicit",
