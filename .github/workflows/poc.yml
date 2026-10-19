@@ -21,7 +21,7 @@ on:
       schema:
         description: 'Schema card mode'
         type: choice
-        options: [full, desc, samples, names]
+        options: [profile, profile_lite, full, desc, samples, names]
         default: full
       evidence:
         description: 'Use the BIRD hint field'
