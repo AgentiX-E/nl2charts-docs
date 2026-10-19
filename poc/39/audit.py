@@ -62,7 +62,7 @@ rep['claims_unsourced'] = {'sections_with_shixce_but_no_ref': len(unsourced),
 wbs = '\n'.join(ln for ln in lines if re.match(r'^\|\s*\*\*T\d', ln) or ln.startswith('T0.') or ln.startswith('T1.') or ln.startswith('T2.'))
 gates = {}
 for ln in lines:
-    m = re.match(r'^\|\s*\**(DG|FG|UX|PKG|TIER|OBS|HITL|CHART|EV|PRE|DELEG|BIRD|API|LINK|REPAIR)(\d{1,2})\**\s*(\||\s+[^|]+\|)', ln)
+    m = re.match(r'^\|\s*\**(DG|FG|UX|PKG|TIER|OBS|HITL|CHART|EV|PRE|DELEG|BIRD|API|LINK|REPAIR|CONF|SILENT)(\d{1,2})\**\s*(\||\s+[^|]+\|)', ln)
     if m and '–' not in ln.split('|')[1]:
         gates[f'{m.group(1)}{m.group(2)}'] = ln
     m2 = re.match(r'^P(\d{1,2})\s+', ln)

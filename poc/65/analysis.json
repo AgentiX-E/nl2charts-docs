@@ -1,0 +1,233 @@
+{
+ "n": 500,
+ "answered": 492,
+ "samplesPerQuestion": 5,
+ "baseline": {
+  "ex": 0.466,
+  "exAmongAnswered": 0.4736,
+  "wrong": 259,
+  "silent": 222,
+  "silentShareOfWrong": 0.8571,
+  "execOrEmpty": 37
+ },
+ "confidenceCurve": [
+  {
+   "minSupport": 1,
+   "auto": 492,
+   "coverage": 0.984,
+   "accuracy": 0.4736,
+   "escalated": 8,
+   "escalationRate": 0.016
+  },
+  {
+   "minSupport": 2,
+   "auto": 487,
+   "coverage": 0.974,
+   "accuracy": 0.4764,
+   "escalated": 13,
+   "escalationRate": 0.026
+  },
+  {
+   "minSupport": 3,
+   "auto": 478,
+   "coverage": 0.956,
+   "accuracy": 0.4854,
+   "escalated": 22,
+   "escalationRate": 0.044
+  },
+  {
+   "minSupport": 4,
+   "auto": 454,
+   "coverage": 0.908,
+   "accuracy": 0.4978,
+   "escalated": 46,
+   "escalationRate": 0.092
+  },
+  {
+   "minSupport": 5,
+   "auto": 427,
+   "coverage": 0.854,
+   "accuracy": 0.5269,
+   "escalated": 73,
+   "escalationRate": 0.146
+  }
+ ],
+ "bySupport": {
+  "1": {
+   "n": 5,
+   "correct": 1,
+   "accuracy": 0.2
+  },
+  "2": {
+   "n": 9,
+   "correct": 0,
+   "accuracy": 0.0
+  },
+  "3": {
+   "n": 24,
+   "correct": 6,
+   "accuracy": 0.25
+  },
+  "4": {
+   "n": 27,
+   "correct": 1,
+   "accuracy": 0.037
+  },
+  "5": {
+   "n": 427,
+   "correct": 225,
+   "accuracy": 0.5269
+  }
+ },
+ "rules": {
+  "shape": {
+   "checked": 193,
+   "flagged": 20,
+   "flagRate": 0.0407,
+   "precision": 0.8,
+   "correctBlocked": 4,
+   "recallAllWrong": 0.0618,
+   "recallSilent": 0.0631
+  },
+  "fanout": {
+   "checked": 0,
+   "flagged": 0,
+   "flagRate": 0.0,
+   "precision": null,
+   "correctBlocked": 0,
+   "recallAllWrong": 0.0,
+   "recallSilent": 0.0
+  },
+  "literal": {
+   "checked": 367,
+   "flagged": 34,
+   "flagRate": 0.0691,
+   "precision": 1.0,
+   "correctBlocked": 0,
+   "recallAllWrong": 0.1313,
+   "recallSilent": 0.0541
+  },
+  "degenerate": {
+   "checked": 268,
+   "flagged": 7,
+   "flagRate": 0.0142,
+   "precision": 1.0,
+   "correctBlocked": 0,
+   "recallAllWrong": 0.027,
+   "recallSilent": 0.0315
+  }
+ },
+ "anyFlag": {
+  "flagged": 56,
+  "flagRate": 0.1138,
+  "precision": 0.9286,
+  "correctBlocked": 4,
+  "recallAllWrong": 0.2008,
+  "recallSilent": 0.1351
+ },
+ "policies": [
+  {
+   "minSupport": 1,
+   "blockOnFlag": false,
+   "auto": 492,
+   "coverage": 0.984,
+   "accuracy": 0.4736,
+   "escalated": 8
+  },
+  {
+   "minSupport": 1,
+   "blockOnFlag": true,
+   "auto": 436,
+   "coverage": 0.872,
+   "accuracy": 0.5252,
+   "escalated": 64
+  },
+  {
+   "minSupport": 2,
+   "blockOnFlag": false,
+   "auto": 487,
+   "coverage": 0.974,
+   "accuracy": 0.4764,
+   "escalated": 13
+  },
+  {
+   "minSupport": 2,
+   "blockOnFlag": true,
+   "auto": 432,
+   "coverage": 0.864,
+   "accuracy": 0.5278,
+   "escalated": 68
+  },
+  {
+   "minSupport": 3,
+   "blockOnFlag": false,
+   "auto": 478,
+   "coverage": 0.956,
+   "accuracy": 0.4854,
+   "escalated": 22
+  },
+  {
+   "minSupport": 3,
+   "blockOnFlag": true,
+   "auto": 425,
+   "coverage": 0.85,
+   "accuracy": 0.5365,
+   "escalated": 75
+  },
+  {
+   "minSupport": 4,
+   "blockOnFlag": false,
+   "auto": 454,
+   "coverage": 0.908,
+   "accuracy": 0.4978,
+   "escalated": 46
+  },
+  {
+   "minSupport": 4,
+   "blockOnFlag": true,
+   "auto": 407,
+   "coverage": 0.814,
+   "accuracy": 0.5479,
+   "escalated": 93
+  },
+  {
+   "minSupport": 5,
+   "blockOnFlag": false,
+   "auto": 427,
+   "coverage": 0.854,
+   "accuracy": 0.5269,
+   "escalated": 73
+  },
+  {
+   "minSupport": 5,
+   "blockOnFlag": true,
+   "auto": 383,
+   "coverage": 0.766,
+   "accuracy": 0.5796,
+   "escalated": 117
+  }
+ ],
+ "residual": {
+  "unanimousWrong": 202,
+  "caughtByValidators": 41,
+  "silentUnanimous": 169,
+  "recallOnUnanimousWrong": 0.203
+ },
+ "perDifficulty": {
+  "challenging": {
+   "n": 99,
+   "accuracy": 0.2929,
+   "flagRate": 0.0909
+  },
+  "moderate": {
+   "n": 246,
+   "accuracy": 0.4797,
+   "flagRate": 0.1341
+  },
+  "simple": {
+   "n": 147,
+   "accuracy": 0.585,
+   "flagRate": 0.0952
+  }
+ }
+}
