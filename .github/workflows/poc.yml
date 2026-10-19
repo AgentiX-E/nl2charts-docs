@@ -81,7 +81,9 @@ jobs:
           node-version: ${{ env.NODE_VERSION }}
 
       - name: verify offline toolchain (no npm registry access on runners)
-        run: node -e "import('esbuild').then(m => console.log('esbuild', m.version))"
+        run: |
+          chmod +x node_modules/@esbuild/linux-x64/bin/esbuild
+          node -e "import('esbuild').then(m => console.log('esbuild', m.version))"
 
       - name: POC-41 single package, two runtimes
         working-directory: poc/41
