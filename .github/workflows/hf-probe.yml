@@ -1,0 +1,76 @@
+name: hf-access-probe
+
+# Answers one question, once: do the credentials this repository can actually
+# see open the gated evaluation datasets? Gating on HuggingFace is decided per
+# *account*, not per token — a valid read token from an account that has not
+# accepted the dataset terms still gets 403. This job distinguishes that from
+# "no token at all" instead of guessing.
+#
+# It prints presence and lengths only. Token values are never echoed; the logs
+# of a public repository are public.
+
+on:
+  workflow_dispatch:
+    inputs:
+      repos:
+        description: 'Comma separated dataset repos to probe'
+        type: string
+        default: 'birdsql/bird_interact,xlang-ai/Spider2-Lite,xlang-ai/Spider2,birdsql/bird_mini_dev'
+      endpoint:
+        description: 'HF endpoint (empty = huggingface.co)'
+        type: string
+        default: ''
+
+permissions:
+  contents: read
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: selftest (redaction + classifier)
+        run: python3 poc/75/hf_probe.py --selftest
+
+      - name: probe
+        env:
+          # Candidate names, because we cannot read the secret list through the
+          # API (fine-grained PAT without Secrets permission returns 403).
+          # An undefined secret evaluates to the empty string — harmless.
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
+          HUGGINGFACE_TOKEN: ${{ secrets.HUGGINGFACE_TOKEN }}
+          HF_API_TOKEN: ${{ secrets.HF_API_TOKEN }}
+          HUGGING_FACE_TOKEN: ${{ secrets.HUGGING_FACE_TOKEN }}
+          HF_ENDPOINT: ${{ inputs.endpoint }}
+          REPOS: ${{ inputs.repos }}
+        run: |
+          python3 poc/75/hf_probe.py --repos "$REPOS" --out poc/75/probe.json
+
+      - name: summary
+        if: always()
+        run: |
+          python3 - <<'PY'
+          import json, os
+          p = 'poc/75/probe.json'
+          if not os.path.exists(p):
+              print('no report; see previous step')
+              raise SystemExit(0)
+          d = json.load(open(p))
+          for name, rec in (d.get('secrets') or {}).items():
+              print('%-18s %s' % (name, 'set' if rec['set'] else 'missing'))
+          print('identity:', d.get('identity'))
+          for repo, rec in d['repos'].items():
+              print('%-28s %-14s http=%s gated=%s files=%s'
+                    % (repo, rec['verdict'], rec['status'], rec['gated'], rec['files']))
+          PY
+
+      - name: upload report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: hf-access-probe
+          path: poc/75/probe.json
+          if-no-files-found: warn
+          retention-days: 14
