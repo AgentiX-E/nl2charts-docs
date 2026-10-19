@@ -105,8 +105,10 @@ jobs:
 
       - name: POC-59 benchmark ownership
         run: python3 poc/59/check.py
-      - name: POC-56 preflight (portable paths, live entries, current constants)
-        run: python3 poc/56/preflight.py
+      - name: POC-56 preflight (portable paths, live entries, current constants, workflow syntax)
+        run: |
+          python3 -m pip install --quiet pyyaml
+          python3 poc/56/preflight.py
 
       - name: POC-25 terminology lint (must be zero)
         run: python3 poc/25/check_terms.py

@@ -31,7 +31,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: selftest (10 mutations: leaks, classifier, empty endpoint)
+      - name: "selftest (10 mutations: leaks, classifier, empty endpoint)"
         run: python3 poc/75/hf_probe.py --selftest
 
       - name: probe

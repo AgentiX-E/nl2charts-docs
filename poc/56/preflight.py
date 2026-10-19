@@ -9,8 +9,11 @@ cannot come back:
   P2  the workflow names a directory or entry file that does not exist
   P3  the workflow's document-count assertions disagree with the documents
   P4  the workflow file itself is stale (its constants lag the docs)
+  P5  a workflow file does not parse, or a step list turned into a mapping
+      (an unquoted "name: a (b: c)" does exactly that, and GitHub then reports
+      "Workflow does not have 'workflow_dispatch' trigger" with no line number)
 
-Self-test: three mutations, each must be caught by exactly the rule it targets.
+Self-test: four mutations, each must be caught by exactly the rule it targets.
 Exit 0 only when every rule is green and all mutations are caught.
 """
 import json
@@ -20,6 +23,8 @@ import re
 import shutil
 import sys
 import tempfile
+
+import yaml
 
 ROOT = pathlib.Path(__file__).resolve().parents[2]
 WF = ROOT / ".github" / "workflows" / "poc.yml"
@@ -123,6 +128,33 @@ def scan_stale_workflow(text, counts):
     return stale
 
 
+def scan_workflows(root):
+    """P5: every workflow must parse and keep its steps a list of mappings."""
+    bad = []
+    wdir = root / ".github" / "workflows"
+    if not wdir.is_dir():
+        return [{"file": ".github/workflows", "why": "missing"}]
+    for p in sorted(list(wdir.glob("*.yml")) + list(wdir.glob("*.yaml"))):
+        try:
+            doc = yaml.safe_load(p.read_text(encoding="utf-8"))
+        except Exception as e:  # noqa: BLE001 - any parse error is the finding
+            bad.append({"file": p.name, "why": "unparseable: " + str(e).splitlines()[0][:90]})
+            continue
+        if not isinstance(doc, dict) or not isinstance(doc.get("jobs"), dict):
+            bad.append({"file": p.name, "why": "no jobs mapping"})
+            continue
+        for job, body in doc["jobs"].items():
+            steps = (body or {}).get("steps")
+            if not isinstance(steps, list):
+                bad.append({"file": p.name, "job": job, "why": "steps is not a list"})
+                continue
+            for i, st in enumerate(steps):
+                if not isinstance(st, dict):
+                    bad.append({"file": p.name, "job": job, "step": i,
+                                "why": "step is not a mapping"})
+    return bad
+
+
 def run_checks(root=ROOT):
     text = (root / ".github" / "workflows" / "poc.yml").read_text(encoding="utf-8")
     dirs = ci_dirs(text)
@@ -173,6 +205,7 @@ def run_checks(root=ROOT):
         "P1_absolutePaths": hits,
         "P2_missingEntries": missing,
         "P3_constantMismatch": bad_const,
+        "P5_workflowSyntax": scan_workflows(root),
         "docs": counts,
     }
 
@@ -202,6 +235,15 @@ def selftest():
             encoding="utf-8")
         r3 = run_checks(base)
         results.append({"mutation": "M3 stale constant", "caught": bool(r3["P3_constantMismatch"]), "rule": "P3"})
+        # M4: one unquoted colon in a step name — the exact shape that made
+        # GitHub report "no workflow_dispatch trigger" without a line number
+        bad_wf = base / ".github" / "workflows" / "hf-probe.yml"
+        bad_wf.write_text(bad_wf.read_text(encoding="utf-8").replace(
+            '- name: "selftest (10 mutations: leaks, classifier, empty endpoint)"',
+            "- name: selftest (10 mutations: leaks, classifier, empty endpoint)", 1), encoding="utf-8")
+        r4 = run_checks(base)
+        results.append({"mutation": "M4 unquoted colon in a step name",
+                        "caught": bool(r4["P5_workflowSyntax"]), "rule": "P5"})
     finally:
         shutil.rmtree(tmp, ignore_errors=True)
     return results
@@ -214,6 +256,7 @@ def main():
         not rep["P1_absolutePaths"]
         and not rep["P2_missingEntries"]
         and not rep["P3_constantMismatch"]
+        and not rep["P5_workflowSyntax"]
         and all(m["caught"] for m in rep["selftest"])
     )
     out = pathlib.Path(__file__).with_name("results.json")
@@ -224,6 +267,7 @@ def main():
         "P1": len(rep["P1_absolutePaths"]),
         "P2": len(rep["P2_missingEntries"]),
         "P3": len(rep["P3_constantMismatch"]),
+        "P5": len(rep["P5_workflowSyntax"]),
         "selftest": f"{sum(1 for m in rep['selftest'] if m['caught'])}/{len(rep['selftest'])}",
         "docs": rep["docs"],
     }, ensure_ascii=False))
