@@ -30,6 +30,7 @@ from concurrent.futures import ThreadPoolExecutor
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
 import ex  # noqa: E402
+import metadata  # noqa: E402
 
 # DeepSeek list price, USD per million tokens (2026-10). Cache-hit input is
 # billed at 1/10 of a miss (POC-53), so cost is reported both ways.
@@ -122,6 +123,18 @@ def schema_card(db_path: str, db_id: str, mode: str, data_dir: str = "") -> str:
     if key in SCHEMA_CACHE:
         return SCHEMA_CACHE[key]
     import sqlite3
+
+    if mode in ("profile", "profile_lite"):
+        info = metadata.profile(
+            db_path,
+            with_enums=(mode == "profile"),
+            with_ranges=(mode == "profile"),
+            with_keys=True,
+        )
+        card = metadata.render(info, db_id, with_enums=(mode == "profile"),
+                               with_ranges=(mode == "profile"), with_keys=True)
+        SCHEMA_CACHE[key] = card
+        return card
 
     conn = sqlite3.connect("file:%s?mode=ro" % db_path, uri=True)
     lines = [f"Database: {db_id}", ""]
@@ -258,6 +271,7 @@ def run_question(q, db_dir, samples, mode, evidence, data_dir=""):
     out["gold_ms"] = round(gold.ms, 3)
 
     card = schema_card(db_path, q["db_id"], mode, data_dir)
+    out["cardChars"] = len(card)
     msgs = build_prompt(q, card, evidence)
 
     got = []
@@ -433,7 +447,9 @@ def main():
     ap.add_argument("--limit", type=int, default=0)
     ap.add_argument("--samples", type=int, default=3)
     ap.add_argument("--workers", type=int, default=6)
-    ap.add_argument("--schema-mode", choices=["names", "samples", "desc", "full"], default="full")
+    ap.add_argument("--schema-mode",
+                    choices=["names", "samples", "desc", "full", "profile", "profile_lite"],
+                    default="profile")
     ap.add_argument("--evidence", choices=["on", "off"], default="off")
     ap.add_argument("--seed", type=int, default=0)
     ap.add_argument("--out", default=os.path.join(HERE, "results.json"))
@@ -443,6 +459,11 @@ def main():
 
     if a.selftest:
         r = selftest()
+        m = metadata.selftest()
+        r["metadata"] = m
+        r["pass"] += m["pass"]
+        r["total"] += m["total"]
+        r["ok"] = r["ok"] and m["ok"]
         print(json.dumps({"selftest": {"pass": r["pass"], "total": r["total"], "ok": r["ok"]}},
                          ensure_ascii=False))
         json.dump(r, open(os.path.join(HERE, "selftest.json"), "w"), indent=1)
@@ -525,6 +546,7 @@ def main():
         "cost_usd": round(cost, 4),
         "wall_s": round(wall, 1),
         "gold_p50_ms": round(lat[len(lat) // 2], 2) if lat else None,
+        "cardCharsP50": sorted(r.get("cardChars", 0) for r in rows)[len(rows) // 2],
         "descriptionIndex": len(index_descriptions(a.data_dir)),
         "descCoverage": round(
             sum(1 for q in qs if load_descriptions(q["db_id"], a.data_dir)) / max(1, len(qs)), 4),

@@ -137,7 +137,75 @@
    "pass": true
   }
  ],
- "pass": 18,
- "total": 18,
- "ok": true
+ "pass": 28,
+ "total": 28,
+ "ok": true,
+ "metadata": {
+  "checks": [
+   {
+    "case": "FK inferred from *_id",
+    "pass": true,
+    "got": "customers.customer_id"
+   },
+   {
+    "case": "PK flagged",
+    "pass": true
+   },
+   {
+    "case": "enum extracted",
+    "pass": true,
+    "got": [
+     [
+      "completed",
+      2
+     ],
+     [
+      "cancelled",
+      1
+     ],
+     [
+      "pending",
+      1
+     ]
+    ]
+   },
+   {
+    "case": "high-card text not enumerated",
+    "pass": true,
+    "got": "23 distinct, enum=None"
+   },
+   {
+    "case": "numeric range",
+    "pass": true,
+    "got": [
+     5.25,
+     20.0
+    ]
+   },
+   {
+    "case": "humanize abbrev",
+    "pass": true,
+    "got": "customer name"
+   },
+   {
+    "case": "render has enum line",
+    "pass": true
+   },
+   {
+    "case": "render has FK line",
+    "pass": true
+   },
+   {
+    "case": "keys can be disabled",
+    "pass": true
+   },
+   {
+    "case": "enums can be disabled",
+    "pass": true
+   }
+  ],
+  "pass": 10,
+  "total": 10,
+  "ok": true
+ }
 }
