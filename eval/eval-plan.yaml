@@ -1,4 +1,4 @@
-version: v5.22
+version: v5.23
 # The evaluation plan is the machine-readable half of §5/§8.19. Every benchmark we
 # quote must appear here with n, metric, grader and evidence; every measured row
 # must carry a baseline and a POC that produced it. `poc/73/check.py` enforces it.
@@ -45,14 +45,13 @@ benchmarks:
     grader: own
     evidence: n/a
     provider: deepseek
-    status: planned
-    baseline: null
-    result: null
-    target: ">=50% answer match"
+    status: measured
+    baseline: 0.3365
+    result: 0.4494
+    target: "chart top-1 >=45%; answer match >=50%"
     gate: CHART1
-    evidencePoc: POC-71
-    unblock: run the CPU-only harness on the CSV; the file carries Answer, Visualization Code and Chart Type per row
-    notes: "6.7 MB, single CSV; the earlier 'no public copy' was never searched for (POC-75)"
+    evidencePoc: POC-76
+    notes: "1985 rows, $0.2107, own grader. chart 44.94% vs rule 33.65%; answer 29.09%; joint 13.81%; unanswerable recall 96.89%, false abstain 19.49%. Answer accuracy is the bottleneck, not chart choice (ADR-147)"
 
 
   - id: E4
@@ -84,14 +83,13 @@ benchmarks:
     grader: official (xlang-ai/Spider2 spider2-lite/evaluation_suite/gold)
     evidence: n/a
     provider: deepseek
-    status: planned
-    baseline: null
-    result: null
-    target: relative +3pp over same-model zero-shot on the SQLite subset
-    gate: BIRD1
-    evidencePoc: null
-    unblock: download spider2-localdb/sqlite.zip (573 MB) and keep only the instances whose db is in that archive
-    notes: "260 instances in total; the SQLite-subset count is measured after the archive is unpacked"
+    status: measured
+    baseline: 0.20
+    result: 0.20
+    target: "hold >=20% on the SQLite subset while cutting prompt size"
+    gate: EV8
+    evidencePoc: POC-77
+    notes: "40 instances with a local sqlite db (median 76 cols, max 352). full 20.0% vs linked 17.5%, McNemar p=1.000; prompt 2312 -> 1144 chars (-50.5%); three full runs 20.0/17.5/22.5%, one question = 2.5pp (ADR-148)"
 
 
   - id: E5

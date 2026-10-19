@@ -35,7 +35,7 @@ on:
       stage:
         description: 'Which experiment to run'
         type: choice
-        options: [baseline, repair, confidence, repair-flags, pipeline, plan, judge, nvbench, alphasql]
+        options: [baseline, repair, confidence, repair-flags, pipeline, plan, judge, nvbench, alphasql, text2vis, spider2]
         default: baseline
 
 permissions:
@@ -101,6 +101,12 @@ jobs:
       - name: POC-75 dataset probe selftest (10 mutations, no network)
         run: python3 poc/75/hf_probe.py --selftest
 
+      - name: POC-76 Text2Vis scoring harness (16 mutations, no network)
+        run: python3 poc/76/run.py --selftest
+
+      - name: POC-77 Spider2-Lite comparator (10 mutations, no network)
+        run: python3 poc/77/run.py --selftest
+
       - name: POC-67 CPU-only dependency guard (5 mutations)
         run: |
           python3 poc/67/no_gpu_deps.py --selftest
@@ -125,8 +131,8 @@ jobs:
           assert d['P1_index_matches_sections'], d
           a, b = d['P2_pass_rate'].split('/')
           assert a == b, d
-          assert d['sections'] == 75, d
-          assert d['P4_assumption_rows'] == 114, d
+          assert d['sections'] == 77, d
+          assert d['P4_assumption_rows'] == 116, d
           print('POC-35 ok:', d['sections'], 'sections,', d['P2_pass_rate'], 'five-part,', d['P4_assumption_rows'], 'assumptions')
           PY
 
@@ -685,6 +691,22 @@ jobs:
           python3 poc/72/run.py --data-dir "$HOME/data/bird_mini_dev" \
             --results poc/65/results.json --workers 8 --out poc/72/results.json
 
+      - name: run Text2Vis text-to-chart evaluation (POC-76)
+        if: inputs.stage == 'text2vis'
+        env:
+          DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
+          HF_ENDPOINT: https://hf-mirror.com
+        run: |
+          python3 -c "import urllib.request as u;open('/tmp/t2v.csv','wb').write(u.urlopen('https://huggingface.co/datasets/mizanurr/Text2Vis/resolve/main/Text2Vis.csv',timeout=120).read())"
+          python3 poc/76/run.py --data /tmp/t2v.csv --workers 8 --out poc/76/results.json
+
+      - name: run Spider2-Lite SQLite subset (POC-77)
+        if: inputs.stage == 'spider2'
+        env:
+          DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
+        run: |
+          python3 poc/77/run.py --run --arm full --workers 6 --out poc/77/results.json
+
       - name: run nvBench 2.0 chart-type evaluation (POC-71)
         if: inputs.stage == 'nvbench'
         env:
@@ -815,6 +837,9 @@ jobs:
             poc/70/results.json
             poc/71/results.json
             poc/72/results.json
+            poc/76/results.json
+            poc/77/results.json
+            poc/77/linked-results.json
 
   llm:
     name: LLM / embedding POCs (manual, needs secrets)

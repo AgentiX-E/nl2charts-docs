@@ -209,6 +209,14 @@
    ],
    "source": "技术设计方案.md"
   },
+  "EV8": {
+   "family": "EV",
+   "criterion": "单次结果、无重复次数即红；把 <1/n 的差值写成结论即红",
+   "layer": [
+    "ci:eval"
+   ],
+   "source": "技术设计方案.md"
+  },
   "FG1": {
    "family": "FG",
    "criterion": "`ATTACH` + schema 发现 **p95 ≤ 500 ms**（实测 10–12 ms）",
