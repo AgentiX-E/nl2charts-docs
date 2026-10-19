@@ -35,7 +35,7 @@ on:
       stage:
         description: 'Which experiment to run'
         type: choice
-        options: [baseline, repair, confidence, repair-flags, pipeline, plan, judge, nvbench, alphasql, text2vis, spider2]
+        options: [baseline, repair, confidence, repair-flags, pipeline, plan, judge, nvbench, alphasql, text2vis, spider2, pglite]
         default: baseline
 
 permissions:
@@ -112,6 +112,9 @@ jobs:
           python3 -m pip install --quiet duckdb
           python3 poc/78/run.py --selftest
 
+      - name: POC-79 PostgreSQL-as-WASM normalisation (9 mutations, no network)
+        run: python3 poc/79/run.py --selftest
+
       - name: POC-67 CPU-only dependency guard (5 mutations)
         run: |
           python3 poc/67/no_gpu_deps.py --selftest
@@ -136,8 +139,8 @@ jobs:
           assert d['P1_index_matches_sections'], d
           a, b = d['P2_pass_rate'].split('/')
           assert a == b, d
-          assert d['sections'] == 78, d
-          assert d['P4_assumption_rows'] == 117, d
+          assert d['sections'] == 79, d
+          assert d['P4_assumption_rows'] == 118, d
           print('POC-35 ok:', d['sections'], 'sections,', d['P2_pass_rate'], 'five-part,', d['P4_assumption_rows'], 'assumptions')
           PY
 
@@ -705,6 +708,12 @@ jobs:
           python3 -c "import urllib.request as u;open('/tmp/t2v.csv','wb').write(u.urlopen('https://huggingface.co/datasets/mizanurr/Text2Vis/resolve/main/Text2Vis.csv',timeout=120).read())"
           python3 poc/76/run.py --data /tmp/t2v.csv --workers 8 --out poc/76/results.json
 
+      - name: run PostgreSQL-as-WASM cross-engine check (POC-79)
+        if: inputs.stage == 'pglite'
+        run: |
+          cd poc/79 && npm init -y >/dev/null 2>&1 && npm i --silent @electric-sql/pglite@0.2 && cd -
+          python3 poc/79/run.py --dbs superhero,toxicology,student_club --out poc/79/results.json
+
       - name: run Spider2-Lite SQLite subset (POC-77)
         if: inputs.stage == 'spider2'
         env:
@@ -845,6 +854,7 @@ jobs:
             poc/76/results.json
             poc/77/results.json
             poc/77/linked-results.json
+            poc/79/results.json
 
   llm:
     name: LLM / embedding POCs (manual, needs secrets)

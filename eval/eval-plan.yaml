@@ -1,4 +1,4 @@
-version: v5.24
+version: v5.25
 # The evaluation plan is the machine-readable half of §5/§8.19. Every benchmark we
 # quote must appear here with n, metric, grader and evidence; every measured row
 # must carry a baseline and a POC that produced it. `poc/73/check.py` enforces it.
@@ -86,10 +86,11 @@ benchmarks:
     status: measured
     baseline: 1.0
     result: 0.982
-    target: "verdict agreement >=97% between sqlite3 and DuckDB (baseline 1.0 = same engine twice); report the un-runnable share"
+    target: "verdict agreement >=97% per engine pair (baseline 1.0 = same engine twice); report un-runnable share and silent divergences separately"
     gate: EV9
     evidencePoc: POC-78
-    notes: "gold self-consistency 98.2% (382/388 comparable); 21.1% of gold cannot run on DuckDB at all; verdict agreement 97.68%, 7 vs 2 flips, p=0.180. This is a product metric: our adapters are the thing being measured (ADR-149)"
+    engines: "sqlite3 3.x, DuckDB 1.5.6, PostgreSQL 17 (PGlite 0.2, WASM)"
+    notes: "sqlite<->duckdb: gold 78.9% runnable, self-consistency 98.2%, verdict 97.68%, 5 silent (1.3%). sqlite<->pg: gold 94.29% runnable, 96.21%, verdict 99.19%, 5 silent (3.8%). Two engines disagree with themselves at different rates, and PG drifts silently more often (POC-78/79, ADR-149/151)"
 
   - id: E6
     name: Spider2-Lite (SQLite subset)
