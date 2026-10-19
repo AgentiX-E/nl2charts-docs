@@ -26,8 +26,8 @@ on:
       evidence:
         description: 'Use the BIRD hint field'
         type: choice
-        options: [off, on]
-        default: off
+        options: ['off', 'on']
+        default: 'off'
       samples:
         description: 'Samples per question for majority vote'
         type: string
