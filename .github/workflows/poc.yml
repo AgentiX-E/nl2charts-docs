@@ -933,9 +933,22 @@ jobs:
           pip install --quiet playwright duckdb
           python3 -m playwright install --with-deps chromium
 
+      - name: serve the OPFS probe (same origin, 127.0.0.1 is a secure context)
+        working-directory: poc/06
+        run: |
+          python3 -m http.server 8932 --bind 127.0.0.1 >/tmp/http.log 2>&1 &
+          for i in $(seq 1 20); do
+            curl -sf -o /dev/null http://127.0.0.1:8932/opfs.html && break
+            sleep 0.5
+          done
+          curl -sf -o /dev/null http://127.0.0.1:8932/opfs.html
+
       - name: POC-6 OPFS persistence across restart
         working-directory: poc/06
-        run: python3 opfs_test.py
+        run: |
+          python3 opfs_test.py | tee /tmp/poc6.txt
+          grep -q "persist across restart: YES" /tmp/poc6.txt
+          grep -q "的写入在 run2 可见: True" /tmp/poc6.txt
 
   # ---------- always-on: real PostgreSQL service ----------
   # The three assertions PGlite cannot witness (auth, pool reuse, RLS) run here,
