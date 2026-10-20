@@ -20,10 +20,12 @@
  "P1_absolutePaths": [],
  "P2_missingEntries": [],
  "P3_constantMismatch": [],
+ "P5_workflowSyntax": [],
+ "P6_documentIdentity": [],
  "docs": {
-  "sections": 64,
-  "assumptions": 99,
-  "adrs": 133
+  "sections": 82,
+  "assumptions": 124,
+  "adrs": 156
  },
  "selftest": [
   {
@@ -40,6 +42,16 @@
    "mutation": "M3 stale constant",
    "caught": true,
    "rule": "P3"
+  },
+  {
+   "mutation": "M5 whitepaper replaced by a workflow",
+   "caught": true,
+   "rule": "P6"
+  },
+  {
+   "mutation": "M4 unquoted colon in a step name",
+   "caught": true,
+   "rule": "P5"
   }
  ],
  "ok": true
