@@ -1,0 +1,100 @@
+# Every POC directory needs a disposition — see poc/82/coverage.py.
+#
+# `ci`       referenced by a workflow job that runs it        (detected automatically)
+# `lib`      imported by a POC that is itself ci/smoke        (detected automatically)
+# `data`     no executable code, results only                 (detected automatically)
+# `oneShot`  declared here, with what it produced and why it is not in CI
+#
+# A oneShot entry is not an excuse, it is a citation: the artifact named here is
+# the thing that must still be in the repository and still be quoted correctly in
+# the design document. If either stops being true, the entry is a lie.
+#
+# Why so many are oneShot: they needed a browser (puppeteer + a built bundle), a
+# ~200 MB model download, a 1 GB process, or a one-time external snapshot. Those
+# constraints are properties of the experiment, not of the product; re-running
+# them in CI would test the runner, not the design.
+
+oneShot:
+  - poc: "01"
+    artifact: "Node vs WASM row-set equivalence: only 2/20 raw outputs agree (§14.1)"
+    why: "needs two runtimes and puppeteer in the same job; superseded as a standing test by POC-06 (OPFS) and POC-45 (entry size)"
+
+  - poc: "05"
+    artifact: "cross-encoder rerank 195 ms default, 4 workers over 20 candidates (§14.5)"
+    why: "downloads a ~200 MB ONNX checkpoint on first run; a CI job would measure the network, not the reranker"
+
+  - poc: "10"
+    artifact: "bigram 95.6% vs segmentation 94.5%, p=1.0 (§14.10)"
+    why: "depends on jieba's dictionary build, which is not a product dependency (bigram is the default for exactly that reason)"
+
+  - poc: "11"
+    artifact: "ValueNormalizer 2/20 -> 20/20 rules (ADR-067)"
+    why: "one-time rule authoring over a fixed sample; the rule table itself is now asserted by the type tests in POC-16"
+
+  - poc: "13"
+    artifact: "federation vs materialisation 10/10 equivalent; two-part names bypass the catalog guard (ADR-071)"
+    why: "required a hand-built two-catalog DuckDB instance; the guard regression is covered by POC-33"
+
+  - poc: "14"
+    artifact: "24 dialect cases: 22 identical, 1 row-order, 1 timezone offset of 8h (ADR-072/073)"
+    why: "compares two live engines with pinned versions; the invariant is now enforced by the cross-engine contract (POC-78/81)"
+
+  - poc: "15"
+    artifact: "31 non-dialect compatibility cases: 27 identical, bare Arrow is not portable (ADR-074/075)"
+    why: "needs Arrow IPC fixtures produced by a specific DuckDB build"
+
+  - poc: "17"
+    artifact: "the pilot table had a 40% mismatch column; the formula was missing b+c (ADR-077)"
+    why: "runs a long simulation (timed out at 45 s locally); the corrected formula is asserted analytically in POC-20"
+
+  - poc: "19"
+    artifact: "federated and materialised metric output agree 7/7 (§4.12.5)"
+    why: "same two-catalog setup as POC-13; the equivalence is restated as an assertion in the metric tests"
+
+  - poc: "21"
+    artifact: "own chart entry 580 B; smallest renderable 190 KB (ADR-080)"
+    why: "needs a built React bundle measured with a bundler; the byte budget is enforced by PLT1-PLT7 on every push"
+
+  - poc: "22"
+    artifact: "10M rows: RSS 752-790 MB, Parquet 24.5 MB (ADR-081)"
+    why: "a 1 GB-class stress run is not a per-push test; the memory policy (subprocess maxRSS) is specified, not re-measured"
+
+  - poc: "23"
+    artifact: "OPFS: a 12 KB header makes 'bytes > 0' a useless health check (ADR-082)"
+    why: "real browser + real origin storage; POC-06 keeps the OPFS restart check in the manual browser job"
+
+  - poc: "24"
+    artifact: "RJSF 127.6 KB vs own form 521 B (ADR-083/084/085)"
+    why: "needs two React builds to compare; the decision is byte budgets, now enforced by PLT gates"
+
+  - poc: "26"
+    artifact: "AST rewrite base: 19/19 semantic equivalence; a uint64 sentinel breaks no-op detection (ADR-087)"
+    why: "depends on a browser-side parser build; the rewrite rules are covered by the AST tests in the deterministic job"
+
+  - poc: "29"
+    artifact: "AS1 precision 0.20; AS2/AS3 1.00 (ADR-090)"
+    why: "superseded by the confidence work: POC-65 replaced three-level assertions with support/flags, measured at 72.2% precision"
+
+  - poc: "31"
+    artifact: "multi-tab: hard failure rather than dirty data, takeover 86 ms, read-only still cannot open (ADR-092)"
+    why: "requires several real tabs against one OPFS origin"
+
+  - poc: "32"
+    artifact: "browser first chart: cold 4.50 s / warm 871 ms / L0 63 ms (ADR-093)"
+    why: "end-to-end bundle + browser timing; would measure runner variance more than the product"
+
+  - poc: "33"
+    artifact: "read-only guard adversarial: TPR 0.964, FPR 0 (ADR-094)"
+    why: "the guard itself runs inside every POC-60/65 execution; this directory holds the adversarial corpus, kept as the fixture"
+
+  - poc: "34"
+    artifact: "cache benefit 18.4x; weak keys give 9/25 dirty reads while metrics stay green (ADR-095)"
+    why: "needed a warm cache across two runs; the invalidation rule is now part of the cache key spec"
+
+  - poc: "41f"
+    artifact: "fixture variant of POC-41 (browser + root entry, build fails on ./pg)"
+    why: "not a separate experiment: it is the `f` variant of the POC-41 matrix, exercised with POC-41"
+
+  - poc: "61"
+    artifact: "schema card ablation: names 40.20 -> samples 45.40 (+5.20pp, p=0.0019) (§8.19)"
+    why: "ablate.py consumes two result sets produced by POC-60; the outputs (ablation-*.json) are committed and quoted, so the run is reproducible by hand, not per push"

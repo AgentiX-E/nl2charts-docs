@@ -12,6 +12,10 @@ cannot come back:
   P5  a workflow file does not parse, or a step list turned into a mapping
       (an unquoted "name: a (b: c)" does exactly that, and GitHub then reports
       "Workflow does not have 'workflow_dispatch' trigger" with no line number)
+  P6  one of the two documents is not what it claims to be
+      (a script that reused a variable wrote poc.yml over the whitepaper; every
+      downstream check reported a confusing failure instead of "this is not the
+      whitepaper")
 
 Self-test: four mutations, each must be caught by exactly the rule it targets.
 Exit 0 only when every rule is green and all mutations are caught.
@@ -155,6 +159,26 @@ def scan_workflows(root):
     return bad
 
 
+DOC_HEADS = {
+    "产品白皮书.md": "# Text-to-Charts 产品白皮书",
+    "技术设计方案.md": "# ",
+}
+
+
+def scan_documents(root):
+    """P6: a document must start with its own title."""
+    bad = []
+    for name, head in DOC_HEADS.items():
+        f = root / name
+        if not f.exists():
+            bad.append({"file": name, "why": "missing"})
+            continue
+        first = f.read_text(encoding="utf-8", errors="ignore").split("\n", 1)[0].strip()
+        if not first.startswith(head):
+            bad.append({"file": name, "why": "starts with %r" % first[:40]})
+    return bad
+
+
 def run_checks(root=ROOT):
     text = (root / ".github" / "workflows" / "poc.yml").read_text(encoding="utf-8")
     dirs = ci_dirs(text)
@@ -206,6 +230,7 @@ def run_checks(root=ROOT):
         "P2_missingEntries": missing,
         "P3_constantMismatch": bad_const,
         "P5_workflowSyntax": scan_workflows(root),
+        "P6_documentIdentity": scan_documents(root),
         "docs": counts,
     }
 
@@ -242,6 +267,14 @@ def selftest():
             '- name: "selftest (10 mutations: leaks, classifier, empty endpoint)"',
             "- name: selftest (10 mutations: leaks, classifier, empty endpoint)", 1), encoding="utf-8")
         r4 = run_checks(base)
+        # M5: write the workflow over the whitepaper -- the actual accident
+        wp = base / "产品白皮书.md"
+        saved_wp = wp.read_text(encoding="utf-8")
+        wp.write_text(wf.read_text(encoding="utf-8"), encoding="utf-8")
+        results.append({"mutation": "M5 whitepaper replaced by a workflow",
+                        "caught": bool(run_checks(base)["P6_documentIdentity"]), "rule": "P6"})
+        wp.write_text(saved_wp, encoding="utf-8")
+
         results.append({"mutation": "M4 unquoted colon in a step name",
                         "caught": bool(r4["P5_workflowSyntax"]), "rule": "P5"})
     finally:
@@ -257,6 +290,7 @@ def main():
         and not rep["P2_missingEntries"]
         and not rep["P3_constantMismatch"]
         and not rep["P5_workflowSyntax"]
+        and not rep["P6_documentIdentity"]
         and all(m["caught"] for m in rep["selftest"])
     )
     out = pathlib.Path(__file__).with_name("results.json")
@@ -268,6 +302,7 @@ def main():
         "P2": len(rep["P2_missingEntries"]),
         "P3": len(rep["P3_constantMismatch"]),
         "P5": len(rep["P5_workflowSyntax"]),
+        "P6": len(rep["P6_documentIdentity"]),
         "selftest": f"{sum(1 for m in rep['selftest'] if m['caught'])}/{len(rep['selftest'])}",
         "docs": rep["docs"],
     }, ensure_ascii=False))

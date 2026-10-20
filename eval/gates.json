@@ -568,6 +568,14 @@
    ],
    "source": "技术设计方案.md"
   },
+  "PRE2": {
+   "family": "PRE",
+   "criterion": "出现未声明目录即红；oneShot 缺 artifact/why 即红",
+   "layer": [
+    "ci:lint"
+   ],
+   "source": "技术设计方案.md"
+  },
   "REPAIR1": {
    "family": "REPAIR",
    "criterion": "未报 trigger_rate / yield 即红；trigger_rate < 0.30 时不得写成主路径",
@@ -651,7 +659,7 @@
   },
   "XCONN1": {
    "family": "XCONN",
-   "criterion": "四条缺一即红；把超时只转发给引擎而不在客户端兜底即红",
+   "criterion": "任一缺失即红；把超时只转发给引擎、或把会话状态留给池去复位，即红",
    "layer": [
     "ci:eval"
    ],

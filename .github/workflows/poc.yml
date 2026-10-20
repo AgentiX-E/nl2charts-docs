@@ -118,6 +118,11 @@ jobs:
       - name: POC-80 divergence guard (11 mutations, no network)
         run: python3 poc/80/guard.py --selftest
 
+      - name: POC-82 every POC directory has a disposition (3 mutations)
+        run: |
+          python3 poc/82/coverage.py
+          python3 poc/82/coverage.py --selftest
+
       - name: POC-67 CPU-only dependency guard (5 mutations)
         run: |
           python3 poc/67/no_gpu_deps.py --selftest
@@ -142,8 +147,8 @@ jobs:
           assert d['P1_index_matches_sections'], d
           a, b = d['P2_pass_rate'].split('/')
           assert a == b, d
-          assert d['sections'] == 81, d
-          assert d['P4_assumption_rows'] == 120, d
+          assert d['sections'] == 82, d
+          assert d['P4_assumption_rows'] == 121, d
           print('POC-35 ok:', d['sections'], 'sections,', d['P2_pass_rate'], 'five-part,', d['P4_assumption_rows'], 'assumptions')
           PY
 
@@ -864,6 +869,7 @@ jobs:
             poc/79/results.json
             poc/80/results.json
             poc/81/results.json
+            poc/82/coverage.json
 
   llm:
     name: LLM / embedding POCs (manual, needs secrets)
@@ -983,3 +989,30 @@ jobs:
           path: poc/81/results-cluster.json
           if-no-files-found: warn
           retention-days: 14
+
+  # ---------- always-on: legacy POCs that still run standalone ----------
+  # These three directories were referenced by no workflow. They are cheap,
+  # dependency-light and still quoted in the document, so they run here rather
+  # than being filed as oneShot.
+  legacy:
+    name: legacy POC smoke (04/16/20)
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: dependencies
+        run: python3 -m pip install --quiet duckdb numpy scipy
+
+      - name: run
+        run: |
+          set -e
+          python3 poc/04/inspect.py  > /tmp/p04.json
+          python3 poc/16/main.py     > /tmp/p16.txt
+          python3 poc/20/main.py     > /tmp/p20.txt
+          grep -q "3.01" /tmp/p16.txt
+          grep -q "power" /tmp/p20.txt
+          echo "legacy POCs 04/16/20 ok"

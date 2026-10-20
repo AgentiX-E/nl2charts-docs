@@ -28,9 +28,16 @@ dup_sec = sorted([k for k, v in collections.Counter([s for _, s in secs]).items(
 rep['sections'] = {'count': len(secs), 'duplicates': dup_sec}
 
 # 决策 D 编号
+# The whitepaper used to carry its own D1-D5 decision table. It was superseded
+# by the ADR ledger (154 entries) and the table was removed; nothing referenced
+# it, and this block then crashed on max([]) for ten revisions without anyone
+# noticing. A check whose subject can vanish is not a check, so the block now
+# reports absence and only fails if a D-number is *referenced* without a row.
 D = sorted({int(x) for x in re.findall(r'^\|\s*\*\*D(\d+)\*\*', w, re.M)})
-rep['decisions'] = {'count': len(D), 'max': max(D),
-                    'missing': [i for i in range(max(D) + 1) if i not in D]}
+refs = sorted({int(x) for x in re.findall(r'(?<![A-Za-z])D([1-9]\d?)(?![0-9])', w)})
+rep['decisions'] = {'count': len(D), 'max': max(D) if D else 0,
+                    'absent': not D,
+                    'danglingRefs': [i for i in refs if i not in D]}
 
 # ---- R8 POC 记录 ----
 poc_secs = [int(x) for x in re.findall(r'^### 14\.\d+ POC-(\d+)：', t, re.M)]
