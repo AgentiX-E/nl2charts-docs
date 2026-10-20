@@ -563,6 +563,9 @@ jobs:
       - name: POC-12 attach PostgreSQL and prove pushdown
         working-directory: poc/12
         run: |
+          # The job never installed the one dependency main.js requires, so it
+          # could not have passed since the script was added.
+          npm ci --silent || npm install --silent
           python3 - <<'PY'
           import sqlite3
           c = sqlite3.connect('small.sqlite')
