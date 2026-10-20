@@ -514,6 +514,10 @@ jobs:
       - name: POC-3 compile latency budget
         working-directory: poc/03
         run: |
+          # poc/03 has its own package.json (flint-chart + echarts pinned); the
+          # POC-2 install does not cover it, so without this the import fails
+          # before latency.json is written and the number is never measured.
+          npm ci --silent || npm install --silent
           node main.mjs
           python3 - <<'PY'
           import json
