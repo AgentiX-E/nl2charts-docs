@@ -547,33 +547,28 @@ jobs:
         with:
           python-version: ${{ env.PYTHON_VERSION }}
 
-      - name: seed PostgreSQL
+      - name: fixture (PostgreSQL schema + SQLite side, one versioned file)
         env:
+          PGHOST: 127.0.0.1
+          PGUSER: t2c
           PGPASSWORD: t2cpass
-        run: |
-          psql -h 127.0.0.1 -U t2c -d analytics -v ON_ERROR_STOP=1 -c "
-          CREATE TABLE orders(id int primary key, region text, amount numeric(12,2),
-                              status text, created_at timestamptz default now());
-          INSERT INTO orders(id, region, amount, status, created_at)
-            SELECT i, (ARRAY['east','west','north'])[1 + i % 3], (i * 7 % 1000) / 10.0,
-                   CASE WHEN i % 4 = 0 THEN 'open' ELSE 'paid' END,
-                   now() - (i || ' hours')::interval
-            FROM generate_series(1, 1000) i;"
+          PGDATABASE: analytics
+        run: python3 poc/12/fixture.py
 
       - name: POC-12 attach PostgreSQL and prove pushdown
         working-directory: poc/12
+        env:
+          PGHOST: 127.0.0.1
         run: |
-          # The job never installed the one dependency main.js requires, so it
-          # could not have passed since the script was added.
           npm ci --silent || npm install --silent
-          python3 - <<'PY'
-          import sqlite3
-          c = sqlite3.connect('small.sqlite')
-          c.execute('create table if not exists region_dim(id integer, owner text)')
-          c.executemany('insert into region_dim values (?,?)', [(i, 'o%d' % i) for i in range(1, 21)])
-          c.commit(); c.close()
-          PY
-          node main.js
+          node main.js | tee /tmp/p12.txt
+          # Each of these is the experiment's actual claim; exit code 0 alone
+          # would pass even if every assertion inside printed the wrong thing.
+          grep -q "read-only mode" /tmp/p12.txt
+          grep -q "\[three_way_rows\] \[\[" /tmp/p12.txt
+          grep -q "\[guard_ok\] true" /tmp/p12.txt
+          grep -q "\[federated_scan_ms\]" /tmp/p12.txt
+          grep -c "FAIL" /tmp/p12.txt || true
 
   # ---------- manual: LLM-backed ----------
   # ---------- manual: external benchmark (BIRD Mini-Dev) ----------

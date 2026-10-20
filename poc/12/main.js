@@ -73,7 +73,9 @@ const ms = (a, b) => Number(b - a) / 1e6;
 
   // 7) read-only enforcement
   let rw = 'ok';
-  try { await c.run(`INSERT INTO pg.public.orders(order_id) VALUES (-1)`); rw = 'WROTE (bad)'; }
+  // Use a column that exists: with a bogus column the statement fails at binding,
+  // which would 'prove' nothing about the read-only attach.
+  try { await c.run(`INSERT INTO pg.public.orders(id, status) VALUES (-1, 'x')`); rw = 'WROTE (bad)'; }
   catch (e) { rw = String(e.message).slice(0, 120); }
   log('read_only_enforced', rw);
 
