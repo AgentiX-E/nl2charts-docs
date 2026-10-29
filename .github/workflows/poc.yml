@@ -118,6 +118,11 @@ jobs:
       - name: POC-80 divergence guard (11 mutations, no network)
         run: python3 poc/80/guard.py --selftest
 
+      # POC-04 was red for five runs because a script named inspect.py shadowed
+      # the standard library that duckdb imports. The rule is mechanical now.
+      - name: POC-39b script names do not shadow imports (7 mutations)
+        run: python3 poc/39/shadow.py --selftest
+
       - name: POC-82 every POC directory has a disposition (3 mutations)
         run: |
           python3 poc/82/coverage.py
@@ -1025,7 +1030,7 @@ jobs:
       - name: run
         run: |
           set -e
-          python3 poc/04/inspect.py  > /tmp/p04.json
+          python3 poc/04/inspect_ast.py  > /tmp/p04.json
           python3 poc/16/main.py     > /tmp/p16.txt
           python3 poc/20/main.py     > /tmp/p20.txt
           grep -q "3.01" /tmp/p16.txt
