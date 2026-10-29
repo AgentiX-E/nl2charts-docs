@@ -1024,15 +1024,46 @@ jobs:
         with:
           python-version: ${{ env.PYTHON_VERSION }}
 
-      - name: dependencies
-        run: python3 -m pip install --quiet duckdb numpy scipy
+      # Pinned, because POC-04 reproduces an AST probe recorded against a
+      # specific duckdb (poc/04/inspect-1.5.6.json). Unpinned, CI silently
+      # upgraded to 2.0.0, which removed Relation.fetchone() -- the script broke
+      # and the recorded numbers stopped being reproducible at the same time.
+      - name: dependencies (pinned to the recorded probe)
+        run: python3 -m pip install --quiet "duckdb==1.5.6" numpy scipy
 
-      - name: run
+      - name: POC-04 reproduces the recorded AST byte for byte
         run: |
           set -e
-          python3 poc/04/inspect_ast.py  > /tmp/p04.json
-          python3 poc/16/main.py     > /tmp/p16.txt
-          python3 poc/20/main.py     > /tmp/p20.txt
+          cd poc/04 && python3 inspect_ast.py > /tmp/p04.json && cd ../..
+          # "The script runs" is not the claim. The claim is that the AST probe
+          # still produces the JSON that is committed, so diff is the assertion.
+          git diff --exit-code -- poc/04/inspect-1.5.6.json
+          echo "POC-04 reproduces ${PWD}/poc/04/inspect-1.5.6.json"
+
+      - name: POC-16 / POC-20 reproduce their numbers
+        run: |
+          set -e
+          python3 poc/16/main.py > /tmp/p16.txt
+          python3 poc/20/main.py > /tmp/p20.txt
           grep -q "3.01" /tmp/p16.txt
           grep -q "power" /tmp/p20.txt
-          echo "legacy POCs 04/16/20 ok"
+          echo "legacy POCs 16/20 ok"
+
+      # The pin fixes reproduction; this step fixes the *other* half -- that a
+      # future duckdb release cannot take the probe down again unnoticed.
+      - name: POC-04 survives the newest duckdb
+        run: |
+          set -e
+          python3 -m pip install --quiet --upgrade duckdb
+          cd poc/04 && python3 inspect_ast.py > /tmp/p04-latest.json && cd ../..
+          python3 - <<'PY'
+          import json
+          d = json.load(open('/tmp/p04-latest.json'))
+          # Three claims that hold on every duckdb recorded in this directory
+          # (1.3.2 / 1.4.5 / 1.5.6 / 2.0.0), so a failure means the probe -- not
+          # the engine -- moved.
+          assert 'c' in d['cte_as_base_table'], d['cte_as_base_table']
+          assert d['base_table']['has_catalog'] and d['base_table']['has_schema'], d['base_table']
+          assert 'type' in d['setop']['keys'], d['setop']
+          print('newest duckdb ok:', d['version'], '| cte seen as base table:', d['cte_as_base_table'])
+          PY

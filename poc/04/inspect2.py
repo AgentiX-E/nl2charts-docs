@@ -1,6 +1,6 @@
 import duckdb, json
 def ast(sql):
-    raw=duckdb.sql("select json_serialize_sql(?)",params=[sql]).fetchone()[0]
+    raw=duckdb.sql("select json_serialize_sql(?)",params=[sql]).fetchall()[0][0]
     return json.loads(raw)
 def find(n,pred,path=''):
     out=[]

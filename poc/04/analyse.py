@@ -16,7 +16,7 @@ def walk(node, path, fp):
 
 def analyse(sql):
     try:
-        raw = duckdb.sql("select json_serialize_sql(?)", params=[sql]).fetchone()[0]
+        raw = duckdb.sql("select json_serialize_sql(?)", params=[sql]).fetchall()[0][0]
         d = json.loads(raw)
     except Exception as e:
         return {'error': True, 'msg': str(e)[:160], 'fp': []}
