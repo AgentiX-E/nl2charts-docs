@@ -157,6 +157,14 @@ jobs:
           print('POC-35 ok:', d['sections'], 'sections,', d['P2_pass_rate'], 'five-part,', d['P4_assumption_rows'], 'assumptions')
           PY
 
+      # R6 sat red on four consecutive pushes reporting section 49.5 as unsourced: the
+      # section cites a workflow run id and the whitelist only knew POC/ADR/section
+      # forms. A gate that always fails stops being read, so the rule moved into a
+      # module with the block splitting it depends on, and is now pinned before it
+      # judges anything.
+      - name: POC-39 R6 provenance rule (14 mutations)
+        run: python3 poc/39/sources.py --selftest
+
       - name: POC-39 eight-requirement audit
         run: |
           python3 poc/39/audit.py > /tmp/p39.json

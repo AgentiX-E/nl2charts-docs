@@ -2,7 +2,11 @@
 """POC-39: 八条要求终验 —— 机器可判部分的全量审计。"""
 import re, json, collections
 
-import os, pathlib
+# The rule and the block splitting it depends on live in one module so that the
+# selftest in `sources.py` can hold both halves; the directory has to be importable.
+import os, pathlib, sys
+sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
+from sources import unsourced_sections  # noqa: E402
 ROOT = pathlib.Path(os.environ.get('NL2CHARTS_DOCS_ROOT') or pathlib.Path(__file__).resolve().parents[2])
 T = str(ROOT / '技术设计方案.md')
 W = str(ROOT / '产品白皮书.md')
@@ -46,22 +50,9 @@ rep['poc'] = {'sections': len(poc_secs), 'index_rows': len(idx_rows),
               'sections_eq_index': sorted(poc_secs) == sorted(idx_rows),
               'max': max(poc_secs)}
 
-# ---- R6 断言有出处：按"小节"粒度检查（比行级窗口精度高）
+# ---- R6 provenance at section granularity: a heading-delimited block, not a window of lines
 lines = t.split('\n')
-blocks, cur, title = [], [], ''
-for ln in lines:
-    if re.match(r'^#{2,4} ', ln):
-        if cur: blocks.append((title, cur))
-        cur, title = [ln], ln.strip()
-    else:
-        cur.append(ln)
-if cur: blocks.append((title, cur))
-unsourced = []
-for title, body in blocks:
-    txt = '\n'.join(body)
-    # 合规出处：POC 编号 / ADR / 章节引用 / 外部论文 / 探针日期 / 运行时测量
-    if '实测' in txt and not re.search(r'POC-\d+|ADR-\d+|§\s*\d|该论文|探针日期|实测\s*20\d\d-|运行时|附录', txt):
-        unsourced.append(title[:80])
+unsourced = unsourced_sections(t)
 rep['claims_unsourced'] = {'sections_with_shixce_but_no_ref': len(unsourced),
                            'samples': unsourced[:8]}
 
