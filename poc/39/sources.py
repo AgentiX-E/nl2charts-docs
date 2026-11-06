@@ -23,7 +23,7 @@ import json
 import re
 import sys
 
-RUN_ID = r'(?<!\d)41\d{9}(?!\d)'
+RUN_ID = r'(?<!\d)4\d{10}(?!\d)'
 
 SOURCES = re.compile('|'.join([
     r'POC-\d+',         # the probe that produced the number
@@ -86,7 +86,11 @@ def selftest():
     expect('a four-digit number is not a run id', '共 4129 次调用', False)
     expect('ten digits is one short of a run id', '运行 4129064707', False)
     expect('twelve digits is one long', '运行 412906470761', False)
-    expect('run ids start with 41', '运行 40123456789', False)
+    # The rule used to pin the prefix to `41`, which was the shape Actions issued while this
+    # module was written. Run ids crossed into `42` and the gate began reporting *true*
+    # citations as missing — a check that fails because the data grew is not a check.
+    expect('an eleven-digit id beginning 42 is a run id', '运行 42223938003', True)
+    expect('eleven digits not beginning 4 is not a run id', '运行 31234567890', False)
     expect('a run id inside a longer number', '运行 941234567890', False)
     expect('POC id still counts', '见 POC-72', True)
     expect('ADR id still counts', '见 ADR-031', True)
