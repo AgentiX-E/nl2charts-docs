@@ -1,1 +1,0 @@
-export const createHttpConnector = (cfg) => ({ kind: 'http', cfg });

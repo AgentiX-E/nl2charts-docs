@@ -1,1 +1,0 @@
-export const createAgent = () => ({ ask: async () => ({ sql: 'select 1' }) });
