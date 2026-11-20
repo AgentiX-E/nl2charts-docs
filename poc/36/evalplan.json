@@ -1,0 +1,117 @@
+{
+ "gates": [
+  {
+   "gate": "BIRD-test",
+   "benchmark": "BIRD test",
+   "target": 75.0,
+   "evidence": "off",
+   "baseline": null,
+   "baselineSource": null,
+   "status": "UNBASELINED",
+   "n": null
+  },
+  {
+   "gate": "SPIDER2-LITE",
+   "benchmark": "Spider 2.0-Lite",
+   "target": 55.0,
+   "evidence": "off",
+   "baseline": null,
+   "baselineSource": null,
+   "status": "UNBASELINED",
+   "n": null
+  },
+  {
+   "gate": "BIRD-CRITIC",
+   "benchmark": "BIRD-CRITIC-PG",
+   "target": 35.0,
+   "evidence": "off",
+   "baseline": null,
+   "baselineSource": null,
+   "status": "UNBASELINED",
+   "n": null
+  },
+  {
+   "gate": "BIRD-INTERACT",
+   "benchmark": "BIRD-Interact",
+   "target": 15.0,
+   "evidence": "n/a",
+   "baseline": null,
+   "baselineSource": null,
+   "status": "UNBASELINED",
+   "n": null
+  },
+  {
+   "gate": "DUSQL",
+   "benchmark": "DuSQL",
+   "target": 70.0,
+   "evidence": "off",
+   "baseline": null,
+   "baselineSource": null,
+   "status": "UNBASELINED",
+   "n": null
+  },
+  {
+   "gate": "CSPIDER",
+   "benchmark": "CSpider",
+   "target": 80.0,
+   "evidence": "off",
+   "baseline": null,
+   "baselineSource": null,
+   "status": "UNBASELINED",
+   "n": null
+  },
+  {
+   "gate": "TEXT2VIS",
+   "benchmark": "Text2Vis",
+   "target": 50.0,
+   "evidence": "off",
+   "baseline": null,
+   "baselineSource": null,
+   "status": "UNBASELINED",
+   "n": null
+  },
+  {
+   "gate": "PRIVATE",
+   "benchmark": "私有 golden v1.0",
+   "target": 88.0,
+   "evidence": "off",
+   "baseline": 83.3,
+   "baselineSource": "POC-30 / n=30",
+   "delta_pp": 4.7,
+   "status": "OK",
+   "n": 1419
+  }
+ ],
+ "coverage": {
+  "total": 8,
+  "baselined": 1,
+  "passing_now": 0,
+  "derivable_n": 1
+ },
+ "flags": {
+  "no_baseline": [
+   "BIRD-test",
+   "SPIDER2-LITE",
+   "BIRD-CRITIC",
+   "BIRD-INTERACT",
+   "DUSQL",
+   "CSPIDER",
+   "TEXT2VIS"
+  ],
+  "vacuous": [],
+  "unpowered": []
+ },
+ "min_detectable_delta_pp_at_n": {
+  "320": 9.9,
+  "660": 6.9,
+  "1300": 4.9,
+  "2000": 4.0,
+  "3400": 3.0,
+  "7800": 2.0
+ },
+ "liveness_rule": {
+  "n": 1300,
+  "min_delta_pp": 4.9,
+  "required_target": 88.2
+ }
+}

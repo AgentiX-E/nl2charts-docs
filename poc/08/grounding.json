@@ -1,0 +1,212 @@
+{
+ "A": {
+  "label": "A 无样例值",
+  "passed": 2,
+  "n": 10,
+  "rows": [
+   {
+    "q": "已完成订单的金额合计",
+    "sql": "SELECT SUM(total_amt) FROM dwd_order WHERE status = '已完成';",
+    "ok": false,
+    "detail": [
+     "missing:completed"
+    ],
+    "lits": [
+     "已完成"
+    ]
+   },
+   {
+    "q": "哪些订单已退款",
+    "sql": "SELECT order_id FROM dwd_order WHERE status = '已退款';",
+    "ok": false,
+    "detail": [
+     "missing:refunded"
+    ],
+    "lits": [
+     "已退款"
+    ]
+   },
+   {
+    "q": "待处理订单有多少",
+    "sql": "SELECT COUNT(*) FROM dwd_order WHERE status = '待处理';",
+    "ok": false,
+    "detail": [
+     "missing:pending"
+    ],
+    "lits": [
+     "待处理"
+    ]
+   },
+   {
+    "q": "已取消的订单数",
+    "sql": "SELECT COUNT(*) FROM dwd_order WHERE status = '已取消';",
+    "ok": false,
+    "detail": [
+     "missing:cancelled"
+    ],
+    "lits": [
+     "已取消"
+    ]
+   },
+   {
+    "q": "统计所有已完成和待处理订单",
+    "sql": "SELECT * FROM dwd_order WHERE status IN ('已完成', '待处理');",
+    "ok": false,
+    "detail": [
+     "missing:completed",
+     "missing:pending"
+    ],
+    "lits": [
+     "已完成",
+     "待处理"
+    ]
+   },
+   {
+    "q": "退款订单的总金额",
+    "sql": "SELECT SUM(total_amt) FROM dwd_order WHERE status = '退款';",
+    "ok": false,
+    "detail": [
+     "missing:refunded"
+    ],
+    "lits": [
+     "退款"
+    ]
+   },
+   {
+    "q": "未完成的订单",
+    "sql": "SELECT * FROM dwd_order WHERE status <> 'completed';",
+    "ok": true,
+    "detail": [],
+    "lits": [
+     "completed"
+    ]
+   },
+   {
+    "q": "按状态分组统计订单数",
+    "sql": "SELECT status, COUNT(*) AS order_cnt FROM dwd_order GROUP BY status;",
+    "ok": true,
+    "detail": [],
+    "lits": []
+   },
+   {
+    "q": "已完成的订单按渠道汇总",
+    "sql": "SELECT chan_id, SUM(total_amt) AS total_amt_sum, SUM(xse) AS xse_sum\nFROM dwd_order\nWHERE status = '已完成'\nGROUP BY chan_id;",
+    "ok": false,
+    "detail": [
+     "missing:completed"
+    ],
+    "lits": [
+     "已完成"
+    ]
+   },
+   {
+    "q": "排除已取消订单",
+    "sql": "SELECT * FROM dwd_order WHERE status <> '已取消';",
+    "ok": false,
+    "detail": [
+     "missing:cancelled"
+    ],
+    "lits": [
+     "已取消"
+    ]
+   }
+  ]
+ },
+ "B": {
+  "label": "B 带样例值",
+  "passed": 10,
+  "n": 10,
+  "rows": [
+   {
+    "q": "已完成订单的金额合计",
+    "sql": "SELECT SUM(total_amt) FROM dwd_order WHERE status = 'completed';",
+    "ok": true,
+    "detail": [],
+    "lits": [
+     "completed"
+    ]
+   },
+   {
+    "q": "哪些订单已退款",
+    "sql": "SELECT order_id FROM dwd_order WHERE status = 'refunded';",
+    "ok": true,
+    "detail": [],
+    "lits": [
+     "refunded"
+    ]
+   },
+   {
+    "q": "待处理订单有多少",
+    "sql": "SELECT COUNT(*) FROM dwd_order WHERE status = 'pending';",
+    "ok": true,
+    "detail": [],
+    "lits": [
+     "pending"
+    ]
+   },
+   {
+    "q": "已取消的订单数",
+    "sql": "SELECT COUNT(*) FROM dwd_order WHERE status = 'cancelled';",
+    "ok": true,
+    "detail": [],
+    "lits": [
+     "cancelled"
+    ]
+   },
+   {
+    "q": "统计所有已完成和待处理订单",
+    "sql": "SELECT * FROM dwd_order WHERE status IN ('completed', 'pending');",
+    "ok": true,
+    "detail": [],
+    "lits": [
+     "completed",
+     "pending"
+    ]
+   },
+   {
+    "q": "退款订单的总金额",
+    "sql": "SELECT SUM(total_amt) FROM dwd_order WHERE status = 'refunded';",
+    "ok": true,
+    "detail": [],
+    "lits": [
+     "refunded"
+    ]
+   },
+   {
+    "q": "未完成的订单",
+    "sql": "SELECT * FROM dwd_order WHERE status NOT IN ('completed', 'refunded');",
+    "ok": true,
+    "detail": [],
+    "lits": [
+     "completed",
+     "refunded"
+    ]
+   },
+   {
+    "q": "按状态分组统计订单数",
+    "sql": "SELECT status, COUNT(*) AS order_cnt FROM dwd_order GROUP BY status;",
+    "ok": true,
+    "detail": [],
+    "lits": []
+   },
+   {
+    "q": "已完成的订单按渠道汇总",
+    "sql": "SELECT chan_id, SUM(total_amt) AS total_amt FROM dwd_order WHERE status = 'completed' GROUP BY chan_id;",
+    "ok": true,
+    "detail": [],
+    "lits": [
+     "completed"
+    ]
+   },
+   {
+    "q": "排除已取消订单",
+    "sql": "SELECT * FROM dwd_order WHERE status <> 'cancelled';",
+    "ok": true,
+    "detail": [],
+    "lits": [
+     "cancelled"
+    ]
+   }
+  ]
+ }
+}

@@ -1,0 +1,100 @@
+{
+ "clean": [],
+ "mutation": {
+  "E1_drop_baseline": {
+   "caught": true,
+   "by": [
+    "E1",
+    "E2"
+   ],
+   "sample": [
+    [
+     "E1",
+     "PRIVATE 缺 baseline/comparison_baseline"
+    ],
+    [
+     "E2",
+     "PRIVATE paired 缺对照"
+    ]
+   ]
+  },
+  "E2_vacuous": {
+   "caught": true,
+   "by": [
+    "E2"
+   ],
+   "sample": [
+    [
+     "E2",
+     "ABS VACUOUS: Δ0.000 < 最小可检出 0.049"
+    ]
+   ]
+  },
+  "E3_n_mismatch": {
+   "caught": true,
+   "by": [
+    "E3"
+   ],
+   "sample": [
+    [
+     "E3",
+     "PRIVATE n_required 300 与公式 1254 差 >5%"
+    ]
+   ]
+  },
+  "E4_evidence_missing": {
+   "caught": true,
+   "by": [
+    "E4"
+   ],
+   "sample": [
+    [
+     "E4",
+     "PRIVATE 缺 evidence"
+    ]
+   ]
+  },
+  "E5_bad_ref": {
+   "caught": true,
+   "by": [
+    "E5"
+   ],
+   "sample": [
+    [
+     "E5",
+     "PRIVATE 引用未注册 DG99"
+    ]
+   ]
+  },
+  "E6_small_adjudication": {
+   "caught": true,
+   "by": [
+    "E6"
+   ],
+   "sample": [
+    [
+     "E6",
+     "PRIVATE adjudication 不足"
+    ]
+   ]
+  },
+  "E7_no_grader": {
+   "caught": true,
+   "by": [
+    "E7"
+   ],
+   "sample": [
+    [
+     "E7",
+     "SPIDER2LITE anchored 缺 grader"
+    ]
+   ]
+  }
+ },
+ "summary": {
+  "clean_passes": true,
+  "mutations_caught": 7,
+  "mutations_total": 7,
+  "each_caught_by_own_rule": true
+ }
+}

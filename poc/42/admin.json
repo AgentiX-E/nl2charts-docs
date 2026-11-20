@@ -1,0 +1,30 @@
+[
+ {
+  "case": "GET /health",
+  "direct": 200,
+  "hono": 200,
+  "http": 200,
+  "sameBody": true
+ },
+ {
+  "case": "GET /models",
+  "direct": 200,
+  "hono": 200,
+  "http": 200,
+  "sameBody": true
+ },
+ {
+  "case": "POST /models {\"name\":\"ops\"}",
+  "direct": 201,
+  "hono": 201,
+  "http": 201,
+  "sameBody": true
+ },
+ {
+  "case": "POST /models {}",
+  "direct": 400,
+  "hono": 400,
+  "http": 400,
+  "sameBody": true
+ }
+]

@@ -1,0 +1,187 @@
+{
+ "meta": {
+  "esbuild": "0.28.2",
+  "node": "v22.13.1",
+  "note": "fixtures are generated from this file; d.ts are the published type surface under test"
+ },
+ "measure": [
+  {
+   "case": "l1-browser",
+   "platform": "browser",
+   "ok": true,
+   "bytes": 242,
+   "hasPg": false,
+   "hasNodeBuiltin": false
+  },
+  {
+   "case": "l1-node",
+   "platform": "node",
+   "ok": true,
+   "bytes": 422,
+   "hasPg": false,
+   "hasNodeBuiltin": true
+  },
+  {
+   "case": "l1-browser-misuse",
+   "platform": "browser",
+   "ok": false,
+   "error": "Build failed with 1 error:"
+  },
+  {
+   "case": "l2-browser",
+   "platform": "browser",
+   "ok": true,
+   "bytes": 242,
+   "hasPg": false,
+   "hasNodeBuiltin": false
+  },
+  {
+   "case": "l2-node",
+   "platform": "node",
+   "ok": true,
+   "bytes": 422,
+   "hasPg": false,
+   "hasNodeBuiltin": true
+  },
+  {
+   "case": "l2-browser-misuse",
+   "platform": "browser",
+   "ok": false,
+   "error": "Build failed with 1 error:"
+  }
+ ],
+ "gates": [
+  {
+   "fixture": "l1",
+   "red": [],
+   "details": []
+  },
+  {
+   "fixture": "l2",
+   "red": [],
+   "details": []
+  },
+  {
+   "fixture": "leak",
+   "red": [
+    "PLT3"
+   ],
+   "details": [
+    {
+     "id": "PLT3",
+     "pkg": "core",
+     "msg": "public types reference \"@duckdb/node-api\""
+    }
+   ]
+  },
+  {
+   "fixture": "mut-PLT1",
+   "red": [
+    "PLT1"
+   ],
+   "details": [
+    {
+     "id": "PLT1",
+     "pkg": "core",
+     "msg": "browser bundle contains node:fs"
+    }
+   ]
+  },
+  {
+   "fixture": "mut-PLT2",
+   "red": [
+    "PLT2"
+   ],
+   "details": [
+    {
+     "id": "PLT2",
+     "pkg": "core",
+     "msg": "root entry imports platform-only module \"pg\""
+    }
+   ]
+  },
+  {
+   "fixture": "mut-PLT3",
+   "red": [
+    "PLT3"
+   ],
+   "details": [
+    {
+     "id": "PLT3",
+     "pkg": "core",
+     "msg": "public types reference \"@duckdb/node-api\""
+    }
+   ]
+  },
+  {
+   "fixture": "mut-PLT4",
+   "red": [
+    "PLT4"
+   ],
+   "details": [
+    {
+     "id": "PLT4",
+     "pkg": "core",
+     "msg": "core must not depend on platform package @agentix-e/nl2charts-node"
+    }
+   ]
+  },
+  {
+   "fixture": "mut-PLT5",
+   "red": [
+    "PLT5"
+   ],
+   "details": [
+    {
+     "id": "PLT5",
+     "pkg": "node",
+     "msg": "platform package exports orchestration symbol \"createAgent\""
+    }
+   ]
+  },
+  {
+   "fixture": "mut-PLT6a",
+   "red": [
+    "PLT6",
+    "PLT6",
+    "PLT6"
+   ],
+   "details": [
+    {
+     "id": "PLT6",
+     "pkg": "core",
+     "msg": "copy A rejects an object carrying the registered brand"
+    },
+    {
+     "id": "PLT6",
+     "pkg": "core",
+     "msg": "copy B rejects an object carrying the registered brand"
+    },
+    {
+     "id": "PLT6",
+     "pkg": "core",
+     "msg": "uses instanceof for engine detection (breaks across copies)"
+    }
+   ]
+  },
+  {
+   "fixture": "mut-PLT6b",
+   "red": [
+    "PLT6"
+   ],
+   "details": [
+    {
+     "id": "PLT6",
+     "pkg": "core",
+     "msg": "registry does not span copies (module-level state)"
+    }
+   ]
+  }
+ ],
+ "summary": {
+  "identicalBytes": true,
+  "baselineGreen": true,
+  "mutationsCaught": 7,
+  "mutationsTotal": 7
+ }
+}

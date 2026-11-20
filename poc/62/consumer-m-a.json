@@ -1,0 +1,14 @@
+{
+ "note": "Call sites written against M-A. They must keep working against M-B with zero edits.",
+ "callSites": [
+  {"id": "sql-only runner", "package": "@agentix-e/nl2charts-core", "subpath": ".", "export": "createRunner", "argc": 1},
+  {"id": "explicit chart validate", "package": "@agentix-e/nl2charts-spec", "subpath": ".", "export": "validateChart", "argc": 2},
+  {"id": "explicit chart render", "package": "@agentix-e/nl2charts-chart", "subpath": ".", "export": "renderChart", "argc": 2},
+  {"id": "tier backfill", "package": "@agentix-e/nl2charts-core", "subpath": ".", "export": "createTier", "argc": 1},
+  {"id": "read-only guard", "package": "@agentix-e/nl2charts-core", "subpath": ".", "export": "guardSql", "argc": 1},
+  {"id": "pg connector", "package": "@agentix-e/nl2charts-node", "subpath": ".", "export": "createPgConnector", "argc": 1},
+  {"id": "mcp server", "package": "@agentix-e/nl2charts-mcp", "subpath": ".", "export": "createMcpServer", "argc": 1},
+  {"id": "admin handler (deep import)", "package": "@agentix-e/nl2charts-core", "subpath": "./admin", "export": "createAdminHandler", "argc": 1},
+  {"id": "mdl audit", "package": "@agentix-e/nl2charts-studio", "subpath": ".", "export": "auditMdl", "argc": 1}
+ ]
+}

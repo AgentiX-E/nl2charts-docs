@@ -1,0 +1,12 @@
+{
+  "name": "@agentix-e/nl2charts-node",
+  "version": "1.0.0",
+  "type": "module",
+  "sideEffects": false,
+  "exports": { ".": "./src/index.ts", "./pg": "./src/pg.ts" },
+  "dependencies": { "@agentix-e/nl2charts-core": "workspace:^" },
+  "peerDependencies": { "@duckdb/node-api": "1.5.6-r.1", "pg": "^8", "mysql2": "^3" },
+  "peerDependenciesMeta": {
+    "@duckdb/node-api": { "optional": true }, "pg": { "optional": true }, "mysql2": { "optional": true }
+  }
+}

@@ -1,0 +1,504 @@
+{
+ "int_agg": {
+  "cols": [
+   "c",
+   "s"
+  ],
+  "types": [
+   "BIGINT",
+   "HUGEINT"
+  ],
+  "rows": [
+   [
+    {
+     "__t": "bigint",
+     "v": "3"
+    },
+    {
+     "__t": "bigint",
+     "v": "6"
+    }
+   ]
+  ]
+ },
+ "bigint": {
+  "cols": [
+   "big",
+   "big2"
+  ],
+  "types": [
+   "BIGINT",
+   "BIGINT"
+  ],
+  "rows": [
+   [
+    {
+     "__t": "bigint",
+     "v": "9223372036854775807"
+    },
+    {
+     "__t": "bigint",
+     "v": "9223372036854775807"
+    }
+   ]
+  ]
+ },
+ "decimal": {
+  "cols": [
+   "d",
+   "d2"
+  ],
+  "types": [
+   "DECIMAL(38,9)",
+   "DECIMAL(11,2)"
+  ],
+  "rows": [
+   [
+    {
+     "__t": "obj",
+     "v": "{\"width\":38,\"scale\":9,\"value\":\"1234567890123456789123456789n\"}"
+    },
+    {
+     "__t": "obj",
+     "v": "{\"width\":11,\"scale\":2,\"value\":\"30n\"}"
+    }
+   ]
+  ]
+ },
+ "double": {
+  "error": "Out of Range Error: cannot take square root of a negative number"
+ },
+ "timestamp_tz": {
+  "cols": [
+   "ts",
+   "tstz"
+  ],
+  "types": [
+   "TIMESTAMP",
+   "TIMESTAMP WITH TIME ZONE"
+  ],
+  "rows": [
+   [
+    {
+     "__t": "obj",
+     "v": "{\"micros\":\"1792238400000000n\"}"
+    },
+    {
+     "__t": "obj",
+     "v": "{\"micros\":\"1792209600000000n\"}"
+    }
+   ]
+  ]
+ },
+ "date": {
+  "cols": [
+   "d",
+   "old"
+  ],
+  "types": [
+   "DATE",
+   "DATE"
+  ],
+  "rows": [
+   [
+    {
+     "__t": "obj",
+     "v": "{\"days\":20743}"
+    },
+    {
+     "__t": "obj",
+     "v": "{\"days\":-1}"
+    }
+   ]
+  ]
+ },
+ "null_order": {
+  "cols": [
+   "x"
+  ],
+  "types": [
+   "INTEGER"
+  ],
+  "rows": [
+   [
+    {
+     "__t": "num",
+     "v": "1"
+    }
+   ],
+   [
+    {
+     "__t": "num",
+     "v": "2"
+    }
+   ],
+   [
+    null
+   ]
+  ]
+ },
+ "varchar_sort": {
+  "cols": [
+   "s"
+  ],
+  "types": [
+   "VARCHAR"
+  ],
+  "rows": [
+   [
+    {
+     "__t": "str",
+     "v": "A"
+    }
+   ],
+   [
+    {
+     "__t": "str",
+     "v": "B"
+    }
+   ],
+   [
+    {
+     "__t": "str",
+     "v": "a"
+    }
+   ],
+   [
+    {
+     "__t": "str",
+     "v": "b"
+    }
+   ],
+   [
+    {
+     "__t": "str",
+     "v": "中"
+    }
+   ]
+  ]
+ },
+ "cn_sort": {
+  "cols": [
+   "s"
+  ],
+  "types": [
+   "VARCHAR"
+  ],
+  "rows": [
+   [
+    {
+     "__t": "str",
+     "v": "上海"
+    }
+   ],
+   [
+    {
+     "__t": "str",
+     "v": "北京"
+    }
+   ],
+   [
+    {
+     "__t": "str",
+     "v": "广州"
+    }
+   ]
+  ]
+ },
+ "no_order_agg": {
+  "cols": [
+   "x",
+   "count_star()"
+  ],
+  "types": [
+   "INTEGER",
+   "BIGINT"
+  ],
+  "rows": [
+   [
+    {
+     "__t": "num",
+     "v": "3"
+    },
+    {
+     "__t": "bigint",
+     "v": "1"
+    }
+   ],
+   [
+    {
+     "__t": "num",
+     "v": "2"
+    },
+    {
+     "__t": "bigint",
+     "v": "1"
+    }
+   ],
+   [
+    {
+     "__t": "num",
+     "v": "1"
+    },
+    {
+     "__t": "bigint",
+     "v": "2"
+    }
+   ]
+  ]
+ },
+ "div_zero": {
+  "cols": [
+   "dz",
+   "dz2",
+   "dz3"
+  ],
+  "types": [
+   "DOUBLE",
+   "DOUBLE",
+   "DOUBLE"
+  ],
+  "rows": [
+   [
+    {
+     "__t": "num",
+     "v": "Infinity"
+    },
+    {
+     "__t": "num",
+     "v": "Infinity"
+    },
+    {
+     "__t": "num",
+     "v": "NaN"
+    }
+   ]
+  ]
+ },
+ "unbound": {
+  "error": "Out of Range Error: Overflow in multiplication of INT64 (5000000000 * 5000000000)!"
+ },
+ "unicode": {
+  "cols": [
+   "cn",
+   "em",
+   "len"
+  ],
+  "types": [
+   "VARCHAR",
+   "VARCHAR",
+   "BIGINT"
+  ],
+  "rows": [
+   [
+    {
+     "__t": "str",
+     "v": "中文"
+    },
+    {
+     "__t": "str",
+     "v": "emoji 😀"
+    },
+    {
+     "__t": "bigint",
+     "v": "2"
+    }
+   ]
+  ]
+ },
+ "bool_null": {
+  "cols": [
+   "t",
+   "n"
+  ],
+  "types": [
+   "BOOLEAN",
+   "BOOLEAN"
+  ],
+  "rows": [
+   [
+    {
+     "__t": "str",
+     "v": "true"
+    },
+    null
+   ]
+  ]
+ },
+ "interval": {
+  "cols": [
+   "i",
+   "d"
+  ],
+  "types": [
+   "INTERVAL",
+   "TIMESTAMP"
+  ],
+  "rows": [
+   [
+    {
+     "__t": "obj",
+     "v": "{\"months\":0,\"days\":1,\"micros\":\"0n\"}"
+    },
+    {
+     "__t": "obj",
+     "v": "{\"micros\":\"1769817600000000n\"}"
+    }
+   ]
+  ]
+ },
+ "struct_list": {
+  "cols": [
+   "s",
+   "l"
+  ],
+  "types": [
+   "STRUCT(\"a\" INTEGER, \"b\" VARCHAR)",
+   "INTEGER[]"
+  ],
+  "rows": [
+   [
+    {
+     "__t": "obj",
+     "v": "{\"entries\":{\"a\":1,\"b\":\"x\"}}"
+    },
+    {
+     "__t": "obj",
+     "v": "{\"items\":[1,2,3]}"
+    }
+   ]
+  ]
+ },
+ "json_variant": {
+  "cols": [
+   "j"
+  ],
+  "types": [
+   "VARCHAR"
+  ],
+  "rows": [
+   [
+    {
+     "__t": "str",
+     "v": "{\"k\":1}"
+    }
+   ]
+  ]
+ },
+ "grouping_sets": {
+  "cols": [
+   "a",
+   "b",
+   "count_star()"
+  ],
+  "types": [
+   "INTEGER",
+   "VARCHAR",
+   "BIGINT"
+  ],
+  "rows": [
+   [
+    {
+     "__t": "num",
+     "v": "2"
+    },
+    null,
+    {
+     "__t": "bigint",
+     "v": "1"
+    }
+   ],
+   [
+    null,
+    {
+     "__t": "str",
+     "v": "x"
+    },
+    {
+     "__t": "bigint",
+     "v": "2"
+    }
+   ],
+   [
+    null,
+    {
+     "__t": "str",
+     "v": "y"
+    },
+    {
+     "__t": "bigint",
+     "v": "1"
+    }
+   ],
+   [
+    {
+     "__t": "num",
+     "v": "1"
+    },
+    null,
+    {
+     "__t": "bigint",
+     "v": "2"
+    }
+   ]
+  ]
+ },
+ "window": {
+  "cols": [
+   "x",
+   "rn"
+  ],
+  "types": [
+   "INTEGER",
+   "BIGINT"
+  ],
+  "rows": [
+   [
+    {
+     "__t": "num",
+     "v": "1"
+    },
+    {
+     "__t": "bigint",
+     "v": "1"
+    }
+   ],
+   [
+    {
+     "__t": "num",
+     "v": "2"
+    },
+    {
+     "__t": "bigint",
+     "v": "2"
+    }
+   ],
+   [
+    {
+     "__t": "num",
+     "v": "3"
+    },
+    {
+     "__t": "bigint",
+     "v": "3"
+    }
+   ]
+  ]
+ },
+ "float_sum": {
+  "cols": [
+   "s"
+  ],
+  "types": [
+   "DECIMAL(38,1)"
+  ],
+  "rows": [
+   [
+    {
+     "__t": "obj",
+     "v": "{\"width\":38,\"scale\":1,\"value\":\"6n\"}"
+    }
+   ]
+  ]
+ }
+}

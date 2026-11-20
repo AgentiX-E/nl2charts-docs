@@ -1,0 +1,1 @@
+export const createS3Connector = (cfg) => ({ kind: 's3-presigned', cfg });

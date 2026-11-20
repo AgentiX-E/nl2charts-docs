@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>POC-6 · OPFS persistence across restart</title>
+<style>
+  body { font: 13px/1.5 ui-monospace, monospace; margin: 24px; }
+  #out { white-space: pre-wrap; }
+</style>
+</head>
+<body>
+<h1>OPFS persistence probe</h1>
+<div id="out">running…</div>
+<script>
+// POC-6: does the Origin Private File System survive a browser restart?
+//
+// The product's browser tier caches data in OPFS. The failure mode that matters
+// is not "OPFS is missing" (that is loud) but "the write succeeded and the bytes
+// were not there after a restart" — which the earlier POC-23 found hiding behind
+// a 12 KB file header. So this probe does not trust `file.size > 0`: it reads the
+// bytes back, parses them, and compares the recorded tags.
+//
+// Contract with opfs_test.py: window.__result = {ok, error?, caps, before, after, rows}
+const tag = new URLSearchParams(location.search).get('tag') || 'run0';
+
+async function probe() {
+  const out = { ok: false, tag, caps: {}, before: 0, after: 0, rows: [] };
+  try {
+    out.caps.opfs = !!(navigator.storage && navigator.storage.getDirectory);
+    out.caps.secure = window.isSecureContext;
+    out.caps.persisted = navigator.storage.persisted ? await navigator.storage.persisted() : null;
+    if (!out.caps.opfs) throw new Error('OPFS unavailable');
+
+    const root = await navigator.storage.getDirectory();
+    const handle = await root.getFileHandle('poc6-tags.json', { create: true });
+
+    // Read what a previous session left behind.
+    let tags = [];
+    const existing = await handle.getFile();
+    if (existing.size > 0) {
+      const text = await existing.text();
+      try { tags = JSON.parse(text); } catch (e) { throw new Error('corrupt: ' + text.slice(0, 60)); }
+      if (!Array.isArray(tags)) throw new Error('not an array');
+    }
+    out.before = tags.length;
+
+    // Write through a sync access handle when available: that is the path the
+    // product uses for chunked writes, and it flushes differently from
+    // createWritable(), so testing only the latter would miss the real case.
+    tags.push(tag);
+    const bytes = new TextEncoder().encode(JSON.stringify(tags));
+    if (handle.createSyncAccessHandle) {
+      const sh = await handle.createSyncAccessHandle();
+      sh.truncate(0);
+      sh.write(bytes, { at: 0 });
+      sh.flush();
+      sh.close();
+      out.caps.syncAccessHandle = true;
+    } else {
+      const w = await handle.createWritable();
+      await w.write(bytes);
+      await w.close();
+      out.caps.syncAccessHandle = false;
+    }
+
+    // Read back from disk, not from the array we just built.
+    const verify = await handle.getFile();
+    out.bytes = verify.size;
+    const roundTrip = JSON.parse(await verify.text());
+    out.rows = roundTrip.map((t) => ({ tag: t }));
+    out.after = roundTrip.length;
+    out.checksumOk = JSON.stringify(roundTrip) === JSON.stringify(tags);
+    out.ok = out.checksumOk && out.after === out.before + 1;
+  } catch (e) {
+    out.error = String(e && e.message || e);
+  }
+  window.__result = out;
+  document.getElementById('out').textContent = JSON.stringify(out, null, 1);
+}
+
+probe();
+</script>
+</body>
+</html>

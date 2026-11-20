@@ -1,0 +1,63 @@
+{
+ "meta": {
+  "node": "v22.13.1"
+ },
+ "rows": [
+  {
+   "check": "engine instanceof EngineBase (copy A)",
+   "value": false,
+   "expected": false,
+   "pass": true,
+   "note": "instanceof is per-realm and per-copy, so it can never cross a copy boundary"
+  },
+  {
+   "check": "copy A isEngine(engine built by B)",
+   "value": true,
+   "expected": true,
+   "pass": true,
+   "note": "the brand is a registered symbol, so both copies read the same key"
+  },
+  {
+   "check": "copy B isEngine(same object)",
+   "value": true,
+   "expected": true,
+   "pass": true,
+   "note": "sanity"
+  },
+  {
+   "check": "Symbol.for identity across copies",
+   "value": true,
+   "expected": true,
+   "pass": true,
+   "note": "global symbol registry returns the same symbol"
+  },
+  {
+   "check": "createAgent (copy A) accepts engine from B",
+   "value": "accepted",
+   "expected": "accepted",
+   "pass": true,
+   "note": "brand-based acceptance survives the split"
+  },
+  {
+   "check": "module-level Map: A sees B registration",
+   "value": false,
+   "expected": false,
+   "pass": true,
+   "note": "module state is duplicated per copy -- silent failure"
+  },
+  {
+   "check": "globalThis registry: A sees B registration",
+   "value": true,
+   "expected": true,
+   "pass": true,
+   "note": "the only implementation that spans copies"
+  }
+ ],
+ "summary": {
+  "total": 7,
+  "pass": 7,
+  "brandSurvives": true,
+  "naiveRegistrySplits": true,
+  "sharedRegistryWorks": true
+ }
+}

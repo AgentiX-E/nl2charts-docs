@@ -1,0 +1,114 @@
+{
+ "meta": {
+  "node": "v22.13.1"
+ },
+ "rows": [
+  {
+   "check": "browser tier bundles for platform=browser",
+   "value": true,
+   "expected": true,
+   "pass": true,
+   "note": ""
+  },
+  {
+   "check": "browser bundle contains node:*",
+   "value": false,
+   "expected": false,
+   "pass": true,
+   "note": "PLT1 analogue"
+  },
+  {
+   "check": "browser bundle contains a driver",
+   "value": false,
+   "expected": false,
+   "pass": true,
+   "note": "PLT2 analogue"
+  },
+  {
+   "check": "describe exposes snapshotId",
+   "value": "string",
+   "expected": "string",
+   "pass": true,
+   "note": ""
+  },
+  {
+   "check": "describe leaks no connection string",
+   "value": false,
+   "expected": false,
+   "pass": true,
+   "note": ""
+  },
+  {
+   "check": "describe reports authoritative tier",
+   "value": "authoritative",
+   "expected": "authoritative",
+   "pass": true,
+   "note": ""
+  },
+  {
+   "check": "backfill fetches rows over plain HTTP",
+   "value": 1000,
+   "expected": 1000,
+   "pass": true,
+   "note": ""
+  },
+  {
+   "check": "backfill carries the snapshot",
+   "value": "snap-2026-10-18",
+   "expected": "snap-2026-10-18",
+   "pass": true,
+   "note": ""
+  },
+  {
+   "check": "backfill rows are structurally usable",
+   "value": "number",
+   "expected": "number",
+   "pass": true,
+   "note": ""
+  },
+  {
+   "check": "no-op when local is complete",
+   "value": "local-complete",
+   "expected": "local-complete",
+   "pass": true,
+   "note": ""
+  },
+  {
+   "check": "write statement is rejected",
+   "value": "STATEMENT_NOT_ALLOWED",
+   "expected": "STATEMENT_NOT_ALLOWED",
+   "pass": true,
+   "note": ""
+  },
+  {
+   "check": "attach is rejected",
+   "value": "STATEMENT_NOT_ALLOWED",
+   "expected": "STATEMENT_NOT_ALLOWED",
+   "pass": true,
+   "note": ""
+  },
+  {
+   "check": "non-select is rejected",
+   "value": "STATEMENT_NOT_ALLOWED",
+   "expected": "STATEMENT_NOT_ALLOWED",
+   "pass": true,
+   "note": ""
+  },
+  {
+   "check": "upstream down yields TIER_UNAVAILABLE",
+   "value": "TIER_UNAVAILABLE",
+   "expected": "TIER_UNAVAILABLE",
+   "pass": true,
+   "note": ""
+  }
+ ],
+ "summary": {
+  "total": 14,
+  "pass": 14,
+  "browserBundleBytes": 1046,
+  "browserImports": [],
+  "zeroNodeDeps": true,
+  "endToEnd": true,
+  "guardHolds": true
+ }
+}

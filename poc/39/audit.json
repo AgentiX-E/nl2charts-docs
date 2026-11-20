@@ -1,0 +1,47 @@
+{
+ "adr": {
+  "defined": 117,
+  "max": 117,
+  "missing_numbers": [],
+  "dup_mentions": []
+ },
+ "sections": {
+  "count": 218,
+  "duplicates": []
+ },
+ "decisions": {
+  "count": 37,
+  "max": 36,
+  "missing": []
+ },
+ "poc": {
+  "sections": 51,
+  "index_rows": 51,
+  "sections_eq_index": true,
+  "max": 51
+ },
+ "claims_unsourced": {
+  "sections_with_shixce_but_no_ref": 0,
+  "samples": []
+ },
+ "gates": {
+  "defined": 39,
+  "families": {
+   "DG": 11,
+   "FG": 8,
+   "UX": 6,
+   "P": 10,
+   "PKG": 4
+  },
+  "missing_family_mapping": []
+ },
+ "power_clauses": 8,
+ "consistency": {
+  "version_tech": "v5.5",
+  "version_wp": "v5.5",
+  "poc_sections": 51,
+  "assumption_rows": 66,
+  "wp_mentions_poc_max": 51,
+  "tech_mentions_poc_max": 51
+ }
+}

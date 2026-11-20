@@ -1,0 +1,1077 @@
+name: POC reproduction
+
+on:
+  push:
+    branches: [main]
+    paths: ['poc/**', '*.md', '.github/workflows/poc.yml']
+  pull_request:
+    paths: ['poc/**', '*.md', '.github/workflows/poc.yml']
+  workflow_dispatch:
+    inputs:
+      group:
+        description: 'Which POC group to run'
+        type: choice
+        options: [deterministic, duckdb, llm, browser, chart, net, eval, all]
+        default: deterministic
+      limit:
+        description: 'BIRD Mini-Dev question count (0 = all 500)'
+        required: false
+        type: string
+        default: '50'
+      schema:
+        description: 'Schema card mode'
+        type: choice
+        options: [link_lex, profile, profile_lite, full, desc, samples, names]
+        default: full
+      evidence:
+        description: 'Use the BIRD hint field'
+        type: choice
+        options: ['off', 'on']
+        default: 'off'
+      samples:
+        description: 'Samples per question (1 = ADR-128 default; voting is not a free win)'
+        type: string
+        default: '1'
+      stage:
+        description: 'Which experiment to run'
+        type: choice
+        options: [baseline, repair, confidence, repair-flags, pipeline, plan, judge, nvbench, alphasql, text2vis, spider2, pglite]
+        default: baseline
+
+permissions:
+  contents: read
+
+env:
+  NODE_VERSION: '22'
+  PYTHON_VERSION: '3.11'
+
+jobs:
+  # ---------- always-on: document invariants ----------
+  static:
+    name: docs invariants (POC-25/35/39/40)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: POC-62 milestone API compatibility
+        run: python3 poc/62/check.py
+
+      - name: POC-60 comparator selftest (35 mutations)
+        run: python3 poc/60/run.py --selftest
+
+      - name: POC-65 validator selftest (17 mutations)
+        run: |
+          python3 -m pip install --quiet sqlglot==30.23.0
+          python3 poc/65/validators.py
+
+      - name: POC-65 document follows the data (12 numbers, 3 mutations)
+        run: |
+          python3 poc/65/verify_doc.py --selftest
+          python3 poc/65/verify_doc.py
+
+      - name: POC-66 diagnosis vs generic repair (9 mutations)
+        run: python3 poc/66/run.py --selftest
+
+      - name: POC-68 repair pipeline (4 mutations)
+        run: python3 poc/68/pipeline.py --selftest
+
+      - name: POC-69 plan-first parser (8 mutations)
+        run: python3 poc/69/run.py --selftest
+
+      - name: POC-70 judge candidate selection (9 mutations)
+        run: python3 poc/70/run.py --selftest
+
+      - name: POC-71 chart-type rule/LLM scoring (10 mutations)
+        run: python3 poc/71/run.py --selftest
+
+      - name: POC-72 Alpha-SQL replication harness (8 mutations)
+        run: python3 poc/72/run.py --selftest
+
+      - name: POC-73 gate registry and eval plan (6 rules, 6 mutations)
+        run: |
+          python3 poc/73/check.py
+          python3 poc/73/check.py --selftest
+
+      - name: POC-74 span contract extension (3 positive, 7 mutations)
+        run: python3 poc/74/run.py
+
+      - name: POC-75 dataset probe selftest (10 mutations, no network)
+        run: python3 poc/75/hf_probe.py --selftest
+
+      - name: POC-76 Text2Vis scoring harness (16 mutations, no network)
+        run: python3 poc/76/run.py --selftest
+
+      - name: POC-77 Spider2-Lite comparator (10 mutations, no network)
+        run: python3 poc/77/run.py --selftest
+
+      - name: POC-78 cross-engine verdicts (9 mutations, no network)
+        run: |
+          python3 -m pip install --quiet duckdb
+          python3 poc/78/run.py --selftest
+
+      - name: POC-79 PostgreSQL-as-WASM normalisation (9 mutations, no network)
+        run: python3 poc/79/run.py --selftest
+
+      - name: POC-80 divergence guard (11 mutations, no network)
+        run: python3 poc/80/guard.py --selftest
+
+      # POC-04 was red for five runs because a script named inspect.py shadowed
+      # the standard library that duckdb imports. The rule is mechanical now.
+      - name: POC-39b script names do not shadow imports (7 mutations)
+        run: python3 poc/39/shadow.py --selftest
+
+      - name: POC-82 every POC directory has a disposition (3 mutations)
+        run: |
+          python3 poc/82/coverage.py
+          python3 poc/82/coverage.py --selftest
+
+      - name: POC-67 CPU-only dependency guard (5 mutations)
+        run: |
+          python3 poc/67/no_gpu_deps.py --selftest
+          python3 poc/67/no_gpu_deps.py
+
+      - name: POC-59 benchmark ownership
+        run: python3 poc/59/check.py
+      - name: POC-56 preflight (portable paths, live entries, current constants, workflow syntax)
+        run: |
+          python3 -m pip install --quiet pyyaml
+          python3 poc/56/preflight.py
+
+      - name: POC-25 terminology lint (must be zero)
+        run: python3 poc/25/check_terms.py
+
+      - name: POC-35 POC completeness
+        run: |
+          python3 poc/35/check_poc.py > /tmp/p35.json
+          python3 - <<'PY'
+          import json
+          d = json.load(open('/tmp/p35.json'))
+          assert d['P1_index_matches_sections'], d
+          a, b = d['P2_pass_rate'].split('/')
+          assert a == b, d
+          assert d['sections'] == 82, d
+          assert d['P4_assumption_rows'] == 124, d
+          print('POC-35 ok:', d['sections'], 'sections,', d['P2_pass_rate'], 'five-part,', d['P4_assumption_rows'], 'assumptions')
+          PY
+
+      # R6 sat red on four consecutive pushes reporting section 49.5 as unsourced: the
+      # section cites a workflow run id and the whitelist only knew POC/ADR/section
+      # forms. A gate that always fails stops being read, so the rule moved into a
+      # module with the block splitting it depends on, and is now pinned before it
+      # judges anything.
+      - name: POC-39 R6 provenance rule (14 mutations)
+        run: python3 poc/39/sources.py --selftest
+
+      - name: POC-39 eight-requirement audit
+        run: |
+          python3 poc/39/audit.py > /tmp/p39.json
+          python3 - <<'PY'
+          import json
+          d = json.load(open('/tmp/p39.json'))
+          assert d['adr']['missing_numbers'] == [], d['adr']
+          assert d['sections']['duplicates'] == [], d['sections']
+          assert d['gates']['missing_family_mapping'] == [], d['gates']
+          assert d['claims_unsourced']['sections_with_shixce_but_no_ref'] == 0, d['claims_unsourced']
+          print('POC-39 ok:', d['adr']['defined'], 'ADRs,', d['gates']['defined'], 'gates,', d['sections']['count'], 'sections')
+          PY
+
+      - name: POC-40 reproducibility fixture
+        run: |
+          python3 poc/40/poc-suite.py --check | tee /tmp/p40.txt
+          grep -q '16/16 PASS' /tmp/p40.txt
+
+  # ---------- always-on: deterministic experiments ----------
+  deterministic:
+    name: deterministic POCs (2/3/41-55)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: verify toolchain
+        run: |
+          chmod +x node_modules/@esbuild/linux-x64/bin/esbuild || true
+          node -e "import('esbuild').then(m => console.log('esbuild', m.version))"
+
+      - name: POC-41 single package, two runtimes
+        working-directory: poc/41
+        run: |
+          # Use the toolchain that ships with the repo. A second `npm install`
+          # here only adds esbuild's postinstall as another failure mode
+          # (observed once: spawnSync in install.js), and buys nothing.
+          node bundle.mjs
+          python3 - <<'PY'
+          import json
+          d = json.load(open('bundle.json'))
+          assert d['browser-core-only']['ok'] is True, d
+          assert d['browser-core-only']['hasPg'] is False, d
+          assert d['browser-core-only']['hasNodeBuiltin'] is False, d
+          assert d['browser-core-plus-pg']['ok'] is False, d
+          assert d['node-core-plus-pg']['ok'] is True, d
+          print('POC-41 ok: browser root =', d['browser-core-only']['bytes'], 'B; pg from root fails as expected')
+          PY
+
+      - name: POC-42 admin handler is framework-agnostic
+        working-directory: poc/42
+        run: |
+          node run.mjs
+          python3 - <<'PY'
+          import json
+          rows = json.load(open('admin.json'))
+          assert len(rows) == 4, rows
+          for r in rows:
+              assert r['direct'] == r['hono'] == r['http'], r
+              assert r['sameBody'] is True, r
+          print('POC-42 ok: 4/4 cases identical across node:http, Hono, direct')
+          PY
+
+      - name: POC-43 tree-shaking holds
+        working-directory: poc/43
+        run: |
+          node run.mjs
+          python3 - <<'PY'
+          import json
+          d = json.load(open('shake.json'))
+          assert d['one-symbol']['bytes'] < 200, d
+          assert d['namespace']['bytes'] > 10000, d
+          print('POC-43 ok:', d['one-symbol']['bytes'], 'B vs', d['namespace']['bytes'], 'B')
+          PY
+
+      - name: POC-44 SQLite is not a first-class engine
+        working-directory: poc/44
+        run: |
+          node --experimental-sqlite run_sqlite.cjs > /tmp/p44.txt 2>/dev/null
+          grep -q '8/25' /tmp/p44.txt || (cat /tmp/p44.txt; exit 1)
+          python3 - <<'PY'
+          import json
+          d = json.load(open('sqlite.json'))
+          ok = sum(1 for r in d['results'] if r['ok'])
+          assert ok == 8, ok
+          print('POC-44 ok: SQLite executes', ok, 'of', len(d['results']), 'metric SQL forms')
+          PY
+
+      - name: POC-45 single package vs three packages
+        working-directory: poc/45
+        run: |
+          node run.mjs
+          python3 - <<'PY'
+          import json
+          d = json.load(open('results.json'))
+          s = d['summary']
+          assert s['identicalBytes'] is True, s
+          assert s['baselineGreen'] is True, s
+          assert s['mutationsCaught'] == s['mutationsTotal'] == 7, s
+          print('POC-45 ok: 0-byte delta between layouts; 7/7 mutations caught')
+          PY
+
+      - name: POC-46 two copies of core
+        working-directory: poc/46
+        run: |
+          node run.mjs
+          python3 - <<'PY'
+          import json
+          d = json.load(open('results.json'))
+          s = d['summary']
+          assert s['pass'] == s['total'] == 7, s
+          assert s['brandSurvives'] and s['naiveRegistrySplits'] and s['sharedRegistryWorks'], s
+          print('POC-46 ok: brand survives, naive registry splits, shared registry works')
+          PY
+
+      - name: POC-47 browser tiering over plain HTTP
+        working-directory: poc/47
+        run: |
+          node run.mjs
+          node survey.mjs
+          python3 - <<'PY'
+          import json
+          d = json.load(open('results.json'))
+          s = d['summary']
+          assert s['pass'] == s['total'] == 14, s
+          assert s['zeroNodeDeps'] is True, s
+          assert s['endToEnd'] and s['guardHolds'], s
+          assert s['browserImports'] == [], s
+          v = json.load(open('survey.json'))['summary']
+          assert v['portable'] == 9 and v['nodeOnly'] == 5, v
+          assert v['connectorOnlyHypothesisHolds'] is False, v
+          print('POC-47 ok:', s['browserBundleBytes'], 'B browser tier,',
+                '5 node-only modules in', len(v['classes']), 'classes')
+          PY
+
+      - name: POC-48 split only the Node side
+        working-directory: poc/48
+        run: |
+          node run.mjs
+          python3 - <<'PY'
+          import json
+          d = json.load(open('results.json'))['summary']
+          assert d['coreSurfaceCleanA'] > 0, d
+          assert d['coreSurfaceCleanB'] == 0, d
+          assert d['structuralGuarantee'] is True, d
+          assert d['peerDriversInCore']['A'] == 4 and d['peerDriversInCore']['B'] == 1, d
+          assert d['extraInstallsForBrowser'] == 0, d
+          print('POC-48 ok: core unusable surface', d['coreSurfaceCleanA'], '->', d['coreSurfaceCleanB'])
+          PY
+
+      - name: POC-49 SQL-first without any model
+        working-directory: poc/49
+        run: |
+          node run.mjs
+          python3 - <<'PY'
+          import json
+          d = json.load(open('results.json'))
+          s = d['summary']
+          assert s['pass'] == s['total'] == 16, s
+          assert s['sqlOnlyNeedsAI'] is False, s
+          assert s['coreImports'] == [], s
+          assert s['coreBytes'] < 2000, s
+          print('POC-49 ok: core', s['coreBytes'], 'B with zero AI imports')
+          PY
+
+      - name: POC-50 embedding providers and degradation
+        working-directory: poc/50
+        run: |
+          node run.mjs
+          python3 - <<'PY'
+          import json
+          d = json.load(open('results.json'))
+          s = d['summary']
+          assert s['pass'] == s['total'] == 17, s
+          assert s['providerAgnostic'] is True, s
+          assert s['degradesWithoutCrash'] is True, s
+          assert s['providersTested'] == ['local', 'api', 'none'], s
+          print('POC-50 ok:', len(s['providersTested']), 'providers, degradation holds')
+          PY
+
+      - name: POC-51 LLM and embedding share one provider model
+        working-directory: poc/51
+        run: |
+          node run.mjs
+          python3 - <<'PY'
+          import json
+          d = json.load(open('results.json'))
+          s = d['summary']
+          assert s['pass'] == s['total'] == 17, s
+          assert s['programmatic'] is True, s
+          assert s['singleMethodContract'] == ['complete'], s
+          assert len(s['llmProviders']) == 4, s
+          print('POC-51 ok:', len(s['llmProviders']), 'llm providers,',
+                len(s['embeddingProviders']), 'embedding providers')
+          PY
+
+      - name: POC-52 HITL session state
+        working-directory: poc/52
+        run: |
+          node run.mjs
+          python3 - <<'PY'
+          import json
+          d = json.load(open('results.json'))
+          sc = d['scenarios']
+          assert sc['appendOnly']['correct'] == 6, d
+          assert sc['intentState']['correct'] == 12, d
+          assert len(sc['driftFailuresAppendOnly']) == 6, d
+          assert d['resume']['ok'] == d['resume']['total'] == 12, d
+          assert sum(1 for r in d['illegalTransitions'] if r['rejected']) == 4, d
+          assert d['ordering']['fixed']['wasted'] == 5, d
+          assert d['ordering']['dependency']['wasted'] == 0, d
+          print('POC-52 ok: intent', sc['intentState']['correct'], '/', sc['total'],
+                'append-only', sc['appendOnly']['correct'], '/', sc['total'])
+          PY
+
+      - name: POC-53 observability contract
+        working-directory: poc/53
+        run: |
+          node run.mjs
+          python3 - <<'PY'
+          import json
+          d = json.load(open('results.json'))
+          sv = d['schemaSurvival']
+          assert sv['v1.30 (2025-04)']['valid'] == 4, sv
+          assert sv['v1.40 (2026-02)']['valid'] == 8, sv
+          assert sv['v1.43+ (2026-07, genai repo)']['valid'] == 12, sv
+          for k, v in d['dashboards']['oldDashboards_on_ourTable'].items():
+              assert v == '0/1', (k, v)
+          for k, v in d['dashboards']['ourDashboards_on_oldTable'].items():
+              assert v == '0/1', (k, v)
+          assert d['pii']['raw_leaks'] == 3, d['pii']
+          assert d['pii']['hash_leaks'] == 0, d['pii']
+          assert d['traceCompleteness']['identical'] is True, d['traceCompleteness']
+          print('POC-53 ok: survival 4/8/12, pii 3->0, trace identical')
+          PY
+
+      - name: POC-54 connector SPI and key reconciliation
+        working-directory: poc/54
+        run: |
+          node run.mjs
+          python3 - <<'PY'
+          import json
+          d = json.load(open('results.json'))
+          assert d['core']['unchangedDuringOnboarding'] is True, d['core']
+          assert len(d['surface']['requiredMethods']) == 2, d['surface']
+          inc = d['incremental']
+          assert inc['missingRows'] == 100 and inc['incremental']['rows'] == 100, inc
+          assert inc['byteRatio'] < 0.30, inc
+          kr = d['keyReconciliation']
+          assert kr['merkleBinary']['ratio'] < 0.06, kr
+          assert kr['bucketDigest']['ratio'] > 0.90, kr
+          assert len(d['failureModes']) == 3, d['failureModes']
+          print('POC-54 ok: incremental', inc['byteRatio'], 'of full bytes; merkle',
+                kr['merkleBinary']['ratio'], 'of manifest')
+          PY
+
+      - name: POC-55 explicit chart spec without a model
+        working-directory: poc/55
+        run: |
+          node spec.mjs > /dev/null
+          node bundle.mjs
+          python3 - <<'PY'
+          import json
+          d = json.load(open('results.json'))
+          assert d['summary']['rendered'] == '5/5', d['summary']
+          assert d['summary']['jsonReplay'] == '5/5', d['summary']
+          assert d['summary']['rejected'] == '6/6', d['summary']
+          b = json.load(open('bundle.json'))
+          assert b['gzip'] < 4000, b
+          assert b['importsCore'] == [], b
+          assert b['hasAiSdk'] is False and b['hasNodeBuiltin'] is False, b
+          print('POC-55 ok:', b['gzip'], 'B gzip, 0 core/ai imports')
+          PY
+
+  # ---------- always-on: pure-python statistics ----------
+  python-stats:
+    name: python-only POCs (27/28/36/37/38)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+      - name: install numpy
+        run: python3 -m pip install --quiet numpy
+
+      - name: run
+        run: |
+          (cd poc/27 && python3 gate_audit.py > /tmp/p27.txt)
+          (cd poc/28 && python3 main.py       > /tmp/p28.txt)
+          (cd poc/36 && python3 evalplan.py   > /tmp/p36.txt)
+          (cd poc/37 && python3 main.py       > /tmp/p37.txt)
+          (cd poc/38 && python3 main.py       > /tmp/p38.txt)
+          for p in 27 28 36 37 38; do test -s /tmp/p$p.txt || (echo "POC-$p produced no output"; exit 1); done
+
+  # ---------- manual: network diagnostics ----------
+  net:
+    name: network diagnostics (manual)
+    if: github.event_name == 'workflow_dispatch' && (inputs.group == 'net' || inputs.group == 'all')
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: environment
+        run: |
+          node -v; npm -v
+          npm config get registry
+          env | grep -iE 'proxy|registry' || true
+
+      - name: registry reachability
+        run: |
+          curl -sS -o /dev/null -w 'npmjs=%{http_code} time=%{time_total}s\n' https://registry.npmjs.org/esbuild || true
+          npm view esbuild version || true
+
+      - name: install a small dependency set
+        run: |
+          mkdir -p /tmp/n1 && cd /tmp/n1 && npm init -y >/dev/null
+          npm install --no-audit --no-fund esbuild pg hono && echo SMALL_OK
+
+      - name: install poc/41 as declared
+        working-directory: poc/41
+        run: |
+          rm -rf node_modules
+          npm install --no-audit --no-fund && echo POC41_OK
+
+  # ---------- manual: chart rendering (needs 108 MB of third-party renderers) ----------
+  chart:
+    name: chart rendering (manual, needs flint-chart + echarts)
+    if: github.event_name == 'workflow_dispatch' && (inputs.group == 'chart' || inputs.group == 'all')
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+      - name: POC-2 dependencies
+        working-directory: poc/02
+        run: |
+          npm install --no-audit --no-fund --fetch-retries=5 --fetch-retry-mintimeout=3000 --fetch-retry-maxtimeout=60000 \
+            || npm install --no-audit --no-fund --registry=https://registry.npmmirror.com \
+            || (sleep 15 && npm install --no-audit --no-fund)
+      - name: POC-2 chart output renders
+        working-directory: poc/02
+        run: |
+          node main.mjs
+          python3 - <<'PY'
+          import json
+          d = json.load(open('results.json'))
+          assert len(d['cases']) == 6, d
+          assert all(c['render_ok'] for c in d['cases']), d
+          assert d['stack_flag_ignored'] is True, d
+          print('POC-2 ok: 6/6 charts render; chart_spec.stack ignored')
+          PY
+
+      - name: POC-3 compile latency budget
+        working-directory: poc/03
+        run: |
+          # poc/03 has its own package.json (flint-chart + echarts pinned); the
+          # POC-2 install does not cover it, so without this the import fails
+          # before latency.json is written and the number is never measured.
+          npm ci --silent || npm install --silent
+          node main.mjs
+          python3 - <<'PY'
+          import json
+          d = json.load(open('latency.json'))
+          assert d['p95'] < 3.0, d
+          print('POC-3 ok: p50', d['p50'], 'ms, p95', d['p95'], 'ms')
+          PY
+
+  # ---------- manual: PostgreSQL + DuckDB native ----------
+  duckdb:
+    name: PostgreSQL backend (manual)
+    if: github.event_name == 'workflow_dispatch' && (inputs.group == 'duckdb' || inputs.group == 'all')
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_DB: analytics
+          POSTGRES_USER: t2c
+          POSTGRES_PASSWORD: t2cpass
+        ports: ['5432:5432']
+        options: >-
+          --health-cmd "pg_isready -U t2c -d analytics"
+          --health-interval 5s --health-timeout 5s --health-retries 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: fixture (PostgreSQL schema + SQLite side, one versioned file)
+        env:
+          PGHOST: 127.0.0.1
+          PGUSER: t2c
+          PGPASSWORD: t2cpass
+          PGDATABASE: analytics
+        run: python3 poc/12/fixture.py
+
+      - name: POC-12 attach PostgreSQL and prove pushdown
+        working-directory: poc/12
+        env:
+          PGHOST: 127.0.0.1
+        run: |
+          npm ci --silent || npm install --silent
+          node main.js | tee /tmp/p12.txt
+          # Each of these is the experiment's actual claim; exit code 0 alone
+          # would pass even if every assertion inside printed the wrong thing.
+          grep -q "read-only mode" /tmp/p12.txt
+          grep -q "\[three_way_rows\] \[\[" /tmp/p12.txt
+          grep -q "\[guard_ok\] true" /tmp/p12.txt
+          grep -q "\[federated_scan_ms\]" /tmp/p12.txt
+          grep -c "FAIL" /tmp/p12.txt || true
+
+  # ---------- manual: LLM-backed ----------
+  # ---------- manual: external benchmark (BIRD Mini-Dev) ----------
+  eval:
+    name: BIRD Mini-Dev evaluation (manual, uses dataset cache)
+    if: github.event_name == 'workflow_dispatch' && (inputs.group == 'eval' || inputs.group == 'all')
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: restore the dataset cache
+        id: ds
+        uses: actions/cache@v4
+        with:
+          path: ~/data/bird_mini_dev
+          key: bird-mini-dev-sqlite-v2
+
+      # A cache is an optimisation, never a contract. GitHub saves the entry in
+      # the post-job step even when the job failed, so an early broken run can
+      # poison the key with a half-downloaded tree. Verify, then repair.
+      - name: ensure dataset (repair an incomplete cache)
+        run: |
+          python3 - <<'PY'
+          import glob, json, os, subprocess, sys
+
+          root = os.path.expanduser('~/data/bird_mini_dev')
+
+          def dbs():
+              return sorted(glob.glob(os.path.join(root, '**', '*.sqlite'), recursive=True))
+
+          def qfile():
+              for f in glob.glob(os.path.join(root, '**', '*.json'), recursive=True):
+                  if 'mini_dev' in os.path.basename(f):
+                      return f
+              return None
+
+          before = len(dbs())
+          print('cache-hit=%s  sqlite_before=%d  question_file=%s'
+                % (os.environ.get('CACHE_HIT'), before, qfile()))
+          for d in sorted(os.listdir(root))[:10] if os.path.isdir(root) else []:
+              print('  ', d)
+
+          desc = glob.glob(os.path.join(root, '**', 'database_description', '*.csv'), recursive=True)
+          print('description_csv_before=%d' % len(desc))
+
+          if before < 11 or qfile() is None or not desc:
+              print('dataset unusable -> downloading')
+              subprocess.run([sys.executable, '-m', 'pip', 'install', '--quiet', 'huggingface_hub'], check=True)
+              from huggingface_hub import hf_hub_download, list_repo_files, snapshot_download
+              os.makedirs(root, exist_ok=True)
+              q = hf_hub_download('birdsql/bird_mini_dev',
+                                  'data/mini_dev_sqlite-00000-of-00001.json',
+                                  repo_type='dataset', local_dir=root)
+              ids = sorted({r['db_id'] for r in json.load(open(q, encoding='utf-8'))})
+              repo_db = 'birdsql/bird-critic-1.0-sqlite'
+              keep = [f for f in list_repo_files(repo_db, repo_type='dataset')
+                      if f.lower().endswith('.sqlite') and any(i in f for i in ids)]
+              snapshot_download(repo_db, repo_type='dataset',
+                                local_dir=os.path.join(root, 'databases'), allow_patterns=keep)
+              print('downloaded', len(keep), 'sqlite files')
+              # column descriptions live next to the questions, not next to the dbs
+              for repo in ('birdsql/bird_mini_dev', 'birdsql/bird'):
+                  try:
+                      files = list_repo_files(repo, repo_type='dataset')
+                      hits = [f for f in files if 'description' in f.lower() and f.lower().endswith('.csv')]
+                      print('%s: %d csv files, %d description-like' % (repo, len([f for f in files if f.endswith('.csv')]), len(hits)))
+                      if hits:
+                          snapshot_download(repo, repo_type='dataset', local_dir=root, allow_patterns=hits[:200])
+                          print('  fetched', len(hits[:200]), 'description files from', repo)
+                          break
+                  except Exception as e:  # noqa: BLE001
+                      print('  ', repo, 'unavailable:', str(e)[:120])
+              desc = glob.glob(os.path.join(root, '**', 'database_description', '*.csv'), recursive=True)
+              print('description_csv_after=%d' % len(desc))
+
+          after = dbs()
+          total = sum(os.path.getsize(p) for p in after)
+          print('sqlite_after=%d  bytes=%d (%.2f GB)' % (len(after), total, total / 1e9))
+          assert len(after) >= 11, after
+          assert total > 1.0e9, total
+          PY
+        env:
+          CACHE_HIT: ${{ steps.ds.outputs.cache-hit }}
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
+
+      - name: dataset probe (fails fast on an empty or misplaced cache)
+        run: python3 poc/60/run.py --data-dir "$HOME/data/bird_mini_dev" --probe
+
+      - name: comparator selftest (must pass before any number is reported)
+        run: python3 poc/60/run.py --selftest
+
+      - name: schema linking recall (offline, no model calls)
+        run: python3 poc/63/measure.py "$HOME/data/bird_mini_dev"
+
+      - name: analysis dependency (POC-65 validators)
+        run: python3 -m pip install --quiet sqlglot==30.23.0
+
+      - name: run BIRD Mini-Dev (baseline)
+        if: inputs.stage == 'baseline'
+        env:
+          DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
+          SCHEMA: ${{ inputs.schema }}
+          EVIDENCE: ${{ inputs.evidence }}
+          SAMPLES: ${{ inputs.samples }}
+        run: |
+          python3 poc/60/run.py --data-dir "$HOME/data/bird_mini_dev" \
+            --limit "${{ inputs.limit }}" --samples "${{ inputs.samples }}" --workers 6 \
+            --schema-mode "${{ inputs.schema }}" --evidence "${{ inputs.evidence }}" \
+            --out "poc/60/results-${SCHEMA}-${EVIDENCE}-${SAMPLES}.json"
+
+      - name: run repair experiment (POC-64)
+        if: inputs.stage == 'repair'
+        env:
+          DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
+        run: |
+          python3 poc/64/run.py "$HOME/data/bird_mini_dev" "${{ inputs.limit }}"
+          python3 - <<'PY'
+          import json
+          d = json.load(open('poc/64/results.json'))['summary']
+          print('EX %.2f%% -> %.2f%% (%+.2fpp); triggers %d/%d = %.1f%%, repair yield %.1f%%'
+                % (d['first_ex'] * 100, d['final_ex'] * 100, d['delta_pp'],
+                   d['with_trigger'], d['wrong'], d['trigger_rate'] * 100, d['repair_yield'] * 100))
+          PY
+
+      - name: run Alpha-SQL replication (POC-72)
+        if: inputs.stage == 'alphasql'
+        env:
+          DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
+        run: |
+          python3 poc/72/run.py --data-dir "$HOME/data/bird_mini_dev" \
+            --results poc/65/results.json --workers 8 --out poc/72/results.json
+
+      - name: run Text2Vis text-to-chart evaluation (POC-76)
+        if: inputs.stage == 'text2vis'
+        env:
+          DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
+          HF_ENDPOINT: https://hf-mirror.com
+        run: |
+          python3 -c "import urllib.request as u;open('/tmp/t2v.csv','wb').write(u.urlopen('https://huggingface.co/datasets/mizanurr/Text2Vis/resolve/main/Text2Vis.csv',timeout=120).read())"
+          python3 poc/76/run.py --data /tmp/t2v.csv --workers 8 --out poc/76/results.json
+
+      - name: run PostgreSQL-as-WASM cross-engine check (POC-79)
+        if: inputs.stage == 'pglite'
+        run: |
+          cd poc/79 && npm init -y >/dev/null 2>&1 && npm i --silent @electric-sql/pglite@0.2 && cd -
+          cd poc/81 && npm init -y >/dev/null 2>&1 && npm i --silent @electric-sql/pglite@0.2 \
+            && node contract.mjs results.json && cd -
+          python3 poc/79/run.py --dbs superhero,toxicology,student_club \
+            --data-dir "$HOME/data/bird_mini_dev" --out poc/79/results.json
+          python3 -c "import json;d=json.load(open('poc/79/results.json'))['summary'];print('pg: runnable %.2f%%, self-consistency %.2f%%, silent %d' % (d['goldRunsOnPg']*100, d['goldSelfConsistency']*100, d['n']-d['goldComparable']));assert d['n']>0 and d['goldRunsOnPg']>0.9"
+
+      - name: run Spider2-Lite SQLite subset (POC-77)
+        if: inputs.stage == 'spider2'
+        env:
+          DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
+        run: |
+          python3 poc/77/run.py --run --arm full --workers 6 --out poc/77/results.json
+
+      - name: run nvBench 2.0 chart-type evaluation (POC-71)
+        if: inputs.stage == 'nvbench'
+        env:
+          DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          python3 poc/71/fetch.py --out /tmp/nvbench_dev.json
+          python3 poc/71/run.py --data /tmp/nvbench_dev.json --workers 8 --out poc/71/results.json
+
+      - name: run plan-first ablation (POC-69)
+        if: inputs.stage == 'plan'
+        env:
+          DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
+        run: |
+          python3 poc/69/run.py --data-dir "$HOME/data/bird_mini_dev" --limit "${{ inputs.limit }}" \
+            --workers 6 --out poc/69/results.json
+
+      - name: run judge selection (POC-70)
+        if: inputs.stage == 'judge'
+        env:
+          DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
+        run: |
+          python3 poc/70/run.py --data-dir "$HOME/data/bird_mini_dev" \
+            --results poc/65/results.json --workers 6 --out poc/70/results.json
+
+      - name: run repair pipeline (POC-68)
+        if: inputs.stage == 'pipeline'
+        env:
+          DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
+        run: |
+          python3 poc/68/pipeline.py --data-dir "$HOME/data/bird_mini_dev" \
+            --results poc/65/results.json --workers 6 --out poc/68/results.json
+          python3 -c "import json;d=json.load(open('poc/68/results.json'))['summary'];print('pipeline: %.2f%% -> %.2f%% (%+.2fpp)' % (d['base']['ex']*100, d['final']['ex']*100, d['deltaPp']))"
+
+      - name: run diagnosis-driven repair (POC-66)
+        if: inputs.stage == 'repair-flags'
+        env:
+          DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
+        run: |
+          python3 poc/66/run.py --data-dir "$HOME/data/bird_mini_dev" \
+            --results poc/65/results.json --workers 6 --out poc/66/results.json
+          python3 -c "import json;d=json.load(open('poc/66/results.json'))['summary'];print('repair: reason %d vs generic %d, p=%.4f' % (d['reason']['fixed'], d['generic']['fixed'], d['mcnemar']['p']))"
+
+      - name: run confidence + validator experiment (POC-65)
+        if: inputs.stage == 'confidence'
+        env:
+          DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
+          SCHEMA: ${{ inputs.schema }}
+          EVIDENCE: ${{ inputs.evidence }}
+          SAMPLES: ${{ inputs.samples }}
+        run: |
+          python3 poc/65/run.py --data-dir "$HOME/data/bird_mini_dev" \
+            --limit "${{ inputs.limit }}" --samples "${{ inputs.samples }}" --workers 6 \
+            --schema-mode "${{ inputs.schema }}" --evidence "${{ inputs.evidence }}" \
+            --out poc/65/results.json
+          python3 poc/65/analyze.py poc/65/results.json --out poc/65/analysis.json
+          python3 poc/65/de_score.py poc/65/results.json
+
+      - name: confidence summary (POC-65)
+        if: inputs.stage == 'confidence'
+        run: |
+          python3 - <<'PY'
+          import json
+          d = json.load(open('poc/65/results.json'))['summary']
+          a = json.load(open('poc/65/analysis.json'))
+          print('n=%d  EX=%.2f%%  cost=$%.4f  wall=%ss'
+                % (d['n'], d['ex_set'] * 100, d['cost_usd'], d['wall_s']))
+          print('statuses:', d['statuses'])
+          print('silent share of wrong: %.1f%%' % (100 * a['baseline']['silentShareOfWrong']))
+          for p in a['confidenceCurve']:
+              print('unanimity>=%d: coverage %.1f%%  accuracy %s'
+                    % (p['minSupport'], 100 * p['coverage'],
+                       'n/a' if p['accuracy'] is None else '%.1f%%' % (100 * p['accuracy'])))
+          for k, v in a['rules'].items():
+              print('%-11s flagged %3d  precision %s  recall(wrong) %s'
+                    % (k, v['flagged'],
+                       'n/a' if v['precision'] is None else '%.0f%%' % (100 * v['precision']),
+                       'n/a' if v['recallAllWrong'] is None else '%.0f%%' % (100 * v['recallAllWrong'])))
+          assert d['statuses'].get('db_missing', 0) == 0, d['statuses']
+          assert d['statuses'].get('gold_error', 0) <= 5, d['statuses']
+          assert a['n'] > 0
+          PY
+
+      - name: summary
+        if: inputs.stage == 'baseline'
+        env:
+          SCHEMA: ${{ inputs.schema }}
+          EVIDENCE: ${{ inputs.evidence }}
+          SAMPLES: ${{ inputs.samples }}
+        run: |
+          python3 - <<'PY'
+          import glob, json, os
+          path = 'poc/60/results-%s-%s-%s.json' % (os.environ['SCHEMA'], os.environ['EVIDENCE'], os.environ['SAMPLES'])
+          d = json.load(open(path))
+          s = d['summary']
+          print('n=%d  EX(set)=%.2f%%  pass@1=%.2f%%  vote gain=%+.2fpp  cost=$%.4f  wall=%ss'
+                % (s['n'], s['ex_set'] * 100, s['pass_at_1'] * 100, s['vote_gain_pp'],
+                   s['cost_usd'], s['wall_s']))
+          print('by difficulty:', {k: v['ex_set'] for k, v in s['byDifficulty'].items()})
+          print('statuses:', s['statuses'])
+          assert s['n'] > 0
+          assert s['statuses'].get('db_missing', 0) == 0, s['statuses']
+          assert s['llm_errors'] == 0, s['llm_errors']
+          # LINK1: only meaningful when the schema was actually pruned
+          if os.environ.get('SCHEMA', '').startswith('link'):
+              link = json.load(open('poc/63/results.json'))
+              g = link['gate']
+              print('link recall@4=%.4f coverage@4=%.4f' % (g['recallAt4'], g['coverageAt4']))
+              assert g['recallAt4'] >= g['threshold'], g
+          # BIRD Mini-Dev has a few broken gold queries; tolerate them, do not hide them
+          assert s['statuses'].get('gold_error', 0) <= max(2, 0.01 * s['n']), s['statuses']
+          PY
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: bird-mini-dev-results
+          path: |
+            poc/60/results-*.json
+            poc/60/selftest.json
+            poc/63/results.json
+            poc/64/results.json
+            poc/65/results.json
+            poc/65/analysis.json
+            poc/66/results.json
+            poc/68/results.json
+            poc/69/results.json
+            poc/70/results.json
+            poc/71/results.json
+            poc/72/results.json
+            poc/76/results.json
+            poc/77/results.json
+            poc/77/linked-results.json
+            poc/79/results.json
+            poc/80/results.json
+            poc/81/results.json
+            poc/82/coverage.json
+
+  llm:
+    name: LLM / embedding POCs (manual, needs secrets)
+    if: github.event_name == 'workflow_dispatch' && (inputs.group == 'llm' || inputs.group == 'all')
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: guard - both secrets must be present
+        run: |
+          if [ -z "${{ secrets.DEEPSEEK_API_KEY }}" ]; then
+            echo "::error::DEEPSEEK_API_KEY is not configured; refusing to run LLM POCs"
+            exit 1
+          fi
+          if [ -z "${{ secrets.ZHIPU_API_KEY }}" ]; then
+            echo "::error::ZHIPU_API_KEY is not configured; POC-8/57 need embeddings"
+            exit 1
+          fi
+
+      - name: LLM and embedding POCs
+        env:
+          DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
+          DEEPSEEK_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
+          ZHIPU_API_KEY: ${{ secrets.ZHIPU_API_KEY }}
+          ZHIPU_KEY: ${{ secrets.ZHIPU_API_KEY }}
+        run: |
+          pip install --quiet duckdb==1.5.6 requests numpy scipy jieba
+          echo "--- POC-7 structured output conformance"
+          (cd poc/07 && python3 conformance.py) || exit 1
+          echo "--- POC-8 comment vs sample values (vague set)"
+          (cd poc/08 && python3 linking_vague.py) || exit 1
+          echo "--- POC-8 grounding"
+          (cd poc/08 && python3 grounding.py) || exit 1
+          echo "--- POC-9 Chinese adaptation"
+          (cd poc/09 && python3 main.py) || exit 1
+          echo "--- POC-18 self-healing"
+          (cd poc/18 && python3 main.py) || exit 1
+          echo "--- POC-30 NL2SQL baseline"
+          (cd poc/30 && python3 main.py) || exit 1
+          echo "--- POC-57 two vendors, one contract"
+          (cd poc/57 && node run.mjs) || exit 1
+          echo "--- POC-58 request fidelity and streaming"
+          (cd poc/58 && node run.mjs) || exit 1
+
+  # ---------- manual: browser / OPFS ----------
+  browser:
+    name: Browser and OPFS (manual)
+    if: github.event_name == 'workflow_dispatch' && (inputs.group == 'browser' || inputs.group == 'all')
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: install Playwright + Chromium
+        run: |
+          pip install --quiet playwright duckdb
+          python3 -m playwright install --with-deps chromium
+
+      - name: serve the OPFS probe (same origin, 127.0.0.1 is a secure context)
+        working-directory: poc/06
+        run: |
+          python3 -m http.server 8932 --bind 127.0.0.1 >/tmp/http.log 2>&1 &
+          for i in $(seq 1 20); do
+            curl -sf -o /dev/null http://127.0.0.1:8932/opfs.html && break
+            sleep 0.5
+          done
+          curl -sf -o /dev/null http://127.0.0.1:8932/opfs.html
+
+      - name: POC-6 OPFS persistence across restart
+        working-directory: poc/06
+        run: |
+          python3 opfs_test.py | tee /tmp/poc6.txt
+          grep -q "persist across restart: YES" /tmp/poc6.txt
+          grep -q "的写入在 run2 可见: True" /tmp/poc6.txt
+
+  # ---------- always-on: real PostgreSQL service ----------
+  # The three assertions PGlite cannot witness (auth, pool reuse, RLS) run here,
+  # against postgres:16 started by the runner. No external cluster, no secrets.
+  pg-cluster:
+    name: real PostgreSQL contract (service container)
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_PASSWORD: pgpass
+          POSTGRES_DB: nl2charts
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U postgres"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: POC-81 contract against a real server (12 assertions, 0 skipped)
+        env:
+          PG_DSN: postgres://postgres:pgpass@localhost:5432/nl2charts
+        run: |
+          cd poc/81
+          npm init -y >/dev/null 2>&1
+          npm i --silent pg
+          node contract.mjs results-cluster.json
+          python3 - <<'PY'
+          import json
+          d = json.load(open('results-cluster.json'))
+          s = d['summary']
+          assert s['backend'] == 'pg', s
+          assert s['skipped'] == 0, s
+          assert s['gatesFailed'] == 0, s
+          print('pg contract:', s)
+          PY
+
+      - name: upload
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: pg-contract
+          path: poc/81/results-cluster.json
+          if-no-files-found: warn
+          retention-days: 14
+
+  # ---------- always-on: legacy POCs that still run standalone ----------
+  # These three directories were referenced by no workflow. They are cheap,
+  # dependency-light and still quoted in the document, so they run here rather
+  # than being filed as oneShot.
+  legacy:
+    name: legacy POC smoke (04/16/20)
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      # Pinned, because POC-04 reproduces an AST probe recorded against a
+      # specific duckdb (poc/04/inspect-1.5.6.json). Unpinned, CI silently
+      # upgraded to 2.0.0, which removed Relation.fetchone() -- the script broke
+      # and the recorded numbers stopped being reproducible at the same time.
+      - name: dependencies (pinned to the recorded probe)
+        run: python3 -m pip install --quiet "duckdb==1.5.6" numpy scipy
+
+      - name: POC-04 reproduces the recorded AST byte for byte
+        run: |
+          set -e
+          cd poc/04 && python3 inspect_ast.py > /tmp/p04.json && cd ../..
+          # "The script runs" is not the claim. The claim is that the AST probe
+          # still produces the JSON that is committed, so diff is the assertion.
+          git diff --exit-code -- poc/04/inspect-1.5.6.json
+          echo "POC-04 reproduces ${PWD}/poc/04/inspect-1.5.6.json"
+
+      - name: POC-16 / POC-20 reproduce their numbers
+        run: |
+          set -e
+          python3 poc/16/main.py > /tmp/p16.txt
+          python3 poc/20/main.py > /tmp/p20.txt
+          grep -q "3.01" /tmp/p16.txt
+          grep -q "power" /tmp/p20.txt
+          echo "legacy POCs 16/20 ok"
+
+      # The pin fixes reproduction; this step fixes the *other* half -- that a
+      # future duckdb release cannot take the probe down again unnoticed.
+      - name: POC-04 survives the newest duckdb
+        run: |
+          set -e
+          python3 -m pip install --quiet --upgrade duckdb
+          cd poc/04 && python3 inspect_ast.py > /tmp/p04-latest.json && cd ../..
+          python3 - <<'PY'
+          import json
+          d = json.load(open('/tmp/p04-latest.json'))
+          # Three claims that hold on every duckdb recorded in this directory
+          # (1.3.2 / 1.4.5 / 1.5.6 / 2.0.0), so a failure means the probe -- not
+          # the engine -- moved.
+          assert 'c' in d['cte_as_base_table'], d['cte_as_base_table']
+          assert d['base_table']['has_catalog'] and d['base_table']['has_schema'], d['base_table']
+          assert 'type' in d['setop']['keys'], d['setop']
+          print('newest duckdb ok:', d['version'], '| cte seen as base table:', d['cte_as_base_table'])
+          PY

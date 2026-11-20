@@ -1,0 +1,1 @@
+export const bind = (q) => ({ metric: q });

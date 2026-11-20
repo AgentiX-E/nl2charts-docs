@@ -1,0 +1,137 @@
+[
+ {
+  "q": "上月销售额",
+  "expect": "AMBIGUOUS",
+  "terms": [
+   "销售额"
+  ],
+  "verdict": "AMBIGUOUS",
+  "ok": true
+ },
+ {
+  "q": "各区域收入",
+  "expect": "AMBIGUOUS",
+  "terms": [
+   "收入"
+  ],
+  "verdict": "AMBIGUOUS",
+  "ok": true
+ },
+ {
+  "q": "本月营业额",
+  "expect": "revenue",
+  "terms": [
+   "营业额"
+  ],
+  "verdict": "revenue",
+  "ok": true
+ },
+ {
+  "q": "各渠道营收",
+  "expect": "AMBIGUOUS",
+  "terms": [
+   "营收"
+  ],
+  "verdict": "AMBIGUOUS",
+  "ok": true
+ },
+ {
+  "q": "上月流水",
+  "expect": "AMBIGUOUS",
+  "terms": [
+   "流水"
+  ],
+  "verdict": "AMBIGUOUS",
+  "ok": true
+ },
+ {
+  "q": "各品类销售业绩",
+  "expect": "UNKNOWN",
+  "terms": [
+   "销售业绩"
+  ],
+  "verdict": "UNKNOWN",
+  "ok": true
+ },
+ {
+  "q": "本月毛利",
+  "expect": "gross_profit",
+  "terms": [
+   "毛利"
+  ],
+  "verdict": "gross_profit",
+  "ok": true
+ },
+ {
+  "q": "各区域客单价",
+  "expect": "aov",
+  "terms": [
+   "客单价"
+  ],
+  "verdict": "aov",
+  "ok": true
+ },
+ {
+  "q": "上月成交额",
+  "expect": "AMBIGUOUS",
+  "terms": [
+   "成交额"
+  ],
+  "verdict": "AMBIGUOUS",
+  "ok": true
+ },
+ {
+  "q": "各渠道收入情况",
+  "expect": "AMBIGUOUS",
+  "terms": [
+   "收入"
+  ],
+  "verdict": "AMBIGUOUS",
+  "ok": true
+ },
+ {
+  "q": "上月各区域净收入",
+  "expect": "net_revenue",
+  "terms": [
+   "净收入"
+  ],
+  "verdict": "net_revenue",
+  "ok": true
+ },
+ {
+  "q": "本季度支付订单数按渠道",
+  "expect": "paid_order_count",
+  "terms": [
+   "支付订单数"
+  ],
+  "verdict": "paid_order_count",
+  "ok": true
+ },
+ {
+  "q": "各品类退款额",
+  "expect": "refund_amount",
+  "terms": [
+   "退款额"
+  ],
+  "verdict": "refund_amount",
+  "ok": true
+ },
+ {
+  "q": "上周各渠道订单数",
+  "expect": "order_count",
+  "terms": [
+   "订单数"
+  ],
+  "verdict": "order_count",
+  "ok": true
+ },
+ {
+  "q": "各区域毛利率",
+  "expect": "gross_margin",
+  "terms": [
+   "毛利率"
+  ],
+  "verdict": "gross_margin",
+  "ok": true
+ }
+]

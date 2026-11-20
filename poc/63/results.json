@@ -1,0 +1,652 @@
+{
+ "questions": 500,
+ "measured": 500,
+ "skipped": 0,
+ "recallAtK": {
+  "1": {
+   "recall": 0.6436,
+   "coverage": 0.52
+  },
+  "2": {
+   "recall": 0.7579,
+   "coverage": 0.652
+  },
+  "3": {
+   "recall": 0.8079,
+   "coverage": 0.694
+  },
+  "4": {
+   "recall": 0.83,
+   "coverage": 0.722
+  },
+  "6": {
+   "recall": 0.8434,
+   "coverage": 0.744
+  }
+ },
+ "byDifficulty": {
+  "simple": {
+   "n": 148,
+   "covered4": 117,
+   "coverage4": 0.7905
+  },
+  "moderate": {
+   "n": 250,
+   "covered4": 176,
+   "coverage4": 0.704
+  },
+  "challenging": {
+   "n": 102,
+   "covered4": 68,
+   "coverage4": 0.6667
+  }
+ },
+ "schemaReduction": {
+  "tables": 0.518,
+  "columns": 0.614
+ },
+ "missedAt4": [
+  {
+   "id": 1322,
+   "db": "student_club",
+   "gold": [
+    "attendance",
+    "event"
+   ],
+   "picked": [
+    "member",
+    "income",
+    "event",
+    "budget"
+   ],
+   "difficulty": "moderate"
+  },
+  {
+   "id": 1323,
+   "db": "student_club",
+   "gold": [
+    "attendance",
+    "event"
+   ],
+   "picked": [
+    "attendance",
+    "income"
+   ],
+   "difficulty": "moderate"
+  },
+  {
+   "id": 1338,
+   "db": "student_club",
+   "gold": [
+    "budget",
+    "event",
+    "expense"
+   ],
+   "picked": [
+    "expense",
+    "event"
+   ],
+   "difficulty": "moderate"
+  },
+  {
+   "id": 1339,
+   "db": "student_club",
+   "gold": [
+    "expense",
+    "member"
+   ],
+   "picked": [
+    "budget",
+    "expense",
+    "income"
+   ],
+   "difficulty": "challenging"
+  },
+  {
+   "id": 1340,
+   "db": "student_club",
+   "gold": [
+    "budget",
+    "event"
+   ],
+   "picked": [
+    "budget",
+    "income",
+    "expense"
+   ],
+   "difficulty": "moderate"
+  },
+  {
+   "id": 1357,
+   "db": "student_club",
+   "gold": [
+    "income",
+    "member"
+   ],
+   "picked": [
+    "income",
+    "zip_code",
+    "event",
+    "expense"
+   ],
+   "difficulty": "simple"
+  },
+  {
+   "id": 1381,
+   "db": "student_club",
+   "gold": [
+    "attendance",
+    "member"
+   ],
+   "picked": [
+    "event",
+    "major",
+    "member",
+    "income"
+   ],
+   "difficulty": "moderate"
+  },
+  {
+   "id": 1387,
+   "db": "student_club",
+   "gold": [
+    "budget",
+    "event",
+    "expense",
+    "member"
+   ],
+   "picked": [
+    "budget",
+    "event",
+    "expense",
+    "income"
+   ],
+   "difficulty": "moderate"
+  },
+  {
+   "id": 1399,
+   "db": "student_club",
+   "gold": [
+    "attendance",
+    "event",
+    "member"
+   ],
+   "picked": [
+    "event",
+    "attendance",
+    "budget"
+   ],
+   "difficulty": "moderate"
+  },
+  {
+   "id": 1404,
+   "db": "student_club",
+   "gold": [
+    "budget",
+    "event",
+    "expense"
+   ],
+   "picked": [
+    "event",
+    "expense",
+    "zip_code",
+    "attendance"
+   ],
+   "difficulty": "moderate"
+  },
+  {
+   "id": 1411,
+   "db": "student_club",
+   "gold": [
+    "expense",
+    "member"
+   ],
+   "picked": [
+    "zip_code",
+    "expense"
+   ],
+   "difficulty": "simple"
+  },
+  {
+   "id": 1457,
+   "db": "student_club",
+   "gold": [
+    "budget",
+    "expense",
+    "member"
+   ],
+   "picked": [
+    "expense",
+    "member",
+    "event",
+    "major"
+   ],
+   "difficulty": "challenging"
+  },
+  {
+   "id": 1464,
+   "db": "student_club",
+   "gold": [
+    "attendance",
+    "event",
+    "income",
+    "member"
+   ],
+   "picked": [
+    "income",
+    "budget",
+    "event",
+    "expense"
+   ],
+   "difficulty": "challenging"
+  },
+  {
+   "id": 1029,
+   "db": "european_football_2",
+   "gold": [
+    "Team",
+    "Team_Attributes"
+   ],
+   "picked": [
+    "Player_Attributes",
+    "Team_Attributes"
+   ],
+   "difficulty": "moderate"
+  },
+  {
+   "id": 1039,
+   "db": "european_football_2",
+   "gold": [
+    "Player",
+    "Player_Attributes"
+   ],
+   "picked": [
+    "Player_Attributes",
+    "Team_Attributes",
+    "Team"
+   ],
+   "difficulty": "simple"
+  },
+  {
+   "id": 1076,
+   "db": "european_football_2",
+   "gold": [
+    "Player",
+    "Player_Attributes"
+   ],
+   "picked": [
+    "Player_Attributes"
+   ],
+   "difficulty": "challenging"
+  },
+  {
+   "id": 1084,
+   "db": "european_football_2",
+   "gold": [
+    "Player",
+    "Player_Attributes"
+   ],
+   "picked": [
+    "Team",
+    "Team_Attributes",
+    "Player",
+    "Match",
+    "Country",
+    "League"
+   ],
+   "difficulty": "challenging"
+  },
+  {
+   "id": 1094,
+   "db": "european_football_2",
+   "gold": [
+    "Player",
+    "Player_Attributes"
+   ],
+   "picked": [
+    "Player_Attributes",
+    "Team_Attributes"
+   ],
+   "difficulty": "challenging"
+  },
+  {
+   "id": 1096,
+   "db": "european_football_2",
+   "gold": [
+    "Player",
+    "Player_Attributes"
+   ],
+   "picked": [
+    "Player_Attributes"
+   ],
+   "difficulty": "moderate"
+  },
+  {
+   "id": 1098,
+   "db": "european_football_2",
+   "gold": [
+    "Team",
+    "Team_Attributes"
+   ],
+   "picked": [
+    "Player_Attributes",
+    "Team_Attributes"
+   ],
+   "difficulty": "moderate"
+  },
+  {
+   "id": 1103,
+   "db": "european_football_2",
+   "gold": [
+    "Player",
+    "Player_Attributes"
+   ],
+   "picked": [
+    "Player_Attributes"
+   ],
+   "difficulty": "moderate"
+  },
+  {
+   "id": 1105,
+   "db": "european_football_2",
+   "gold": [
+    "Player",
+    "Player_Attributes"
+   ],
+   "picked": [
+    "Player_Attributes",
+    "Country",
+    "Team_Attributes"
+   ],
+   "difficulty": "moderate"
+  },
+  {
+   "id": 1107,
+   "db": "european_football_2",
+   "gold": [
+    "Player",
+    "Player_Attributes"
+   ],
+   "picked": [
+    "Player_Attributes",
+    "Team_Attributes",
+    "Match",
+    "player_audits",
+    "Country",
+    "League"
+   ],
+   "difficulty": "moderate"
+  },
+  {
+   "id": 1110,
+   "db": "european_football_2",
+   "gold": [
+    "Team",
+    "Team_Attributes"
+   ],
+   "picked": [
+    "Team_Attributes",
+    "Player_Attributes"
+   ],
+   "difficulty": "moderate"
+  },
+  {
+   "id": 1114,
+   "db": "european_football_2",
+   "gold": [
+    "Player",
+    "Player_Attributes"
+   ],
+   "picked": [
+    "Player_Attributes"
+   ],
+   "difficulty": "challenging"
+  },
+  {
+   "id": 1115,
+   "db": "european_football_2",
+   "gold": [
+    "Player",
+    "Player_Attributes"
+   ],
+   "picked": [
+    "Player_Attributes",
+    "Team_Attributes"
+   ],
+   "difficulty": "challenging"
+  },
+  {
+   "id": 854,
+   "db": "formula_1",
+   "gold": [
+    "circuits",
+    "races"
+   ],
+   "picked": [
+    "circuits"
+   ],
+   "difficulty": "simple"
+  },
+  {
+   "id": 857,
+   "db": "formula_1",
+   "gold": [
+    "circuits",
+    "races"
+   ],
+   "picked": [
+    "constructorStandings",
+    "driverStandings",
+    "lapTimes",
+    "qualifying",
+    "constructors"
+   ],
+   "difficulty": "simple"
+  },
+  {
+   "id": 859,
+   "db": "formula_1",
+   "gold": [
+    "drivers",
+    "qualifying"
+   ],
+   "picked": [
+    "qualifying",
+    "constructors"
+   ],
+   "difficulty": "simple"
+  },
+  {
+   "id": 862,
+   "db": "formula_1",
+   "gold": [
+    "drivers",
+    "races",
+    "results"
+   ],
+   "picked": [
+    "drivers"
+   ],
+   "difficulty": "simple"
+  },
+  {
+   "id": 865,
+   "db": "formula_1",
+   "gold": [
+    "drivers",
+    "results"
+   ],
+   "picked": [
+    "drivers"
+   ],
+   "difficulty": "moderate"
+  },
+  {
+   "id": 866,
+   "db": "formula_1",
+   "gold": [
+    "drivers",
+    "lapTimes"
+   ],
+   "picked": [
+    "lapTimes",
+    "pitStops",
+    "races",
+    "results",
+    "seasons",
+    "circuits",
+    "constructors",
+    "status"
+   ],
+   "difficulty": "moderate"
+  },
+  {
+   "id": 868,
+   "db": "formula_1",
+   "gold": [
+    "circuits",
+    "races"
+   ],
+   "picked": [
+    "circuits"
+   ],
+   "difficulty": "simple"
+  },
+  {
+   "id": 872,
+   "db": "formula_1",
+   "gold": [
+    "drivers",
+    "qualifying"
+   ],
+   "picked": [
+    "drivers",
+    "lapTimes",
+    "pitStops",
+    "races",
+    "seasons",
+    "circuits"
+   ],
+   "difficulty": "simple"
+  },
+  {
+   "id": 877,
+   "db": "formula_1",
+   "gold": [
+    "drivers",
+    "results"
+   ],
+   "picked": [
+    "drivers"
+   ],
+   "difficulty": "moderate"
+  },
+  {
+   "id": 880,
+   "db": "formula_1",
+   "gold": [
+    "drivers",
+    "results"
+   ],
+   "picked": [
+    "results",
+    "lapTimes",
+    "pitStops",
+    "constructors",
+    "status"
+   ],
+   "difficulty": "challenging"
+  },
+  {
+   "id": 881,
+   "db": "formula_1",
+   "gold": [
+    "races",
+    "results"
+   ],
+   "picked": [
+    "drivers"
+   ],
+   "difficulty": "moderate"
+  },
+  {
+   "id": 892,
+   "db": "formula_1",
+   "gold": [
+    "driverStandings",
+    "drivers",
+    "races"
+   ],
+   "picked": [
+    "constructorResults",
+    "constructorStandings",
+    "driverStandings",
+    "results",
+    "constructors",
+    "status"
+   ],
+   "difficulty": "moderate"
+  },
+  {
+   "id": 894,
+   "db": "formula_1",
+   "gold": [
+    "drivers",
+    "lapTimes",
+    "races"
+   ],
+   "picked": [
+    "lapTimes",
+    "pitStops",
+    "races",
+    "results",
+    "seasons",
+    "circuits",
+    "constructors",
+    "status"
+   ],
+   "difficulty": "moderate"
+  },
+  {
+   "id": 895,
+   "db": "formula_1",
+   "gold": [
+    "drivers",
+    "lapTimes",
+    "races"
+   ],
+   "picked": [
+    "lapTimes",
+    "pitStops",
+    "races",
+    "results",
+    "seasons",
+    "circuits",
+    "constructors",
+    "status"
+   ],
+   "difficulty": "moderate"
+  }
+ ],
+ "missedAt4Count": 139,
+ "bySchemaSize": {
+  "small(<=6)": {
+   "n": 202,
+   "gold": 386,
+   "hit4": 386,
+   "recall4": 1.0
+  },
+  "large(>6)": {
+   "n": 298,
+   "gold": 655,
+   "hit4": 478,
+   "recall4": 0.7298
+  }
+ },
+ "gate": {
+  "recallAt4": 0.83,
+  "coverageAt4": 0.722,
+  "threshold": 0.9,
+  "pass": false
+ }
+}

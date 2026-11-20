@@ -1,0 +1,107 @@
+{
+ "meta": {
+  "node": "v22.13.1"
+ },
+ "layouts": [
+  {
+   "layout": "A one core",
+   "coreSubpaths": 14,
+   "coreBrowserUsable": 9,
+   "coreUnusableRatio": 0.36,
+   "nodeSubpaths": 0,
+   "nodeBrowserUsable": 0
+  },
+  {
+   "layout": "B core+node",
+   "coreSubpaths": 9,
+   "coreBrowserUsable": 9,
+   "coreUnusableRatio": 0,
+   "nodeSubpaths": 5,
+   "nodeBrowserUsable": 0
+  }
+ ],
+ "surfaces": {
+  "A": {
+   "core": {
+    "peers": [
+     "zod",
+     "ai",
+     "@duckdb/node-api",
+     "@duckdb/duckdb-wasm",
+     "pg",
+     "mysql2"
+    ],
+    "driversInPeers": [
+     "@duckdb/node-api",
+     "@duckdb/duckdb-wasm",
+     "pg",
+     "mysql2"
+    ],
+    "subpaths": 14
+   }
+  },
+  "B": {
+   "core": {
+    "peers": [
+     "zod",
+     "ai",
+     "@duckdb/duckdb-wasm"
+    ],
+    "driversInPeers": [
+     "@duckdb/duckdb-wasm"
+    ],
+    "subpaths": 9
+   },
+   "node": {
+    "peers": [
+     "@duckdb/node-api",
+     "pg",
+     "mysql2"
+    ],
+    "driversInPeers": [
+     "@duckdb/node-api",
+     "pg",
+     "mysql2"
+    ],
+    "subpaths": 5
+   }
+  }
+ },
+ "browserInstall": {
+  "A": [
+   "core"
+  ],
+  "B": [
+   "core"
+  ]
+ },
+ "nodeInstall": {
+  "A": [
+   "core"
+  ],
+  "B": [
+   "core",
+   "node"
+  ]
+ },
+ "driverBumpReleases": {
+  "A": [
+   "core"
+  ],
+  "B": [
+   "node"
+  ]
+ },
+ "summary": {
+  "coreSurfaceCleanA": 0.36,
+  "coreSurfaceCleanB": 0,
+  "peerDriversInCore": {
+   "A": 4,
+   "B": 1
+  },
+  "extraPackagesForNode": 1,
+  "extraDependencyEdges": 1,
+  "extraInstallsForBrowser": 0,
+  "structuralGuarantee": true
+ }
+}

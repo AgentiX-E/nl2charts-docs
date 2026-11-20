@@ -1,0 +1,266 @@
+{
+ "comparator": [
+  {
+   "case": "identical",
+   "multiset": true,
+   "set": true,
+   "expected": [
+    true,
+    true
+   ],
+   "pass": true
+  },
+  {
+   "case": "row order differs",
+   "multiset": true,
+   "set": true,
+   "expected": [
+    true,
+    true
+   ],
+   "pass": true
+  },
+  {
+   "case": "duplicate collapsed",
+   "multiset": false,
+   "set": true,
+   "expected": [
+    false,
+    true
+   ],
+   "pass": true
+  },
+  {
+   "case": "value changed",
+   "multiset": false,
+   "set": false,
+   "expected": [
+    false,
+    false
+   ],
+   "pass": true
+  },
+  {
+   "case": "float rounded",
+   "multiset": true,
+   "set": true,
+   "expected": [
+    true,
+    true
+   ],
+   "pass": true
+  },
+  {
+   "case": "column count differs",
+   "multiset": false,
+   "set": false,
+   "expected": [
+    false,
+    false
+   ],
+   "pass": true
+  }
+ ],
+ "guard": [
+  {
+   "sql": "SELECT 1",
+   "allowed": true,
+   "expected": true,
+   "pass": true
+  },
+  {
+   "sql": "  with x as (select 1) select * from x",
+   "allowed": true,
+   "expected": true,
+   "pass": true
+  },
+  {
+   "sql": "DELETE FROM t",
+   "allowed": false,
+   "expected": false,
+   "pass": true
+  },
+  {
+   "sql": "WITH x AS (DELETE FROM t RETURNING a) SELECT * FROM x",
+   "allowed": false,
+   "expected": false,
+   "pass": true
+  },
+  {
+   "sql": "SELECT 1; DROP TABLE t",
+   "allowed": false,
+   "expected": false,
+   "pass": true
+  },
+  {
+   "sql": "PRAGMA writable_schema=1",
+   "allowed": false,
+   "expected": false,
+   "pass": true
+  },
+  {
+   "sql": "-- comment only",
+   "allowed": false,
+   "expected": false,
+   "pass": true
+  }
+ ],
+ "fence": [
+  {
+   "input": "```sql\nSELECT 1\n```",
+   "sql": "SELECT 1",
+   "fenced": true,
+   "pass": true
+  },
+  {
+   "input": "```\nSELECT 1\n```",
+   "sql": "SELECT 1",
+   "fenced": true,
+   "pass": true
+  },
+  {
+   "input": "SELECT 1",
+   "sql": "SELECT 1",
+   "fenced": false,
+   "pass": true
+  }
+ ],
+ "vote": [
+  {
+   "case": "2 of 3 agree",
+   "pick": "SELECT 1",
+   "pass": true
+  },
+  {
+   "case": "order does not matter",
+   "pick": "SELECT 1",
+   "pass": true
+  }
+ ],
+ "pass": 35,
+ "total": 35,
+ "ok": true,
+ "metadata": {
+  "checks": [
+   {
+    "case": "FK inferred from *_id",
+    "pass": true,
+    "got": "customers.customer_id"
+   },
+   {
+    "case": "PK flagged",
+    "pass": true
+   },
+   {
+    "case": "enum extracted",
+    "pass": true,
+    "got": [
+     [
+      "completed",
+      2
+     ],
+     [
+      "cancelled",
+      1
+     ],
+     [
+      "pending",
+      1
+     ]
+    ]
+   },
+   {
+    "case": "high-card text not enumerated",
+    "pass": true,
+    "got": "23 distinct, enum=None"
+   },
+   {
+    "case": "numeric range",
+    "pass": true,
+    "got": [
+     5.25,
+     20.0
+    ]
+   },
+   {
+    "case": "humanize abbrev",
+    "pass": true,
+    "got": "customer name"
+   },
+   {
+    "case": "render has enum line",
+    "pass": true
+   },
+   {
+    "case": "render has FK line",
+    "pass": true
+   },
+   {
+    "case": "keys can be disabled",
+    "pass": true
+   },
+   {
+    "case": "enums can be disabled",
+    "pass": true
+   }
+  ],
+  "pass": 10,
+  "total": 10,
+  "ok": true
+ },
+ "link": {
+  "checks": [
+   {
+    "case": "picks orders+customers",
+    "pass": true,
+    "got": [
+     "customers",
+     "orders",
+     "products"
+    ]
+   },
+   {
+    "case": "fk closure adds customers from orders",
+    "pass": true
+   },
+   {
+    "case": "k=1 honours the budget",
+    "pass": true,
+    "got": [
+     "products"
+    ]
+   },
+   {
+    "case": "small schema is not pruned",
+    "pass": true,
+    "got": [
+     "customers",
+     "orders",
+     "products"
+    ]
+   },
+   {
+    "case": "enum value beats container word",
+    "pass": true
+   },
+   {
+    "case": "gold table extraction",
+    "pass": true,
+    "got": [
+     "customers",
+     "orders"
+    ]
+   },
+   {
+    "case": "string literal does not fake a table",
+    "pass": true,
+    "got": [
+     "products"
+    ]
+   }
+  ],
+  "pass": 7,
+  "total": 7,
+  "ok": true
+ }
+}

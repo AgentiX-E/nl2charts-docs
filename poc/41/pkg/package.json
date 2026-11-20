@@ -1,0 +1,12 @@
+{
+  "name": "@agentix-e/nl2charts-core",
+  "version": "0.0.0",
+  "type": "module",
+  "sideEffects": false,
+  "exports": {
+    ".": "./src/index.js",
+    "./duckdb-node": "./src/engine/node.js",
+    "./duckdb-wasm": "./src/engine/wasm.js",
+    "./pg": "./src/connectors/pg.js"
+  }
+}

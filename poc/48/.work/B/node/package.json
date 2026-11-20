@@ -1,0 +1,21 @@
+{
+ "name": "@agentix-e/nl2charts-node",
+ "version": "1.0.0",
+ "type": "module",
+ "sideEffects": false,
+ "exports": {
+  "./duckdb-node": "./src/duckdb-node.mjs",
+  "./pg": "./src/pg.mjs",
+  "./mysql": "./src/mysql.mjs",
+  "./file": "./src/file.mjs",
+  "./cache-file": "./src/cache-file.mjs"
+ },
+ "dependencies": {
+  "@agentix-e/nl2charts-core": "workspace:^"
+ },
+ "peerDependencies": {
+  "@duckdb/node-api": "1.5.6-r.1",
+  "pg": "^8",
+  "mysql2": "^3"
+ }
+}

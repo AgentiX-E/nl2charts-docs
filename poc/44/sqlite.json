@@ -1,0 +1,156 @@
+{
+ "engine": "node:sqlite",
+ "version": "3.47.2",
+ "results": [
+  {
+   "id": 1,
+   "cat": "baseline",
+   "ok": true,
+   "err": null
+  },
+  {
+   "id": 2,
+   "cat": "date_trunc",
+   "ok": false,
+   "err": "no such function: date_trunc"
+  },
+  {
+   "id": 3,
+   "cat": "cast_colon",
+   "ok": false,
+   "err": "unrecognized token: \":\""
+  },
+  {
+   "id": 4,
+   "cat": "window",
+   "ok": true,
+   "err": null
+  },
+  {
+   "id": 5,
+   "cat": "cte",
+   "ok": true,
+   "err": null
+  },
+  {
+   "id": 6,
+   "cat": "qualify",
+   "ok": false,
+   "err": "near \"rn\": syntax error"
+  },
+  {
+   "id": 7,
+   "cat": "filter_agg",
+   "ok": true,
+   "err": null
+  },
+  {
+   "id": 8,
+   "cat": "ilike",
+   "ok": false,
+   "err": "near \"ilike\": syntax error"
+  },
+  {
+   "id": 9,
+   "cat": "interval",
+   "ok": false,
+   "err": "near \"1\": syntax error"
+  },
+  {
+   "id": 10,
+   "cat": "group_by_all",
+   "ok": false,
+   "err": "near \"all\": syntax error"
+  },
+  {
+   "id": 11,
+   "cat": "distinct_on",
+   "ok": false,
+   "err": "near \"on\": syntax error"
+  },
+  {
+   "id": 12,
+   "cat": "semi_join",
+   "ok": false,
+   "err": "no such column: orders.id"
+  },
+  {
+   "id": 13,
+   "cat": "median",
+   "ok": false,
+   "err": "no such function: median"
+  },
+  {
+   "id": 14,
+   "cat": "percentile",
+   "ok": false,
+   "err": "near \"(\": syntax error"
+  },
+  {
+   "id": 15,
+   "cat": "string_agg",
+   "ok": true,
+   "err": null
+  },
+  {
+   "id": 16,
+   "cat": "array_fn",
+   "ok": false,
+   "err": "no such column: 1,2,3"
+  },
+  {
+   "id": 17,
+   "cat": "parquet",
+   "ok": false,
+   "err": "no such table: read_parquet"
+  },
+  {
+   "id": 18,
+   "cat": "generate_series",
+   "ok": false,
+   "err": "no such table: generate_series"
+  },
+  {
+   "id": 19,
+   "cat": "pivot",
+   "ok": false,
+   "err": "near \"pivot\": syntax error"
+  },
+  {
+   "id": 20,
+   "cat": "nulls_last",
+   "ok": true,
+   "err": null
+  },
+  {
+   "id": 21,
+   "cat": "lateral",
+   "ok": false,
+   "err": "near \"select\": syntax error"
+  },
+  {
+   "id": 22,
+   "cat": "struct_access",
+   "ok": false,
+   "err": "unrecognized token: \"{\""
+  },
+  {
+   "id": 23,
+   "cat": "json_extract",
+   "ok": true,
+   "err": null
+  },
+  {
+   "id": 24,
+   "cat": "approx_quantile",
+   "ok": false,
+   "err": "no such function: approx_quantile"
+  },
+  {
+   "id": 25,
+   "cat": "window_frame",
+   "ok": true,
+   "err": null
+  }
+ ]
+}

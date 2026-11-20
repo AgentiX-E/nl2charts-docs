@@ -1,0 +1,34 @@
+[
+ {
+  "question_id": 1,
+  "db_id": "tiny",
+  "question": "How many regions are there?",
+  "evidence": "",
+  "SQL": "SELECT count(*) FROM regions",
+  "difficulty": "simple"
+ },
+ {
+  "question_id": 2,
+  "db_id": "tiny",
+  "question": "Total sales amount in 2026-01",
+  "evidence": "",
+  "SQL": "SELECT sum(amount) FROM sales WHERE month = '2026-01'",
+  "difficulty": "simple"
+ },
+ {
+  "question_id": 3,
+  "db_id": "tiny",
+  "question": "List region name and total amount, highest first",
+  "evidence": "",
+  "SQL": "SELECT r.name, sum(s.amount) FROM regions r JOIN sales s ON s.region_id=r.id GROUP BY r.name ORDER BY 2 DESC",
+  "difficulty": "moderate"
+ },
+ {
+  "question_id": 4,
+  "db_id": "tiny",
+  "question": "Which country has the largest number of regions?",
+  "evidence": "",
+  "SQL": "SELECT country FROM regions GROUP BY country ORDER BY count(*) DESC LIMIT 1",
+  "difficulty": "moderate"
+ }
+]

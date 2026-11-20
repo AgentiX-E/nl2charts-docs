@@ -1,0 +1,9 @@
+{
+  "name": "@agentix-e/nl2charts-browser",
+  "version": "1.0.0",
+  "type": "module",
+  "sideEffects": false,
+  "exports": { ".": "./src/index.ts" },
+  "dependencies": { "@agentix-e/nl2charts-core": "workspace:^" },
+  "peerDependencies": { "@duckdb/duckdb-wasm": "1.33.1-dev65.0" }
+}

@@ -1,0 +1,121 @@
+{
+ "ok": true,
+ "summary": {
+  "universal": 9,
+  "gatesPassed": 6,
+  "gatesFailed": 0,
+  "obligations": 3,
+  "obligationsUnmet": 1,
+  "clusterSkipped": 3
+ },
+ "assertions": [
+  {
+   "id": "readonly-transaction",
+   "class": "universal",
+   "kind": "gate",
+   "expected": "write rejected",
+   "got": "rejected",
+   "pass": true,
+   "note": ""
+  },
+  {
+   "id": "statement-timeout",
+   "class": "universal",
+   "kind": "obligation",
+   "expected": "aborted near 100ms",
+   "got": "completed in 600ms",
+   "pass": false,
+   "note": "PGlite ignores statement_timeout; the host must enforce a deadline (worker termination) or a slow query pins the tab"
+  },
+  {
+   "id": "search-path",
+   "class": "universal",
+   "kind": "gate",
+   "expected": "resolves to s2.t3",
+   "got": "resolved",
+   "pass": true,
+   "note": "a pooled session must reset this; it leaks between tenants otherwise"
+  },
+  {
+   "id": "transaction-rollback",
+   "class": "universal",
+   "kind": "gate",
+   "expected": "0 rows",
+   "got": "0 rows",
+   "pass": true,
+   "note": ""
+  },
+  {
+   "id": "identifier-folding",
+   "class": "universal",
+   "kind": "gate",
+   "expected": "quoted kept, unquoted folded",
+   "got": "quoted=1 folded=0",
+   "pass": true,
+   "note": "SQLite is case-insensitive; a table named \"Users\" changes meaning on PG"
+  },
+  {
+   "id": "boolean-strictness",
+   "class": "universal",
+   "kind": "gate",
+   "expected": "flag = 1 rejected",
+   "got": "rejected",
+   "pass": true,
+   "note": "generated SQL often compares booleans to 1, which SQLite accepts"
+  },
+  {
+   "id": "concat-null",
+   "class": "universal",
+   "kind": "gate",
+   "expected": "NULL",
+   "got": "NULL",
+   "pass": true,
+   "note": ""
+  },
+  {
+   "id": "text-collation",
+   "class": "universal",
+   "kind": "obligation",
+   "expected": "order recorded",
+   "got": "B,a,c,Á",
+   "pass": true,
+   "note": "PGlite defaults to C (byte order); a cluster initdb-ed with en_US.UTF-8 orders a,Á,B,c instead, so the axis order differs by *server*, which no client-side test can see. The adapter must pin COLLATE explicitly"
+  },
+  {
+   "id": "null-ordering",
+   "class": "universal",
+   "kind": "obligation",
+   "expected": "NULLS LAST (PG default)",
+   "got": "NULLS LAST",
+   "pass": true,
+   "note": "differs from SQLite; a bar chart gains a phantom category"
+  },
+  {
+   "id": "tls-and-auth",
+   "class": "cluster",
+   "kind": "gap",
+   "expected": "TLS + SCRAM",
+   "got": "skipped",
+   "pass": null,
+   "note": "PGlite has no network; auth is the pg driver's contract, not ours"
+  },
+  {
+   "id": "pool-reuse",
+   "class": "cluster",
+   "kind": "gap",
+   "expected": "no session state leak across checkouts",
+   "got": "skipped",
+   "pass": null,
+   "note": "requires a real pool; search_path and statement_timeout are per-session"
+  },
+  {
+   "id": "multi-tenant-rls",
+   "class": "cluster",
+   "kind": "gap",
+   "expected": "RLS enforced by roles",
+   "got": "skipped",
+   "pass": null,
+   "note": "PGlite runs as one superuser, so policies cannot be exercised"
+  }
+ ]
+}

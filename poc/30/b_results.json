@@ -1,0 +1,306 @@
+{
+ "strict": 23,
+ "details": [
+  {
+   "id": "q01",
+   "cat": "simple_count",
+   "strict": true,
+   "agree": "3/3",
+   "sql": "SELECT COUNT(*) AS total_orders FROM orders",
+   "err": null,
+   "gold_rows": 1,
+   "pred_rows": 1
+  },
+  {
+   "id": "q02",
+   "cat": "simple_sum",
+   "strict": true,
+   "agree": "3/3",
+   "sql": "SELECT SUM(oi.qty * oi.unit_price * (1 - oi.discount)) AS total_revenue\nFROM orders o\nJOIN order_items oi ON oi.order_id = o.order_id\nWHERE o.status = 'paid'",
+   "err": null,
+   "gold_rows": 1,
+   "pred_rows": 1
+  },
+  {
+   "id": "q03",
+   "cat": "distinct_count",
+   "strict": true,
+   "agree": "3/3",
+   "sql": "SELECT COUNT(DISTINCT customer_id) FROM orders",
+   "err": null,
+   "gold_rows": 1,
+   "pred_rows": 1
+  },
+  {
+   "id": "q04",
+   "cat": "avg",
+   "strict": true,
+   "agree": "3/3",
+   "sql": "SELECT AVG(total_amount) AS avg_order_amount FROM orders WHERE status = 'paid'",
+   "err": null,
+   "gold_rows": 1,
+   "pred_rows": 1
+  },
+  {
+   "id": "q05",
+   "cat": "join_group",
+   "strict": true,
+   "agree": "3/3",
+   "sql": "SELECT c.city, SUM(oi.qty * oi.unit_price * (1 - oi.discount)) AS revenue\nFROM orders o\nJOIN customers c ON o.customer_id = c.customer_id\nJOIN order_items oi ON o.order_id = oi.order_id\nWHERE o.status = 'paid'\nGROUP BY c.city",
+   "err": null,
+   "gold_rows": 5,
+   "pred_rows": 5
+  },
+  {
+   "id": "q06",
+   "cat": "multi_join",
+   "strict": true,
+   "agree": "3/3",
+   "sql": "SELECT p.category, SUM(oi.qty * oi.unit_price * (1 - oi.discount)) AS revenue\nFROM orders o\nJOIN order_items oi ON oi.order_id = o.order_id\nJOIN products p ON p.product_id = oi.product_id\nWHERE o.status = 'paid'\nGROUP BY p.category",
+   "err": null,
+   "gold_rows": 4,
+   "pred_rows": 4
+  },
+  {
+   "id": "q07",
+   "cat": "ratio",
+   "strict": true,
+   "agree": "2/3",
+   "sql": "SELECT c.segment, AVG(o.total_amount) AS aov\nFROM orders o\nJOIN customers c ON o.customer_id = c.customer_id\nWHERE o.status = 'paid'\nGROUP BY c.segment",
+   "err": null,
+   "gold_rows": 3,
+   "pred_rows": 3
+  },
+  {
+   "id": "q08",
+   "cat": "time_bucket",
+   "strict": false,
+   "agree": "2/3",
+   "sql": "SELECT EXTRACT(MONTH FROM o.order_date) AS month, SUM(oi.qty * oi.unit_price * (1 - oi.discount)) AS revenue\nFROM orders o\nJOIN order_items oi ON oi.order_id = o.order_id\nWHERE o.status = 'paid' AND EXTRACT(YEAR FROM o.order_date) = 2025\nGROUP BY EXTRACT(MONTH FROM o.order_date)\nORDER BY month",
+   "err": null,
+   "gold_rows": 12,
+   "pred_rows": 12
+  },
+  {
+   "id": "q09",
+   "cat": "topk",
+   "strict": true,
+   "agree": "3/3",
+   "sql": "SELECT p.name, SUM(oi.qty) AS total_quantity\nFROM order_items oi\nJOIN products p ON oi.product_id = p.product_id\nGROUP BY p.product_id, p.name\nORDER BY total_quantity DESC\nLIMIT 5",
+   "err": null,
+   "gold_rows": 5,
+   "pred_rows": 5
+  },
+  {
+   "id": "q10",
+   "cat": "anti_join",
+   "strict": true,
+   "agree": "3/3",
+   "sql": "SELECT COUNT(*) FROM customers c WHERE NOT EXISTS (SELECT 1 FROM orders o WHERE o.customer_id = c.customer_id)",
+   "err": null,
+   "gold_rows": 1,
+   "pred_rows": 1
+  },
+  {
+   "id": "q11",
+   "cat": "ratio_conditional",
+   "strict": true,
+   "agree": "2/3",
+   "sql": "SELECT channel, AVG(CASE WHEN status = 'refunded' THEN 1.0 ELSE 0.0 END) AS refund_rate FROM orders GROUP BY channel",
+   "err": null,
+   "gold_rows": 3,
+   "pred_rows": 3
+  },
+  {
+   "id": "q12",
+   "cat": "join_group",
+   "strict": true,
+   "agree": "3/3",
+   "sql": "SELECT reason, SUM(amount) AS total_refund_amount FROM refunds GROUP BY reason",
+   "err": null,
+   "gold_rows": 4,
+   "pred_rows": 4
+  },
+  {
+   "id": "q13",
+   "cat": "topk_join",
+   "strict": false,
+   "agree": "3/3",
+   "sql": "SELECT c.city\nFROM refunds r\nJOIN orders o ON r.order_id = o.order_id\nJOIN customers c ON o.customer_id = c.customer_id\nGROUP BY c.city\nORDER BY SUM(r.amount) DESC\nLIMIT 1",
+   "err": null,
+   "gold_rows": 1,
+   "pred_rows": 1
+  },
+  {
+   "id": "q14",
+   "cat": "time_bucket_multi",
+   "strict": false,
+   "agree": "3/3",
+   "sql": "SELECT EXTRACT(MONTH FROM order_date) AS month, channel, COUNT(*) AS order_count\nFROM orders\nWHERE EXTRACT(YEAR FROM order_date) = 2025\nGROUP BY month, channel\nORDER BY month, channel",
+   "err": null,
+   "gold_rows": 36,
+   "pred_rows": 36
+  },
+  {
+   "id": "q15",
+   "cat": "derived",
+   "strict": true,
+   "agree": "3/3",
+   "sql": "SELECT SUM(oi.qty * oi.unit_price * (1 - oi.discount) - oi.qty * p.cost) AS total_gross_margin\nFROM orders o\nJOIN order_items oi ON oi.order_id = o.order_id\nJOIN products p ON p.product_id = oi.product_id\nWHERE o.status = 'paid'",
+   "err": null,
+   "gold_rows": 1,
+   "pred_rows": 1
+  },
+  {
+   "id": "q16",
+   "cat": "having",
+   "strict": false,
+   "agree": "3/3",
+   "sql": "SELECT c.customer_id, c.name\nFROM customers c\nJOIN orders o ON o.customer_id = c.customer_id\nWHERE o.status = 'paid'\nGROUP BY c.customer_id, c.name\nHAVING COUNT(*) > 10",
+   "err": null,
+   "gold_rows": 42,
+   "pred_rows": 42
+  },
+  {
+   "id": "q17",
+   "cat": "avg",
+   "strict": true,
+   "agree": "3/3",
+   "sql": "SELECT AVG(discount) AS avg_discount_rate FROM order_items",
+   "err": null,
+   "gold_rows": 1,
+   "pred_rows": 1
+  },
+  {
+   "id": "q18",
+   "cat": "topk_multi_cond",
+   "strict": true,
+   "agree": "3/3",
+   "sql": "SELECT p.brand, SUM(oi.qty * oi.unit_price * (1 - oi.discount)) AS revenue\nFROM order_items oi\nJOIN products p ON oi.product_id = p.product_id\nJOIN orders o ON oi.order_id = o.order_id\nWHERE p.category = 'Electronics' AND o.status = 'paid'\nGROUP BY p.brand\nORDER BY revenue DESC\nLIMIT 3",
+   "err": null,
+   "gold_rows": 3,
+   "pred_rows": 3
+  },
+  {
+   "id": "q19",
+   "cat": "anti_join_cond",
+   "strict": true,
+   "agree": "3/3",
+   "sql": "SELECT COUNT(*) AS order_count\nFROM orders o\nWHERE o.status = 'refunded'\n  AND NOT EXISTS (\n    SELECT 1 FROM refunds r WHERE r.order_id = o.order_id\n  )",
+   "err": null,
+   "gold_rows": 1,
+   "pred_rows": 1
+  },
+  {
+   "id": "q20",
+   "cat": "median",
+   "strict": true,
+   "agree": "3/3",
+   "sql": "SELECT median(total_amount) FROM orders WHERE status = 'paid'",
+   "err": null,
+   "gold_rows": 1,
+   "pred_rows": 1
+  },
+  {
+   "id": "q21",
+   "cat": "ratio_total",
+   "strict": true,
+   "agree": "3/3",
+   "sql": "SELECT c.segment, SUM(oi.qty * oi.unit_price * (1 - oi.discount)) / (SELECT SUM(oi2.qty * oi2.unit_price * (1 - oi2.discount)) FROM order_items oi2 JOIN orders o2 ON oi2.order_id = o2.order_id WHERE o2.status = 'paid') AS revenue_share FROM customers c JOIN orders o ON c.customer_id = o.customer_id JOIN order_items oi ON o.order_id = oi.order_id WHERE o.status = 'paid' GROUP BY c.segment",
+   "err": null,
+   "gold_rows": 3,
+   "pred_rows": 3
+  },
+  {
+   "id": "q22",
+   "cat": "distinct_multi_join",
+   "strict": true,
+   "agree": "3/3",
+   "sql": "SELECT p.category, COUNT(DISTINCT o.customer_id) AS customer_count\nFROM order_items oi\nJOIN products p ON oi.product_id = p.product_id\nJOIN orders o ON oi.order_id = o.order_id\nGROUP BY p.category",
+   "err": null,
+   "gold_rows": 4,
+   "pred_rows": 4
+  },
+  {
+   "id": "q23",
+   "cat": "window",
+   "strict": false,
+   "agree": "2/3",
+   "sql": "SELECT month, revenue, (revenue - LAG(revenue) OVER (ORDER BY month)) / LAG(revenue) OVER (ORDER BY month) AS mom_growth\nFROM (\n  SELECT EXTRACT(MONTH FROM o.order_date) AS month,\n         SUM(oi.qty * oi.unit_price * (1 - oi.discount)) AS revenue\n  FROM orders o\n  JOIN order_items oi ON oi.order_id = o.order_id\n  WHERE o.status = 'paid' AND EXTRACT(YEAR FROM o.order_date) = 2025\n  GROUP BY EXTRACT(MONTH FROM o.order_date)\n) t\nORDER BY month",
+   "err": null,
+   "gold_rows": 12,
+   "pred_rows": 12
+  },
+  {
+   "id": "q24",
+   "cat": "topk_avg",
+   "strict": false,
+   "agree": "3/3",
+   "sql": "SELECT p.category\nFROM order_items oi\nJOIN products p ON oi.product_id = p.product_id\nGROUP BY p.category\nORDER BY AVG(oi.unit_price) DESC\nLIMIT 1",
+   "err": null,
+   "gold_rows": 1,
+   "pred_rows": 1
+  },
+  {
+   "id": "q25",
+   "cat": "filter_count",
+   "strict": true,
+   "agree": "3/3",
+   "sql": "SELECT COUNT(*) FROM orders WHERE order_date >= DATE '2025-01-01' AND order_date < DATE '2026-01-01' AND total_amount > 500",
+   "err": null,
+   "gold_rows": 1,
+   "pred_rows": 1
+  },
+  {
+   "id": "q26",
+   "cat": "time_bucket_quarter",
+   "strict": true,
+   "agree": "3/3",
+   "sql": "SELECT QUARTER(signup_date) AS quarter, COUNT(*) AS new_customers\nFROM customers\nWHERE YEAR(signup_date) = 2024\nGROUP BY QUARTER(signup_date)\nORDER BY quarter",
+   "err": null,
+   "gold_rows": 4,
+   "pred_rows": 4
+  },
+  {
+   "id": "q27",
+   "cat": "ratio_cond_simple",
+   "strict": true,
+   "agree": "3/3",
+   "sql": "SELECT AVG(CASE WHEN channel = 'app' THEN 1.0 ELSE 0.0 END) AS app_paid_order_fraction FROM orders WHERE status = 'paid'",
+   "err": null,
+   "gold_rows": 1,
+   "pred_rows": 1
+  },
+  {
+   "id": "q28",
+   "cat": "window_group",
+   "strict": true,
+   "agree": "3/3",
+   "sql": "SELECT customer_id, MAX(order_date) AS most_recent_order_date FROM orders GROUP BY customer_id",
+   "err": null,
+   "gold_rows": 200,
+   "pred_rows": 200
+  },
+  {
+   "id": "q29",
+   "cat": "anti_join_multi",
+   "strict": false,
+   "agree": "2/3",
+   "sql": "SELECT SUM(oi.qty) FROM order_items oi WHERE oi.product_id NOT IN (SELECT oi2.product_id FROM order_items oi2 JOIN refunds r ON oi2.order_id = r.order_id)",
+   "err": null,
+   "gold_rows": 1,
+   "pred_rows": 1
+  },
+  {
+   "id": "q30",
+   "cat": "topk_ratio",
+   "strict": true,
+   "agree": "3/3",
+   "sql": "SELECT c.city, AVG(o.total_amount) AS avg_order_value\nFROM orders o\nJOIN customers c ON o.customer_id = c.customer_id\nWHERE o.status = 'paid'\nGROUP BY c.city\nORDER BY avg_order_value DESC\nLIMIT 3",
+   "err": null,
+   "gold_rows": 3,
+   "pred_rows": 3
+  }
+ ],
+ "elapsed_s": 71.8
+}

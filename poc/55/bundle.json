@@ -1,0 +1,12 @@
+{
+  "bytes": 5944,
+  "gzip": 2440,
+  "inputs": [
+    "spec.mjs",
+    "entry.mjs"
+  ],
+  "importsCore": [],
+  "importsChart": [],
+  "hasAiSdk": false,
+  "hasNodeBuiltin": false
+}

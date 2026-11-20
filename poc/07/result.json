@@ -1,0 +1,2318 @@
+{
+ "mode=plain temp=0.0": {
+  "summary": {
+   "n": 40,
+   "ok": 40,
+   "parse_fail": 0,
+   "extra": 0,
+   "halluc": 0,
+   "errors": 0
+  },
+  "rows": [
+   {
+    "cls": "A",
+    "q": "上月各区域净收入",
+    "ms": 886.650562286377,
+    "how": "direct",
+    "ok": true,
+    "issues": [],
+    "usage": {
+     "prompt_tokens": 219,
+     "completion_tokens": 36,
+     "total_tokens": 255,
+     "prompt_tokens_details": {
+      "cached_tokens": 0
+     },
+     "prompt_cache_hit_tokens": 0,
+     "prompt_cache_miss_tokens": 219
+    },
+    "head": "{\"metrics\":[\"net_revenue\"],\"dimensions\":[\"region\"],\"filters\":[{\"field\":\"order_mo"
+   },
+   {
+    "cls": "A",
+    "q": "本季度订单数按渠道",
+    "ms": 587.4779224395752,
+    "how": "direct",
+    "ok": true,
+    "issues": [],
+    "usage": {
+     "prompt_tokens": 220,
+     "completion_tokens": 20,
+     "total_tokens": 240,
+     "prompt_tokens_details": {
+      "cached_tokens": 0
+     },
+     "prompt_cache_hit_tokens": 0,
+     "prompt_cache_miss_tokens": 220
+    },
+    "head": "{\"metrics\":[\"order_count\"],\"dimensions\":[\"channel\"],\"filters\":[]}"
+   },
+   {
+    "cls": "A",
+    "q": "各品类退款额",
+    "ms": 1104.8216819763184,
+    "how": "direct",
+    "ok": true,
+    "issues": [],
+    "usage": {
+     "prompt_tokens": 218,
+     "completion_tokens": 21,
+     "total_tokens": 239,
+     "prompt_tokens_details": {
+      "cached_tokens": 0
+     },
+     "prompt_cache_hit_tokens": 0,
+     "prompt_cache_miss_tokens": 218
+    },
+    "head": "{\"metrics\":[\"refund_amount\"],\"dimensions\":[\"category\"],\"filters\":[]}"
+   },
+   {
+    "cls": "A",
+    "q": "上月客单价按区域",
+    "ms": 771.0859775543213,
+    "how": "direct",
+    "ok": true,
+    "issues": [],
+    "usage": {
+     "prompt_tokens": 219,
+     "completion_tokens": 20,
+     "total_tokens": 239,
+     "prompt_tokens_details": {
+      "cached_tokens": 0
+     },
+     "prompt_cache_hit_tokens": 0,
+     "prompt_cache_miss_tokens": 219
+    },
+    "head": "{\"metrics\":[\"aov\"],\"dimensions\":[\"region\"],\"filters\":[]}"
+   },
+   {
+    "cls": "A",
+    "q": "今年各月净收入",
+    "ms": 839.8356437683105,
+    "how": "direct",
+    "ok": true,
+    "issues": [],
+    "usage": {
+     "prompt_tokens": 219,
+     "completion_tokens": 22,
+     "total_tokens": 241,
+     "prompt_tokens_details": {
+      "cached_tokens": 0
+     },
+     "prompt_cache_hit_tokens": 0,
+     "prompt_cache_miss_tokens": 219
+    },
+    "head": "{\"metrics\":[\"net_revenue\"],\"dimensions\":[\"order_month\"],\"filters\":[]}"
+   },
+   {
+    "cls": "A",
+    "q": "上周各渠道订单数",
+    "ms": 758.0356597900391,
+    "how": "direct",
+    "ok": true,
+    "issues": [],
+    "usage": {
+     "prompt_tokens": 219,
+     "completion_tokens": 20,
+     "total_tokens": 239,
+     "prompt_tokens_details": {
+      "cached_tokens": 0
+     },
+     "prompt_cache_hit_tokens": 0,
+     "prompt_cache_miss_tokens": 219
+    },
+    "head": "{\"metrics\":[\"order_count\"],\"dimensions\":[\"channel\"],\"filters\":[]}"
+   },
+   {
+    "cls": "A",
+    "q": "各区域退款额占比",
+    "ms": 810.8336925506592,
+    "how": "direct",
+    "ok": true,
+    "issues": [],
+    "usage": {
+     "prompt_tokens": 219,
+     "completion_tokens": 21,
+     "total_tokens": 240,
+     "prompt_tokens_details": {
+      "cached_tokens": 0
+     },
+     "prompt_cache_hit_tokens": 0,
+     "prompt_cache_miss_tokens": 219
+    },
+    "head": "{\"metrics\":[\"refund_amount\"],\"dimensions\":[\"region\"],\"filters\":[]}"
+   },
+   {
+    "cls": "A",
+    "q": "本月各品类客单价",
+    "ms": 956.2840461730957,
+    "how": "direct",
+    "ok": true,
+    "issues": [],
+    "usage": {
+     "prompt_tokens": 219,
+     "completion_tokens": 20,
+     "total_tokens": 239,
+     "prompt_tokens_details": {
+      "cached_tokens": 0
+     },
+     "prompt_cache_hit_tokens": 0,
+     "prompt_cache_miss_tokens": 219
+    },
+    "head": "{\"metrics\":[\"aov\"],\"dimensions\":[\"category\"],\"filters\":[]}"
+   },
+   {
+    "cls": "A",
+    "q": "最近30天净收入按渠道",
+    "ms": 844.4123268127441,
+    "how": "direct",
+    "ok": true,
+    "issues": [],
+    "usage": {
+     "prompt_tokens": 221,
+     "completion_tokens": 21,
+     "total_tokens": 242,
+     "prompt_tokens_details": {
+      "cached_tokens": 0
+     },
+     "prompt_cache_hit_tokens": 0,
+     "prompt_cache_miss_tokens": 221
+    },
+    "head": "{\"metrics\":[\"net_revenue\"],\"dimensions\":[\"channel\"],\"filters\":[]}"
+   },
+   {
+    "cls": "A",
+    "q": "各区域订单数",
+    "ms": 720.8936214447021,
+    "how": "direct",
+    "ok": true,
+    "issues": [],
+    "usage": {
+     "prompt_tokens": 218,
+     "completion_tokens": 20,
+     "total_tokens": 238,
+     "prompt_tokens_details": {
+      "cached_tokens": 0
+     },
+     "prompt_cache_hit_tokens": 0,
+     "prompt_cache_miss_tokens": 218
+    },
+    "head": "{\"metrics\":[\"order_count\"],\"dimensions\":[\"region\"],\"filters\":[]}"
+   },
+   {
+    "cls": "B",
+    "q": "上月各区域净收入、订单数和客单价",
+    "ms": 957.5104713439941,
+    "how": "direct",
+    "ok": true,
+    "issues": [],
+    "usage": {
+     "prompt_tokens": 224,
+     "completion_tokens": 27,
+     "total_tokens": 251,
+     "prompt_tokens_details": {
+      "cached_tokens": 0
+     },
+     "prompt_cache_hit_tokens": 0,
+     "prompt_cache_miss_tokens": 224
+    },
+    "head": "{\"metrics\":[\"net_revenue\",\"order_count\",\"aov\"],\"dimensions\":[\"region\"],\"filters\""
+   },
+   {
+    "cls": "B",
+    "q": "按渠道和品类看退款额与订单数",
+    "ms": 921.2164878845215,
+    "how": "direct",
+    "ok": true,
+    "issues": [],
+    "usage": {
+     "prompt_tokens": 224,
+     "completion_tokens": 26,
+     "total_tokens": 250,
+     "prompt_tokens_details": {
+      "cached_tokens": 0
+     },
+     "prompt_cache_hit_tokens": 0,
+     "prompt_cache_miss_tokens": 224
+    },
+    "head": "{\"metrics\":[\"refund_amount\",\"order_count\"],\"dimensions\":[\"channel\",\"category\"],\""
+   },
+   {
+    "cls": "B",
+    "q": "今年每个月各区域的净收入和客单价",
+    "ms": 889.3992900848389,
+    "how": "direct",
+    "ok": true,
+    "issues": [],
+    "usage": {
+     "prompt_tokens": 222,
+     "completion_tokens": 27,
+     "total_tokens": 249,
+     "prompt_tokens_details": {
+      "cached_tokens": 0
+     },
+     "prompt_cache_hit_tokens": 0,
+     "prompt_cache_miss_tokens": 222
+    },
+    "head": "{\"metrics\":[\"net_revenue\",\"aov\"],\"dimensions\":[\"order_month\",\"region\"],\"filters\""
+   },
+   {
+    "cls": "B",
+    "q": "各品类订单数、退款额，按渠道拆分",
+    "ms": 864.5141124725342,
+    "how": "direct",
+    "ok": true,
+    "issues": [],
+    "usage": {
+     "prompt_tokens": 225,
+     "completion_tokens": 26,
+     "total_tokens": 251,
+     "prompt_tokens_details": {
+      "cached_tokens": 0
+     },
+     "prompt_cache_hit_tokens": 0,
+     "prompt_cache_miss_tokens": 225
+    },
+    "head": "{\"metrics\":[\"order_count\",\"refund_amount\"],\"dimensions\":[\"category\",\"channel\"],\""
+   },
+   {
+    "cls": "B",
+    "q": "上月各渠道的客单价和订单数对比",
+    "ms": 902.8217792510986,
+    "how": "direct",
+    "ok": true,
+    "issues": [],
+    "usage": {
+     "prompt_tokens": 224,
+     "completion_tokens": 38,
+     "total_tokens": 262,
+     "prompt_tokens_details": {
+      "cached_tokens": 0
+     },
+     "prompt_cache_hit_tokens": 0,
+     "prompt_cache_miss_tokens": 224
+    },
+    "head": "{\"metrics\":[\"aov\",\"order_count\"],\"dimensions\":[\"channel\"],\"filters\":[{\"field\":\"o"
+   },
+   {
+    "cls": "B",
+    "q": "近三个月各区域净收入趋势",
+    "ms": 932.7638149261475,
+    "how": "direct",
+    "ok": true,
+    "issues": [],
+    "usage": {
+     "prompt_tokens": 221,
+     "completion_tokens": 24,
+     "total_tokens": 245,
+     "prompt_tokens_details": {
+      "cached_tokens": 0
+     },
+     "prompt_cache_hit_tokens": 0,
+     "prompt_cache_miss_tokens": 221
+    },
+    "head": "{\"metrics\":[\"net_revenue\"],\"dimensions\":[\"region\",\"order_month\"],\"filters\":[]}"
+   },
+   {
+    "cls": "B",
+    "q": "各品类净收入和退款额",
+    "ms": 759.4304084777832,
+    "how": "direct",
+    "ok": true,
+    "issues": [],
+    "usage": {
+     "prompt_tokens": 220,
+     "completion_tokens": 25,
+     "total_tokens": 245,
+     "prompt_tokens_details": {
+      "cached_tokens": 0
+     },
+     "prompt_cache_hit_tokens": 0,
+     "prompt_cache_miss_tokens": 220
+    },
+    "head": "{\"metrics\":[\"net_revenue\",\"refund_amount\"],\"dimensions\":[\"category\"],\"filters\":["
+   },
+   {
+    "cls": "B",
+    "q": "按区域、渠道统计订单数和客单价",
+    "ms": 936.5999698638916,
+    "how": "direct",
+    "ok": true,
+    "issues": [],
+    "usage": {
+     "prompt_tokens": 223,
+     "completion_tokens": 25,
+     "total_tokens": 248,
+     "prompt_tokens_details": {
+      "cached_tokens": 0
+     },
+     "prompt_cache_hit_tokens": 0,
+     "prompt_cache_miss_tokens": 223
+    },
+    "head": "{\"metrics\":[\"order_count\",\"aov\"],\"dimensions\":[\"region\",\"channel\"],\"filters\":[]}"
+   },
+   {
+    "cls": "B",
+    "q": "本月各品类退款额与净收入",
+    "ms": 811.9781017303467,
+    "how": "direct",
+    "ok": true,
+    "issues": [],
+    "usage": {
+     "prompt_tokens": 222,
+     "completion_tokens": 25,
+     "total_tokens": 247,
+     "prompt_tokens_details": {
+      "cached_tokens": 0
+     },
+     "prompt_cache_hit_tokens": 0,
+     "prompt_cache_miss_tokens": 222
+    },
+    "head": "{\"metrics\":[\"refund_amount\",\"net_revenue\"],\"dimensions\":[\"category\"],\"filters\":["
+   },
+   {
+    "cls": "B",
+    "q": "各区域每月订单数",
+    "ms": 713.2468223571777,
+    "how": "direct",
+    "ok": true,
+    "issues": [],
+    "usage": {
+     "prompt_tokens": 219,
+     "completion_tokens": 23,
+     "total_tokens": 242,
+     "prompt_tokens_details": {
+      "cached_tokens": 0
+     },
+     "prompt_cache_hit_tokens": 0,
+     "prompt_cache_miss_tokens": 219
+    },
+    "head": "{\"metrics\":[\"order_count\"],\"dimensions\":[\"region\",\"order_month\"],\"filters\":[]}"
+   },
+   {
+    "cls": "C",
+    "q": "上月毛利率",
+    "ms": 885.3123188018799,
+    "how": "direct",
+    "ok": true,
+    "issues": [],
+    "usage": {
+     "prompt_tokens": 216,
+     "completion_tokens": 18,
+     "total_tokens": 234,
+     "prompt_tokens_details": {
+      "cached_tokens": 0
+     },
+     "prompt_cache_hit_tokens": 0,
+     "prompt_cache_miss_tokens": 216
+    },
+    "head": "{\"error\":\"METRIC_NOT_FOUND\",\"candidates\":[\"net_revenue\"]}"
+   },
+   {
+    "cls": "C",
+    "q": "各区域库存周转率",
+    "ms": 679.8923015594482,
+    "how": "direct",
+    "ok": true,
+    "issues": [],
+    "usage": {
+     "prompt_tokens": 219,
+     "completion_tokens": 28,
+     "total_tokens": 247,
+     "prompt_tokens_details": {
+      "cached_tokens": 0
+     },
+     "prompt_cache_hit_tokens": 0,
+     "prompt_cache_miss_tokens": 219
+    },
+    "head": "{\"error\":\"METRIC_NOT_FOUND\",\"candidates\":[\"net_revenue\",\"order_count\",\"aov\",\"ref"
+   },
+   {
+    "cls": "C",
+    "q": "本月新增用户数",
+    "ms": 751.5528202056885,
+    "how": "direct",
+    "ok": true,
+    "issues": [],
+    "usage": {
+     "prompt_tokens": 218,
+     "completion_tokens": 17,
+     "total_tokens": 235,
+     "prompt_tokens_details": {
+      "cached_tokens": 0
+     },
+     "prompt_cache_hit_tokens": 0,
+     "prompt_cache_miss_tokens": 218
+    },
+    "head": "{\"error\":\"METRIC_NOT_FOUND\",\"candidates\":[\"order_count\"]}"
+   },
+   {
+    "cls": "C",
+    "q": "各渠道转化率",
+    "ms": 943.9339637756348,
+    "how": "direct",
+    "ok": true,
+    "issues": [],
+    "usage": {
+     "prompt_tokens": 218,
+     "completion_tokens": 17,
+     "total_tokens": 235,
+     "prompt_tokens_details": {
+      "cached_tokens": 0
+     },
+     "prompt_cache_hit_tokens": 0,
+     "prompt_cache_miss_tokens": 218
+    },
+    "head": "{\"error\":\"METRIC_NOT_FOUND\",\"candidates\":[\"aov\"]}"
+   },
+   {
+    "cls": "C",
+    "q": "上月客户满意度",
+    "ms": 627.7291774749756,
+    "how": "direct",
+    "ok": true,
+    "issues": [],
+    "usage": {
+     "prompt_tokens": 217,
+     "completion_tokens": 17,
+     "total_tokens": 234,
+     "prompt_tokens_details": {
+      "cached_tokens": 0
+     },
+     "prompt_cache_hit_tokens": 0,
+     "prompt_cache_miss_tokens": 217
+    },
+    "head": "{\"error\":\"METRIC_NOT_FOUND\",\"candidates\":[\"aov\"]}"
+   },
+   {
+    "cls": "C",
+    "q": "各品类复购率",
+    "ms": 853.4886837005615,
+    "how": "direct",
+    "ok": true,
+    "issues": [],
+    "usage": {
+     "prompt_tokens": 219,
+     "completion_tokens": 17,
+     "total_tokens": 236,
+     "prompt_tokens_details": {
+      "cached_tokens": 0
+     },
+     "prompt_cache_hit_tokens": 0,
+     "prompt_cache_miss_tokens": 219
+    },
+    "head": "{\"error\":\"METRIC_NOT_FOUND\",\"candidates\":[\"order_count\"]}"
+   },
+   {
+    "cls": "C",
+    "q": "本季度人均消费",
+    "ms": 953.7606239318848,
+    "how": "direct",
+    "ok": true,
+    "issues": [],
+    "usage": {
+     "prompt_tokens": 218,
+     "completion_tokens": 34,
+     "total_tokens": 252,
+     "prompt_tokens_details": {
+      "cached_tokens": 0
+     },
+     "prompt_cache_hit_tokens": 0,
+     "prompt_cache_miss_tokens": 218
+    },
+    "head": "{\"error\":\"AMBIGUOUS\",\"candidates\":[\"aov(客单价)\",\"net_revenue(净收入)/order_count(订单数)"
+   },
+   {
+    "cls": "C",
+    "q": "各区域退货率",
+    "ms": 796.10276222229,
+    "how": "direct",
+    "ok": true,
+    "issues": [],
+    "usage": {
+     "prompt_tokens": 218,
+     "completion_tokens": 18,
+     "total_tokens": 236,
+     "prompt_tokens_details": {
+      "cached_tokens": 0
+     },
+     "prompt_cache_hit_tokens": 0,
+     "prompt_cache_miss_tokens": 218
+    },
+    "head": "{\"error\":\"METRIC_NOT_FOUND\",\"candidates\":[\"refund_amount\"]}"
+   },
+   {
+    "cls": "C",
+    "q": "上月广告ROI",
+    "ms": 777.9626846313477,
+    "how": "direct",
+    "ok": true,
+    "issues": [],
+    "usage": {
+     "prompt_tokens": 218,
+     "completion_tokens": 17,
+     "total_tokens": 235,
+     "prompt_tokens_details": {
+      "cached_tokens": 0
+     },
+     "prompt_cache_hit_tokens": 0,
+     "prompt_cache_miss_tokens": 218
+    },
+    "head": "{\"error\":\"METRIC_NOT_FOUND\",\"candidates\":[\"aov\"]}"
+   },
+   {
+    "cls": "C",
+    "q": "各渠道获客成本",
+    "ms": 810.8041286468506,
+    "how": "direct",
+    "ok": true,
+    "issues": [],
+    "usage": {
+     "prompt_tokens": 219,
+     "completion_tokens": 17,
+     "total_tokens": 236,
+     "prompt_tokens_details": {
+      "cached_tokens": 0
+     },
+     "prompt_cache_hit_tokens": 0,
+     "prompt_cache_miss_tokens": 219
+    },
+    "head": "{\"error\":\"METRIC_NOT_FOUND\",\"candidates\":[\"aov\"]}"
+   },
+   {
+    "cls": "D",
+    "q": "最近表现怎么样",
+    "ms": 862.7088069915771,
+    "how": "direct",
+    "ok": true,
+    "issues": [],
+    "usage": {
+     "prompt_tokens": 217,
+     "completion_tokens": 27,
+     "total_tokens": 244,
+     "prompt_tokens_details": {
+      "cached_tokens": 0
+     },
+     "prompt_cache_hit_tokens": 0,
+     "prompt_cache_miss_tokens": 217
+    },
+    "head": "{\"error\":\"AMBIGUOUS\",\"candidates\":[\"net_revenue\",\"order_count\",\"aov\",\"refund_amo"
+   },
+   {
+    "cls": "D",
+    "q": "这个月比上个月好还是差",
+    "ms": 737.9627227783203,
+    "how": "direct",
+    "ok": true,
+    "issues": [],
+    "usage": {
+     "prompt_tokens": 222,
+     "completion_tokens": 27,
+     "total_tokens": 249,
+     "prompt_tokens_details": {
+      "cached_tokens": 0
+     },
+     "prompt_cache_hit_tokens": 0,
+     "prompt_cache_miss_tokens": 222
+    },
+    "head": "{\"error\":\"AMBIGUOUS\",\"candidates\":[\"net_revenue\",\"order_count\",\"aov\",\"refund_amo"
+   },
+   {
+    "cls": "D",
+    "q": "看看销售情况",
+    "ms": 962.4388217926025,
+    "how": "direct",
+    "ok": true,
+    "issues": [],
+    "usage": {
+     "prompt_tokens": 217,
+     "completion_tokens": 27,
+     "total_tokens": 244,
+     "prompt_tokens_details": {
+      "cached_tokens": 0
+     },
+     "prompt_cache_hit_tokens": 0,
+     "prompt_cache_miss_tokens": 217
+    },
+    "head": "{\"error\":\"AMBIGUOUS\",\"candidates\":[\"net_revenue\",\"order_count\",\"aov\",\"refund_amo"
+   },
+   {
+    "cls": "D",
+    "q": "帮我分析一下数据",
+    "ms": 770.9465026855469,
+    "how": "direct",
+    "ok": true,
+    "issues": [],
+    "usage": {
+     "prompt_tokens": 218,
+     "completion_tokens": 27,
+     "total_tokens": 245,
+     "prompt_tokens_details": {
+      "cached_tokens": 0
+     },
+     "prompt_cache_hit_tokens": 0,
+     "prompt_cache_miss_tokens": 218
+    },
+    "head": "{\"error\":\"AMBIGUOUS\",\"candidates\":[\"net_revenue\",\"order_count\",\"aov\",\"refund_amo"
+   },
+   {
+    "cls": "D",
+    "q": "哪个渠道最好",
+    "ms": 717.5178527832031,
+    "how": "direct",
+    "ok": true,
+    "issues": [],
+    "usage": {
+     "prompt_tokens": 217,
+     "completion_tokens": 27,
+     "total_tokens": 244,
+     "prompt_tokens_details": {
+      "cached_tokens": 0
+     },
+     "prompt_cache_hit_tokens": 0,
+     "prompt_cache_miss_tokens": 217
+    },
+    "head": "{\"error\":\"AMBIGUOUS\",\"candidates\":[\"net_revenue\",\"order_count\",\"aov\",\"refund_amo"
+   },
+   {
+    "cls": "D",
+    "q": "这几天怎么样",
+    "ms": 814.469575881958,
+    "how": "direct",
+    "ok": true,
+    "issues": [],
+    "usage": {
+     "prompt_tokens": 216,
+     "completion_tokens": 27,
+     "total_tokens": 243,
+     "prompt_tokens_details": {
+      "cached_tokens": 0
+     },
+     "prompt_cache_hit_tokens": 0,
+     "prompt_cache_miss_tokens": 216
+    },
+    "head": "{\"error\":\"AMBIGUOUS\",\"candidates\":[\"net_revenue\",\"order_count\",\"aov\",\"refund_amo"
+   },
+   {
+    "cls": "D",
+    "q": "对比一下",
+    "ms": 943.5102939605713,
+    "how": "direct",
+    "ok": true,
+    "issues": [],
+    "usage": {
+     "prompt_tokens": 216,
+     "completion_tokens": 27,
+     "total_tokens": 243,
+     "prompt_tokens_details": {
+      "cached_tokens": 0
+     },
+     "prompt_cache_hit_tokens": 0,
+     "prompt_cache_miss_tokens": 216
+    },
+    "head": "{\"error\":\"AMBIGUOUS\",\"candidates\":[\"net_revenue\",\"order_count\",\"aov\",\"refund_amo"
+   },
+   {
+    "cls": "D",
+    "q": "趋势如何",
+    "ms": 921.1225509643555,
+    "how": "direct",
+    "ok": true,
+    "issues": [],
+    "usage": {
+     "prompt_tokens": 216,
+     "completion_tokens": 27,
+     "total_tokens": 243,
+     "prompt_tokens_details": {
+      "cached_tokens": 0
+     },
+     "prompt_cache_hit_tokens": 0,
+     "prompt_cache_miss_tokens": 216
+    },
+    "head": "{\"error\":\"AMBIGUOUS\",\"candidates\":[\"net_revenue\",\"order_count\",\"aov\",\"refund_amo"
+   },
+   {
+    "cls": "D",
+    "q": "哪个区域表现最差",
+    "ms": 709.5584869384766,
+    "how": "direct",
+    "ok": true,
+    "issues": [],
+    "usage": {
+     "prompt_tokens": 219,
+     "completion_tokens": 27,
+     "total_tokens": 246,
+     "prompt_tokens_details": {
+      "cached_tokens": 0
+     },
+     "prompt_cache_hit_tokens": 0,
+     "prompt_cache_miss_tokens": 219
+    },
+    "head": "{\"error\":\"AMBIGUOUS\",\"candidates\":[\"net_revenue\",\"order_count\",\"aov\",\"refund_amo"
+   },
+   {
+    "cls": "D",
+    "q": "有没有异常",
+    "ms": 725.6908416748047,
+    "how": "direct",
+    "ok": true,
+    "issues": [],
+    "usage": {
+     "prompt_tokens": 216,
+     "completion_tokens": 27,
+     "total_tokens": 243,
+     "prompt_tokens_details": {
+      "cached_tokens": 0
+     },
+     "prompt_cache_hit_tokens": 0,
+     "prompt_cache_miss_tokens": 216
+    },
+    "head": "{\"error\":\"AMBIGUOUS\",\"candidates\":[\"net_revenue\",\"order_count\",\"aov\",\"refund_amo"
+   }
+  ]
+ },
+ "mode=json_object temp=0.0": {
+  "summary": {
+   "n": 40,
+   "ok": 40,
+   "parse_fail": 0,
+   "extra": 0,
+   "halluc": 0,
+   "errors": 0
+  },
+  "rows": [
+   {
+    "cls": "A",
+    "q": "上月各区域净收入",
+    "ms": 898.0977535247803,
+    "how": "direct",
+    "ok": true,
+    "issues": [],
+    "usage": {
+     "prompt_tokens": 242,
+     "completion_tokens": 21,
+     "total_tokens": 263,
+     "prompt_tokens_details": {
+      "cached_tokens": 0
+     },
+     "prompt_cache_hit_tokens": 0,
+     "prompt_cache_miss_tokens": 242
+    },
+    "head": "{\"metrics\":[\"net_revenue\"],\"dimensions\":[\"region\"],\"filters\":[]}"
+   },
+   {
+    "cls": "A",
+    "q": "本季度订单数按渠道",
+    "ms": 742.7575588226318,
+    "how": "direct",
+    "ok": true,
+    "issues": [],
+    "usage": {
+     "prompt_tokens": 243,
+     "completion_tokens": 20,
+     "total_tokens": 263,
+     "prompt_tokens_details": {
+      "cached_tokens": 0
+     },
+     "prompt_cache_hit_tokens": 0,
+     "prompt_cache_miss_tokens": 243
+    },
+    "head": "{\"metrics\":[\"order_count\"],\"dimensions\":[\"channel\"],\"filters\":[]}"
+   },
+   {
+    "cls": "A",
+    "q": "各品类退款额",
+    "ms": 925.7493019104004,
+    "how": "direct",
+    "ok": true,
+    "issues": [],
+    "usage": {
+     "prompt_tokens": 241,
+     "completion_tokens": 21,
+     "total_tokens": 262,
+     "prompt_tokens_details": {
+      "cached_tokens": 0
+     },
+     "prompt_cache_hit_tokens": 0,
+     "prompt_cache_miss_tokens": 241
+    },
+    "head": "{\"metrics\":[\"refund_amount\"],\"dimensions\":[\"category\"],\"filters\":[]}"
+   },
+   {
+    "cls": "A",
+    "q": "上月客单价按区域",
+    "ms": 783.9064598083496,
+    "how": "direct",
+    "ok": true,
+    "issues": [],
+    "usage": {
+     "prompt_tokens": 242,
+     "completion_tokens": 20,
+     "total_tokens": 262,
+     "prompt_tokens_details": {
+      "cached_tokens": 0
+     },
+     "prompt_cache_hit_tokens": 0,
+     "prompt_cache_miss_tokens": 242
+    },
+    "head": "{\"metrics\":[\"aov\"],\"dimensions\":[\"region\"],\"filters\":[]}"
+   },
+   {
+    "cls": "A",
+    "q": "今年各月净收入",
+    "ms": 588.1075859069824,
+    "how": "direct",
+    "ok": true,
+    "issues": [],
+    "usage": {
+     "prompt_tokens": 242,
+     "completion_tokens": 22,
+     "total_tokens": 264,
+     "prompt_tokens_details": {
+      "cached_tokens": 0
+     },
+     "prompt_cache_hit_tokens": 0,
+     "prompt_cache_miss_tokens": 242
+    },
+    "head": "{\"metrics\":[\"net_revenue\"],\"dimensions\":[\"order_month\"],\"filters\":[]}"
+   },
+   {
+    "cls": "A",
+    "q": "上周各渠道订单数",
+    "ms": 858.734130859375,
+    "how": "direct",
+    "ok": true,
+    "issues": [],
+    "usage": {
+     "prompt_tokens": 242,
+     "completion_tokens": 20,
+     "total_tokens": 262,
+     "prompt_tokens_details": {
+      "cached_tokens": 0
+     },
+     "prompt_cache_hit_tokens": 0,
+     "prompt_cache_miss_tokens": 242
+    },
+    "head": "{\"metrics\":[\"order_count\"],\"dimensions\":[\"channel\"],\"filters\":[]}"
+   },
+   {
+    "cls": "A",
+    "q": "各区域退款额占比",
+    "ms": 816.8530464172363,
+    "how": "direct",
+    "ok": true,
+    "issues": [],
+    "usage": {
+     "prompt_tokens": 242,
+     "completion_tokens": 21,
+     "total_tokens": 263,
+     "prompt_tokens_details": {
+      "cached_tokens": 0
+     },
+     "prompt_cache_hit_tokens": 0,
+     "prompt_cache_miss_tokens": 242
+    },
+    "head": "{\"metrics\":[\"refund_amount\"],\"dimensions\":[\"region\"],\"filters\":[]}"
+   },
+   {
+    "cls": "A",
+    "q": "本月各品类客单价",
+    "ms": 886.911153793335,
+    "how": "direct",
+    "ok": true,
+    "issues": [],
+    "usage": {
+     "prompt_tokens": 242,
+     "completion_tokens": 20,
+     "total_tokens": 262,
+     "prompt_tokens_details": {
+      "cached_tokens": 0
+     },
+     "prompt_cache_hit_tokens": 0,
+     "prompt_cache_miss_tokens": 242
+    },
+    "head": "{\"metrics\":[\"aov\"],\"dimensions\":[\"category\"],\"filters\":[]}"
+   },
+   {
+    "cls": "A",
+    "q": "最近30天净收入按渠道",
+    "ms": 492.4767017364502,
+    "how": "direct",
+    "ok": true,
+    "issues": [],
+    "usage": {
+     "prompt_tokens": 244,
+     "completion_tokens": 21,
+     "total_tokens": 265,
+     "prompt_tokens_details": {
+      "cached_tokens": 0
+     },
+     "prompt_cache_hit_tokens": 0,
+     "prompt_cache_miss_tokens": 244
+    },
+    "head": "{\"metrics\":[\"net_revenue\"],\"dimensions\":[\"channel\"],\"filters\":[]}"
+   },
+   {
+    "cls": "A",
+    "q": "各区域订单数",
+    "ms": 626.5318393707275,
+    "how": "direct",
+    "ok": true,
+    "issues": [],
+    "usage": {
+     "prompt_tokens": 241,
+     "completion_tokens": 20,
+     "total_tokens": 261,
+     "prompt_tokens_details": {
+      "cached_tokens": 0
+     },
+     "prompt_cache_hit_tokens": 0,
+     "prompt_cache_miss_tokens": 241
+    },
+    "head": "{\"metrics\":[\"order_count\"],\"dimensions\":[\"region\"],\"filters\":[]}"
+   },
+   {
+    "cls": "B",
+    "q": "上月各区域净收入、订单数和客单价",
+    "ms": 867.6366806030273,
+    "how": "direct",
+    "ok": true,
+    "issues": [],
+    "usage": {
+     "prompt_tokens": 247,
+     "completion_tokens": 27,
+     "total_tokens": 274,
+     "prompt_tokens_details": {
+      "cached_tokens": 0
+     },
+     "prompt_cache_hit_tokens": 0,
+     "prompt_cache_miss_tokens": 247
+    },
+    "head": "{\"metrics\":[\"net_revenue\",\"order_count\",\"aov\"],\"dimensions\":[\"region\"],\"filters\""
+   },
+   {
+    "cls": "B",
+    "q": "按渠道和品类看退款额与订单数",
+    "ms": 832.0097923278809,
+    "how": "direct",
+    "ok": true,
+    "issues": [],
+    "usage": {
+     "prompt_tokens": 247,
+     "completion_tokens": 26,
+     "total_tokens": 273,
+     "prompt_tokens_details": {
+      "cached_tokens": 0
+     },
+     "prompt_cache_hit_tokens": 0,
+     "prompt_cache_miss_tokens": 247
+    },
+    "head": "{\"metrics\":[\"refund_amount\",\"order_count\"],\"dimensions\":[\"channel\",\"category\"],\""
+   },
+   {
+    "cls": "B",
+    "q": "今年每个月各区域的净收入和客单价",
+    "ms": 754.889965057373,
+    "how": "direct",
+    "ok": true,
+    "issues": [],
+    "usage": {
+     "prompt_tokens": 245,
+     "completion_tokens": 27,
+     "total_tokens": 272,
+     "prompt_tokens_details": {
+      "cached_tokens": 0
+     },
+     "prompt_cache_hit_tokens": 0,
+     "prompt_cache_miss_tokens": 245
+    },
+    "head": "{\"metrics\":[\"net_revenue\",\"aov\"],\"dimensions\":[\"order_month\",\"region\"],\"filters\""
+   },
+   {
+    "cls": "B",
+    "q": "各品类订单数、退款额，按渠道拆分",
+    "ms": 802.7245998382568,
+    "how": "direct",
+    "ok": true,
+    "issues": [],
+    "usage": {
+     "prompt_tokens": 248,
+     "completion_tokens": 26,
+     "total_tokens": 274,
+     "prompt_tokens_details": {
+      "cached_tokens": 0
+     },
+     "prompt_cache_hit_tokens": 0,
+     "prompt_cache_miss_tokens": 248
+    },
+    "head": "{\"metrics\":[\"order_count\",\"refund_amount\"],\"dimensions\":[\"category\",\"channel\"],\""
+   },
+   {
+    "cls": "B",
+    "q": "上月各渠道的客单价和订单数对比",
+    "ms": 495.9876537322998,
+    "how": "direct",
+    "ok": true,
+    "issues": [],
+    "usage": {
+     "prompt_tokens": 247,
+     "completion_tokens": 23,
+     "total_tokens": 270,
+     "prompt_tokens_details": {
+      "cached_tokens": 0
+     },
+     "prompt_cache_hit_tokens": 0,
+     "prompt_cache_miss_tokens": 247
+    },
+    "head": "{\"metrics\":[\"aov\",\"order_count\"],\"dimensions\":[\"channel\"],\"filters\":[]}"
+   },
+   {
+    "cls": "B",
+    "q": "近三个月各区域净收入趋势",
+    "ms": 799.9505996704102,
+    "how": "direct",
+    "ok": true,
+    "issues": [],
+    "usage": {
+     "prompt_tokens": 244,
+     "completion_tokens": 24,
+     "total_tokens": 268,
+     "prompt_tokens_details": {
+      "cached_tokens": 0
+     },
+     "prompt_cache_hit_tokens": 0,
+     "prompt_cache_miss_tokens": 244
+    },
+    "head": "{\"metrics\":[\"net_revenue\"],\"dimensions\":[\"region\",\"order_month\"],\"filters\":[]}"
+   },
+   {
+    "cls": "B",
+    "q": "各品类净收入和退款额",
+    "ms": 850.7907390594482,
+    "how": "direct",
+    "ok": true,
+    "issues": [],
+    "usage": {
+     "prompt_tokens": 243,
+     "completion_tokens": 25,
+     "total_tokens": 268,
+     "prompt_tokens_details": {
+      "cached_tokens": 0
+     },
+     "prompt_cache_hit_tokens": 0,
+     "prompt_cache_miss_tokens": 243
+    },
+    "head": "{\"metrics\":[\"net_revenue\",\"refund_amount\"],\"dimensions\":[\"category\"],\"filters\":["
+   },
+   {
+    "cls": "B",
+    "q": "按区域、渠道统计订单数和客单价",
+    "ms": 877.2222995758057,
+    "how": "direct",
+    "ok": true,
+    "issues": [],
+    "usage": {
+     "prompt_tokens": 246,
+     "completion_tokens": 25,
+     "total_tokens": 271,
+     "prompt_tokens_details": {
+      "cached_tokens": 0
+     },
+     "prompt_cache_hit_tokens": 0,
+     "prompt_cache_miss_tokens": 246
+    },
+    "head": "{\"metrics\":[\"order_count\",\"aov\"],\"dimensions\":[\"region\",\"channel\"],\"filters\":[]}"
+   },
+   {
+    "cls": "B",
+    "q": "本月各品类退款额与净收入",
+    "ms": 911.898136138916,
+    "how": "direct",
+    "ok": true,
+    "issues": [],
+    "usage": {
+     "prompt_tokens": 245,
+     "completion_tokens": 25,
+     "total_tokens": 270,
+     "prompt_tokens_details": {
+      "cached_tokens": 0
+     },
+     "prompt_cache_hit_tokens": 0,
+     "prompt_cache_miss_tokens": 245
+    },
+    "head": "{\"metrics\":[\"refund_amount\",\"net_revenue\"],\"dimensions\":[\"category\"],\"filters\":["
+   },
+   {
+    "cls": "B",
+    "q": "各区域每月订单数",
+    "ms": 738.3213043212891,
+    "how": "direct",
+    "ok": true,
+    "issues": [],
+    "usage": {
+     "prompt_tokens": 242,
+     "completion_tokens": 23,
+     "total_tokens": 265,
+     "prompt_tokens_details": {
+      "cached_tokens": 0
+     },
+     "prompt_cache_hit_tokens": 0,
+     "prompt_cache_miss_tokens": 242
+    },
+    "head": "{\"metrics\":[\"order_count\"],\"dimensions\":[\"region\",\"order_month\"],\"filters\":[]}"
+   },
+   {
+    "cls": "C",
+    "q": "上月毛利率",
+    "ms": 887.9365921020508,
+    "how": "direct",
+    "ok": true,
+    "issues": [],
+    "usage": {
+     "prompt_tokens": 239,
+     "completion_tokens": 18,
+     "total_tokens": 257,
+     "prompt_tokens_details": {
+      "cached_tokens": 0
+     },
+     "prompt_cache_hit_tokens": 0,
+     "prompt_cache_miss_tokens": 239
+    },
+    "head": "{\"error\":\"METRIC_NOT_FOUND\",\"candidates\":[\"net_revenue\"]}"
+   },
+   {
+    "cls": "C",
+    "q": "各区域库存周转率",
+    "ms": 814.0113353729248,
+    "how": "direct",
+    "ok": true,
+    "issues": [],
+    "usage": {
+     "prompt_tokens": 242,
+     "completion_tokens": 18,
+     "total_tokens": 260,
+     "prompt_tokens_details": {
+      "cached_tokens": 0
+     },
+     "prompt_cache_hit_tokens": 0,
+     "prompt_cache_miss_tokens": 242
+    },
+    "head": "{\"error\":\"METRIC_NOT_FOUND\",\"candidates\":[\"net_revenue\"]}"
+   },
+   {
+    "cls": "C",
+    "q": "本月新增用户数",
+    "ms": 497.4958896636963,
+    "how": "direct",
+    "ok": true,
+    "issues": [],
+    "usage": {
+     "prompt_tokens": 241,
+     "completion_tokens": 17,
+     "total_tokens": 258,
+     "prompt_tokens_details": {
+      "cached_tokens": 0
+     },
+     "prompt_cache_hit_tokens": 0,
+     "prompt_cache_miss_tokens": 241
+    },
+    "head": "{\"error\":\"METRIC_NOT_FOUND\",\"candidates\":[\"order_count\"]}"
+   },
+   {
+    "cls": "C",
+    "q": "各渠道转化率",
+    "ms": 930.2723407745361,
+    "how": "direct",
+    "ok": true,
+    "issues": [],
+    "usage": {
+     "prompt_tokens": 241,
+     "completion_tokens": 17,
+     "total_tokens": 258,
+     "prompt_tokens_details": {
+      "cached_tokens": 0
+     },
+     "prompt_cache_hit_tokens": 0,
+     "prompt_cache_miss_tokens": 241
+    },
+    "head": "{\"error\":\"METRIC_NOT_FOUND\",\"candidates\":[\"aov\"]}"
+   },
+   {
+    "cls": "C",
+    "q": "上月客户满意度",
+    "ms": 704.6518325805664,
+    "how": "direct",
+    "ok": true,
+    "issues": [],
+    "usage": {
+     "prompt_tokens": 240,
+     "completion_tokens": 17,
+     "total_tokens": 257,
+     "prompt_tokens_details": {
+      "cached_tokens": 0
+     },
+     "prompt_cache_hit_tokens": 0,
+     "prompt_cache_miss_tokens": 240
+    },
+    "head": "{\"error\":\"METRIC_NOT_FOUND\",\"candidates\":[\"aov\"]}"
+   },
+   {
+    "cls": "C",
+    "q": "各品类复购率",
+    "ms": 420.6101894378662,
+    "how": "direct",
+    "ok": true,
+    "issues": [],
+    "usage": {
+     "prompt_tokens": 242,
+     "completion_tokens": 17,
+     "total_tokens": 259,
+     "prompt_tokens_details": {
+      "cached_tokens": 0
+     },
+     "prompt_cache_hit_tokens": 0,
+     "prompt_cache_miss_tokens": 242
+    },
+    "head": "{\"error\":\"METRIC_NOT_FOUND\",\"candidates\":[\"order_count\"]}"
+   },
+   {
+    "cls": "C",
+    "q": "本季度人均消费",
+    "ms": 785.4106426239014,
+    "how": "direct",
+    "ok": true,
+    "issues": [],
+    "usage": {
+     "prompt_tokens": 241,
+     "completion_tokens": 17,
+     "total_tokens": 258,
+     "prompt_tokens_details": {
+      "cached_tokens": 0
+     },
+     "prompt_cache_hit_tokens": 0,
+     "prompt_cache_miss_tokens": 241
+    },
+    "head": "{\"error\":\"METRIC_NOT_FOUND\",\"candidates\":[\"aov\"]}"
+   },
+   {
+    "cls": "C",
+    "q": "各区域退货率",
+    "ms": 828.9473056793213,
+    "how": "direct",
+    "ok": true,
+    "issues": [],
+    "usage": {
+     "prompt_tokens": 241,
+     "completion_tokens": 18,
+     "total_tokens": 259,
+     "prompt_tokens_details": {
+      "cached_tokens": 0
+     },
+     "prompt_cache_hit_tokens": 0,
+     "prompt_cache_miss_tokens": 241
+    },
+    "head": "{\"error\":\"METRIC_NOT_FOUND\",\"candidates\":[\"refund_amount\"]}"
+   },
+   {
+    "cls": "C",
+    "q": "上月广告ROI",
+    "ms": 857.2008609771729,
+    "how": "direct",
+    "ok": true,
+    "issues": [],
+    "usage": {
+     "prompt_tokens": 241,
+     "completion_tokens": 21,
+     "total_tokens": 262,
+     "prompt_tokens_details": {
+      "cached_tokens": 0
+     },
+     "prompt_cache_hit_tokens": 0,
+     "prompt_cache_miss_tokens": 241
+    },
+    "head": "{\"error\":\"METRIC_NOT_FOUND\",\"candidates\":[\"net_revenue\",\"aov\"]}"
+   },
+   {
+    "cls": "C",
+    "q": "各渠道获客成本",
+    "ms": 840.6791687011719,
+    "how": "direct",
+    "ok": true,
+    "issues": [],
+    "usage": {
+     "prompt_tokens": 242,
+     "completion_tokens": 17,
+     "total_tokens": 259,
+     "prompt_tokens_details": {
+      "cached_tokens": 0
+     },
+     "prompt_cache_hit_tokens": 0,
+     "prompt_cache_miss_tokens": 242
+    },
+    "head": "{\"error\":\"METRIC_NOT_FOUND\",\"candidates\":[\"aov\"]}"
+   },
+   {
+    "cls": "D",
+    "q": "最近表现怎么样",
+    "ms": 923.1793880462646,
+    "how": "direct",
+    "ok": true,
+    "issues": [],
+    "usage": {
+     "prompt_tokens": 240,
+     "completion_tokens": 27,
+     "total_tokens": 267,
+     "prompt_tokens_details": {
+      "cached_tokens": 0
+     },
+     "prompt_cache_hit_tokens": 0,
+     "prompt_cache_miss_tokens": 240
+    },
+    "head": "{\"error\":\"AMBIGUOUS\",\"candidates\":[\"net_revenue\",\"order_count\",\"aov\",\"refund_amo"
+   },
+   {
+    "cls": "D",
+    "q": "这个月比上个月好还是差",
+    "ms": 922.0757484436035,
+    "how": "direct",
+    "ok": true,
+    "issues": [],
+    "usage": {
+     "prompt_tokens": 245,
+     "completion_tokens": 27,
+     "total_tokens": 272,
+     "prompt_tokens_details": {
+      "cached_tokens": 0
+     },
+     "prompt_cache_hit_tokens": 0,
+     "prompt_cache_miss_tokens": 245
+    },
+    "head": "{\"error\":\"AMBIGUOUS\",\"candidates\":[\"net_revenue\",\"order_count\",\"aov\",\"refund_amo"
+   },
+   {
+    "cls": "D",
+    "q": "看看销售情况",
+    "ms": 896.8534469604492,
+    "how": "direct",
+    "ok": true,
+    "issues": [],
+    "usage": {
+     "prompt_tokens": 240,
+     "completion_tokens": 23,
+     "total_tokens": 263,
+     "prompt_tokens_details": {
+      "cached_tokens": 0
+     },
+     "prompt_cache_hit_tokens": 0,
+     "prompt_cache_miss_tokens": 240
+    },
+    "head": "{\"error\":\"AMBIGUOUS\",\"candidates\":[\"net_revenue\",\"order_count\",\"aov\"]}"
+   },
+   {
+    "cls": "D",
+    "q": "帮我分析一下数据",
+    "ms": 799.1361618041992,
+    "how": "direct",
+    "ok": true,
+    "issues": [],
+    "usage": {
+     "prompt_tokens": 241,
+     "completion_tokens": 27,
+     "total_tokens": 268,
+     "prompt_tokens_details": {
+      "cached_tokens": 0
+     },
+     "prompt_cache_hit_tokens": 0,
+     "prompt_cache_miss_tokens": 241
+    },
+    "head": "{\"error\":\"AMBIGUOUS\",\"candidates\":[\"net_revenue\",\"order_count\",\"aov\",\"refund_amo"
+   },
+   {
+    "cls": "D",
+    "q": "哪个渠道最好",
+    "ms": 874.4046688079834,
+    "how": "direct",
+    "ok": true,
+    "issues": [],
+    "usage": {
+     "prompt_tokens": 240,
+     "completion_tokens": 27,
+     "total_tokens": 267,
+     "prompt_tokens_details": {
+      "cached_tokens": 0
+     },
+     "prompt_cache_hit_tokens": 0,
+     "prompt_cache_miss_tokens": 240
+    },
+    "head": "{\"error\":\"AMBIGUOUS\",\"candidates\":[\"net_revenue\",\"order_count\",\"aov\",\"refund_amo"
+   },
+   {
+    "cls": "D",
+    "q": "这几天怎么样",
+    "ms": 865.7443523406982,
+    "how": "direct",
+    "ok": true,
+    "issues": [],
+    "usage": {
+     "prompt_tokens": 239,
+     "completion_tokens": 27,
+     "total_tokens": 266,
+     "prompt_tokens_details": {
+      "cached_tokens": 0
+     },
+     "prompt_cache_hit_tokens": 0,
+     "prompt_cache_miss_tokens": 239
+    },
+    "head": "{\"error\":\"AMBIGUOUS\",\"candidates\":[\"net_revenue\",\"order_count\",\"aov\",\"refund_amo"
+   },
+   {
+    "cls": "D",
+    "q": "对比一下",
+    "ms": 1042.588472366333,
+    "how": "direct",
+    "ok": true,
+    "issues": [],
+    "usage": {
+     "prompt_tokens": 239,
+     "completion_tokens": 27,
+     "total_tokens": 266,
+     "prompt_tokens_details": {
+      "cached_tokens": 0
+     },
+     "prompt_cache_hit_tokens": 0,
+     "prompt_cache_miss_tokens": 239
+    },
+    "head": "{\"error\":\"AMBIGUOUS\",\"candidates\":[\"net_revenue\",\"order_count\",\"aov\",\"refund_amo"
+   },
+   {
+    "cls": "D",
+    "q": "趋势如何",
+    "ms": 855.4501533508301,
+    "how": "direct",
+    "ok": true,
+    "issues": [],
+    "usage": {
+     "prompt_tokens": 239,
+     "completion_tokens": 27,
+     "total_tokens": 266,
+     "prompt_tokens_details": {
+      "cached_tokens": 0
+     },
+     "prompt_cache_hit_tokens": 0,
+     "prompt_cache_miss_tokens": 239
+    },
+    "head": "{\"error\":\"AMBIGUOUS\",\"candidates\":[\"net_revenue\",\"order_count\",\"aov\",\"refund_amo"
+   },
+   {
+    "cls": "D",
+    "q": "哪个区域表现最差",
+    "ms": 621.4854717254639,
+    "how": "direct",
+    "ok": true,
+    "issues": [],
+    "usage": {
+     "prompt_tokens": 242,
+     "completion_tokens": 24,
+     "total_tokens": 266,
+     "prompt_tokens_details": {
+      "cached_tokens": 0
+     },
+     "prompt_cache_hit_tokens": 0,
+     "prompt_cache_miss_tokens": 242
+    },
+    "head": "{\"error\":\"AMBIGUOUS\",\"candidates\":[\"net_revenue\",\"aov\",\"refund_amount\"]}"
+   },
+   {
+    "cls": "D",
+    "q": "有没有异常",
+    "ms": 628.1898021697998,
+    "how": "direct",
+    "ok": true,
+    "issues": [],
+    "usage": {
+     "prompt_tokens": 239,
+     "completion_tokens": 27,
+     "total_tokens": 266,
+     "prompt_tokens_details": {
+      "cached_tokens": 0
+     },
+     "prompt_cache_hit_tokens": 0,
+     "prompt_cache_miss_tokens": 239
+    },
+    "head": "{\"error\":\"AMBIGUOUS\",\"candidates\":[\"net_revenue\",\"order_count\",\"aov\",\"refund_amo"
+   }
+  ]
+ },
+ "mode=json_object temp=0.3": {
+  "summary": {
+   "n": 40,
+   "ok": 40,
+   "parse_fail": 0,
+   "extra": 0,
+   "halluc": 0,
+   "errors": 0
+  },
+  "rows": [
+   {
+    "cls": "A",
+    "q": "上月各区域净收入",
+    "ms": 1052.79541015625,
+    "how": "direct",
+    "ok": true,
+    "issues": [],
+    "usage": {
+     "prompt_tokens": 242,
+     "completion_tokens": 21,
+     "total_tokens": 263,
+     "prompt_tokens_details": {
+      "cached_tokens": 0
+     },
+     "prompt_cache_hit_tokens": 0,
+     "prompt_cache_miss_tokens": 242
+    },
+    "head": "{\"metrics\":[\"net_revenue\"],\"dimensions\":[\"region\"],\"filters\":[]}"
+   },
+   {
+    "cls": "A",
+    "q": "本季度订单数按渠道",
+    "ms": 802.0484447479248,
+    "how": "direct",
+    "ok": true,
+    "issues": [],
+    "usage": {
+     "prompt_tokens": 243,
+     "completion_tokens": 20,
+     "total_tokens": 263,
+     "prompt_tokens_details": {
+      "cached_tokens": 0
+     },
+     "prompt_cache_hit_tokens": 0,
+     "prompt_cache_miss_tokens": 243
+    },
+    "head": "{\"metrics\":[\"order_count\"],\"dimensions\":[\"channel\"],\"filters\":[]}"
+   },
+   {
+    "cls": "A",
+    "q": "各品类退款额",
+    "ms": 556.7007064819336,
+    "how": "direct",
+    "ok": true,
+    "issues": [],
+    "usage": {
+     "prompt_tokens": 241,
+     "completion_tokens": 21,
+     "total_tokens": 262,
+     "prompt_tokens_details": {
+      "cached_tokens": 0
+     },
+     "prompt_cache_hit_tokens": 0,
+     "prompt_cache_miss_tokens": 241
+    },
+    "head": "{\"metrics\":[\"refund_amount\"],\"dimensions\":[\"category\"],\"filters\":[]}"
+   },
+   {
+    "cls": "A",
+    "q": "上月客单价按区域",
+    "ms": 912.7154350280762,
+    "how": "direct",
+    "ok": true,
+    "issues": [],
+    "usage": {
+     "prompt_tokens": 242,
+     "completion_tokens": 20,
+     "total_tokens": 262,
+     "prompt_tokens_details": {
+      "cached_tokens": 0
+     },
+     "prompt_cache_hit_tokens": 0,
+     "prompt_cache_miss_tokens": 242
+    },
+    "head": "{\"metrics\":[\"aov\"],\"dimensions\":[\"region\"],\"filters\":[]}"
+   },
+   {
+    "cls": "A",
+    "q": "今年各月净收入",
+    "ms": 803.06077003479,
+    "how": "direct",
+    "ok": true,
+    "issues": [],
+    "usage": {
+     "prompt_tokens": 242,
+     "completion_tokens": 22,
+     "total_tokens": 264,
+     "prompt_tokens_details": {
+      "cached_tokens": 0
+     },
+     "prompt_cache_hit_tokens": 0,
+     "prompt_cache_miss_tokens": 242
+    },
+    "head": "{\"metrics\":[\"net_revenue\"],\"dimensions\":[\"order_month\"],\"filters\":[]}"
+   },
+   {
+    "cls": "A",
+    "q": "上周各渠道订单数",
+    "ms": 944.2763328552246,
+    "how": "direct",
+    "ok": true,
+    "issues": [],
+    "usage": {
+     "prompt_tokens": 242,
+     "completion_tokens": 20,
+     "total_tokens": 262,
+     "prompt_tokens_details": {
+      "cached_tokens": 0
+     },
+     "prompt_cache_hit_tokens": 0,
+     "prompt_cache_miss_tokens": 242
+    },
+    "head": "{\"metrics\":[\"order_count\"],\"dimensions\":[\"channel\"],\"filters\":[]}"
+   },
+   {
+    "cls": "A",
+    "q": "各区域退款额占比",
+    "ms": 771.709680557251,
+    "how": "direct",
+    "ok": true,
+    "issues": [],
+    "usage": {
+     "prompt_tokens": 242,
+     "completion_tokens": 21,
+     "total_tokens": 263,
+     "prompt_tokens_details": {
+      "cached_tokens": 0
+     },
+     "prompt_cache_hit_tokens": 0,
+     "prompt_cache_miss_tokens": 242
+    },
+    "head": "{\"metrics\":[\"refund_amount\"],\"dimensions\":[\"region\"],\"filters\":[]}"
+   },
+   {
+    "cls": "A",
+    "q": "本月各品类客单价",
+    "ms": 893.0027484893799,
+    "how": "direct",
+    "ok": true,
+    "issues": [],
+    "usage": {
+     "prompt_tokens": 242,
+     "completion_tokens": 20,
+     "total_tokens": 262,
+     "prompt_tokens_details": {
+      "cached_tokens": 0
+     },
+     "prompt_cache_hit_tokens": 0,
+     "prompt_cache_miss_tokens": 242
+    },
+    "head": "{\"metrics\":[\"aov\"],\"dimensions\":[\"category\"],\"filters\":[]}"
+   },
+   {
+    "cls": "A",
+    "q": "最近30天净收入按渠道",
+    "ms": 847.0947742462158,
+    "how": "direct",
+    "ok": true,
+    "issues": [],
+    "usage": {
+     "prompt_tokens": 244,
+     "completion_tokens": 21,
+     "total_tokens": 265,
+     "prompt_tokens_details": {
+      "cached_tokens": 0
+     },
+     "prompt_cache_hit_tokens": 0,
+     "prompt_cache_miss_tokens": 244
+    },
+    "head": "{\"metrics\":[\"net_revenue\"],\"dimensions\":[\"channel\"],\"filters\":[]}"
+   },
+   {
+    "cls": "A",
+    "q": "各区域订单数",
+    "ms": 563.0719661712646,
+    "how": "direct",
+    "ok": true,
+    "issues": [],
+    "usage": {
+     "prompt_tokens": 241,
+     "completion_tokens": 20,
+     "total_tokens": 261,
+     "prompt_tokens_details": {
+      "cached_tokens": 0
+     },
+     "prompt_cache_hit_tokens": 0,
+     "prompt_cache_miss_tokens": 241
+    },
+    "head": "{\"metrics\":[\"order_count\"],\"dimensions\":[\"region\"],\"filters\":[]}"
+   },
+   {
+    "cls": "B",
+    "q": "上月各区域净收入、订单数和客单价",
+    "ms": 782.0608615875244,
+    "how": "direct",
+    "ok": true,
+    "issues": [],
+    "usage": {
+     "prompt_tokens": 247,
+     "completion_tokens": 27,
+     "total_tokens": 274,
+     "prompt_tokens_details": {
+      "cached_tokens": 0
+     },
+     "prompt_cache_hit_tokens": 0,
+     "prompt_cache_miss_tokens": 247
+    },
+    "head": "{\"metrics\":[\"net_revenue\",\"order_count\",\"aov\"],\"dimensions\":[\"region\"],\"filters\""
+   },
+   {
+    "cls": "B",
+    "q": "按渠道和品类看退款额与订单数",
+    "ms": 722.5184440612793,
+    "how": "direct",
+    "ok": true,
+    "issues": [],
+    "usage": {
+     "prompt_tokens": 247,
+     "completion_tokens": 26,
+     "total_tokens": 273,
+     "prompt_tokens_details": {
+      "cached_tokens": 0
+     },
+     "prompt_cache_hit_tokens": 0,
+     "prompt_cache_miss_tokens": 247
+    },
+    "head": "{\"metrics\":[\"refund_amount\",\"order_count\"],\"dimensions\":[\"channel\",\"category\"],\""
+   },
+   {
+    "cls": "B",
+    "q": "今年每个月各区域的净收入和客单价",
+    "ms": 978.656530380249,
+    "how": "direct",
+    "ok": true,
+    "issues": [],
+    "usage": {
+     "prompt_tokens": 245,
+     "completion_tokens": 27,
+     "total_tokens": 272,
+     "prompt_tokens_details": {
+      "cached_tokens": 0
+     },
+     "prompt_cache_hit_tokens": 0,
+     "prompt_cache_miss_tokens": 245
+    },
+    "head": "{\"metrics\":[\"net_revenue\",\"aov\"],\"dimensions\":[\"order_month\",\"region\"],\"filters\""
+   },
+   {
+    "cls": "B",
+    "q": "各品类订单数、退款额，按渠道拆分",
+    "ms": 611.9470596313477,
+    "how": "direct",
+    "ok": true,
+    "issues": [],
+    "usage": {
+     "prompt_tokens": 248,
+     "completion_tokens": 26,
+     "total_tokens": 274,
+     "prompt_tokens_details": {
+      "cached_tokens": 0
+     },
+     "prompt_cache_hit_tokens": 0,
+     "prompt_cache_miss_tokens": 248
+    },
+    "head": "{\"metrics\":[\"order_count\",\"refund_amount\"],\"dimensions\":[\"category\",\"channel\"],\""
+   },
+   {
+    "cls": "B",
+    "q": "上月各渠道的客单价和订单数对比",
+    "ms": 887.864351272583,
+    "how": "direct",
+    "ok": true,
+    "issues": [],
+    "usage": {
+     "prompt_tokens": 247,
+     "completion_tokens": 23,
+     "total_tokens": 270,
+     "prompt_tokens_details": {
+      "cached_tokens": 0
+     },
+     "prompt_cache_hit_tokens": 0,
+     "prompt_cache_miss_tokens": 247
+    },
+    "head": "{\"metrics\":[\"aov\",\"order_count\"],\"dimensions\":[\"channel\"],\"filters\":[]}"
+   },
+   {
+    "cls": "B",
+    "q": "近三个月各区域净收入趋势",
+    "ms": 777.0185470581055,
+    "how": "direct",
+    "ok": true,
+    "issues": [],
+    "usage": {
+     "prompt_tokens": 244,
+     "completion_tokens": 24,
+     "total_tokens": 268,
+     "prompt_tokens_details": {
+      "cached_tokens": 0
+     },
+     "prompt_cache_hit_tokens": 0,
+     "prompt_cache_miss_tokens": 244
+    },
+    "head": "{\"metrics\":[\"net_revenue\"],\"dimensions\":[\"region\",\"order_month\"],\"filters\":[]}"
+   },
+   {
+    "cls": "B",
+    "q": "各品类净收入和退款额",
+    "ms": 878.1721591949463,
+    "how": "direct",
+    "ok": true,
+    "issues": [],
+    "usage": {
+     "prompt_tokens": 243,
+     "completion_tokens": 25,
+     "total_tokens": 268,
+     "prompt_tokens_details": {
+      "cached_tokens": 0
+     },
+     "prompt_cache_hit_tokens": 0,
+     "prompt_cache_miss_tokens": 243
+    },
+    "head": "{\"metrics\":[\"net_revenue\",\"refund_amount\"],\"dimensions\":[\"category\"],\"filters\":["
+   },
+   {
+    "cls": "B",
+    "q": "按区域、渠道统计订单数和客单价",
+    "ms": 830.817461013794,
+    "how": "direct",
+    "ok": true,
+    "issues": [],
+    "usage": {
+     "prompt_tokens": 246,
+     "completion_tokens": 25,
+     "total_tokens": 271,
+     "prompt_tokens_details": {
+      "cached_tokens": 0
+     },
+     "prompt_cache_hit_tokens": 0,
+     "prompt_cache_miss_tokens": 246
+    },
+    "head": "{\"metrics\":[\"order_count\",\"aov\"],\"dimensions\":[\"region\",\"channel\"],\"filters\":[]}"
+   },
+   {
+    "cls": "B",
+    "q": "本月各品类退款额与净收入",
+    "ms": 847.9609489440918,
+    "how": "direct",
+    "ok": true,
+    "issues": [],
+    "usage": {
+     "prompt_tokens": 245,
+     "completion_tokens": 25,
+     "total_tokens": 270,
+     "prompt_tokens_details": {
+      "cached_tokens": 0
+     },
+     "prompt_cache_hit_tokens": 0,
+     "prompt_cache_miss_tokens": 245
+    },
+    "head": "{\"metrics\":[\"refund_amount\",\"net_revenue\"],\"dimensions\":[\"category\"],\"filters\":["
+   },
+   {
+    "cls": "B",
+    "q": "各区域每月订单数",
+    "ms": 614.9337291717529,
+    "how": "direct",
+    "ok": true,
+    "issues": [],
+    "usage": {
+     "prompt_tokens": 242,
+     "completion_tokens": 23,
+     "total_tokens": 265,
+     "prompt_tokens_details": {
+      "cached_tokens": 0
+     },
+     "prompt_cache_hit_tokens": 0,
+     "prompt_cache_miss_tokens": 242
+    },
+    "head": "{\"metrics\":[\"order_count\"],\"dimensions\":[\"region\",\"order_month\"],\"filters\":[]}"
+   },
+   {
+    "cls": "C",
+    "q": "上月毛利率",
+    "ms": 816.8838024139404,
+    "how": "direct",
+    "ok": true,
+    "issues": [],
+    "usage": {
+     "prompt_tokens": 239,
+     "completion_tokens": 18,
+     "total_tokens": 257,
+     "prompt_tokens_details": {
+      "cached_tokens": 0
+     },
+     "prompt_cache_hit_tokens": 0,
+     "prompt_cache_miss_tokens": 239
+    },
+    "head": "{\"error\":\"METRIC_NOT_FOUND\",\"candidates\":[\"net_revenue\"]}"
+   },
+   {
+    "cls": "C",
+    "q": "各区域库存周转率",
+    "ms": 815.0858879089355,
+    "how": "direct",
+    "ok": true,
+    "issues": [],
+    "usage": {
+     "prompt_tokens": 242,
+     "completion_tokens": 28,
+     "total_tokens": 270,
+     "prompt_tokens_details": {
+      "cached_tokens": 0
+     },
+     "prompt_cache_hit_tokens": 0,
+     "prompt_cache_miss_tokens": 242
+    },
+    "head": "{\"error\":\"METRIC_NOT_FOUND\",\"candidates\":[\"net_revenue\",\"order_count\",\"aov\",\"ref"
+   },
+   {
+    "cls": "C",
+    "q": "本月新增用户数",
+    "ms": 547.7218627929688,
+    "how": "direct",
+    "ok": true,
+    "issues": [],
+    "usage": {
+     "prompt_tokens": 241,
+     "completion_tokens": 17,
+     "total_tokens": 258,
+     "prompt_tokens_details": {
+      "cached_tokens": 0
+     },
+     "prompt_cache_hit_tokens": 0,
+     "prompt_cache_miss_tokens": 241
+    },
+    "head": "{\"error\":\"METRIC_NOT_FOUND\",\"candidates\":[\"order_count\"]}"
+   },
+   {
+    "cls": "C",
+    "q": "各渠道转化率",
+    "ms": 849.7917652130127,
+    "how": "direct",
+    "ok": true,
+    "issues": [],
+    "usage": {
+     "prompt_tokens": 241,
+     "completion_tokens": 17,
+     "total_tokens": 258,
+     "prompt_tokens_details": {
+      "cached_tokens": 0
+     },
+     "prompt_cache_hit_tokens": 0,
+     "prompt_cache_miss_tokens": 241
+    },
+    "head": "{\"error\":\"METRIC_NOT_FOUND\",\"candidates\":[\"aov\"]}"
+   },
+   {
+    "cls": "C",
+    "q": "上月客户满意度",
+    "ms": 1176.3687133789062,
+    "how": "direct",
+    "ok": true,
+    "issues": [],
+    "usage": {
+     "prompt_tokens": 240,
+     "completion_tokens": 17,
+     "total_tokens": 257,
+     "prompt_tokens_details": {
+      "cached_tokens": 0
+     },
+     "prompt_cache_hit_tokens": 0,
+     "prompt_cache_miss_tokens": 240
+    },
+    "head": "{\"error\":\"METRIC_NOT_FOUND\",\"candidates\":[\"aov\"]}"
+   },
+   {
+    "cls": "C",
+    "q": "各品类复购率",
+    "ms": 829.5509815216064,
+    "how": "direct",
+    "ok": true,
+    "issues": [],
+    "usage": {
+     "prompt_tokens": 242,
+     "completion_tokens": 17,
+     "total_tokens": 259,
+     "prompt_tokens_details": {
+      "cached_tokens": 0
+     },
+     "prompt_cache_hit_tokens": 0,
+     "prompt_cache_miss_tokens": 242
+    },
+    "head": "{\"error\":\"METRIC_NOT_FOUND\",\"candidates\":[\"order_count\"]}"
+   },
+   {
+    "cls": "C",
+    "q": "本季度人均消费",
+    "ms": 719.0210819244385,
+    "how": "direct",
+    "ok": true,
+    "issues": [],
+    "usage": {
+     "prompt_tokens": 241,
+     "completion_tokens": 20,
+     "total_tokens": 261,
+     "prompt_tokens_details": {
+      "cached_tokens": 0
+     },
+     "prompt_cache_hit_tokens": 0,
+     "prompt_cache_miss_tokens": 241
+    },
+    "head": "{\"error\":\"AMBIGUOUS\",\"candidates\":[\"aov\",\"net_revenue\"]}"
+   },
+   {
+    "cls": "C",
+    "q": "各区域退货率",
+    "ms": 836.3018035888672,
+    "how": "direct",
+    "ok": true,
+    "issues": [],
+    "usage": {
+     "prompt_tokens": 241,
+     "completion_tokens": 18,
+     "total_tokens": 259,
+     "prompt_tokens_details": {
+      "cached_tokens": 0
+     },
+     "prompt_cache_hit_tokens": 0,
+     "prompt_cache_miss_tokens": 241
+    },
+    "head": "{\"error\":\"METRIC_NOT_FOUND\",\"candidates\":[\"refund_amount\"]}"
+   },
+   {
+    "cls": "C",
+    "q": "上月广告ROI",
+    "ms": 868.5202598571777,
+    "how": "direct",
+    "ok": true,
+    "issues": [],
+    "usage": {
+     "prompt_tokens": 241,
+     "completion_tokens": 21,
+     "total_tokens": 262,
+     "prompt_tokens_details": {
+      "cached_tokens": 0
+     },
+     "prompt_cache_hit_tokens": 0,
+     "prompt_cache_miss_tokens": 241
+    },
+    "head": "{\"error\":\"METRIC_NOT_FOUND\",\"candidates\":[\"net_revenue\",\"aov\"]}"
+   },
+   {
+    "cls": "C",
+    "q": "各渠道获客成本",
+    "ms": 1023.0271816253662,
+    "how": "direct",
+    "ok": true,
+    "issues": [],
+    "usage": {
+     "prompt_tokens": 242,
+     "completion_tokens": 17,
+     "total_tokens": 259,
+     "prompt_tokens_details": {
+      "cached_tokens": 0
+     },
+     "prompt_cache_hit_tokens": 0,
+     "prompt_cache_miss_tokens": 242
+    },
+    "head": "{\"error\":\"METRIC_NOT_FOUND\",\"candidates\":[\"aov\"]}"
+   },
+   {
+    "cls": "D",
+    "q": "最近表现怎么样",
+    "ms": 787.5432968139648,
+    "how": "direct",
+    "ok": true,
+    "issues": [],
+    "usage": {
+     "prompt_tokens": 240,
+     "completion_tokens": 27,
+     "total_tokens": 267,
+     "prompt_tokens_details": {
+      "cached_tokens": 0
+     },
+     "prompt_cache_hit_tokens": 0,
+     "prompt_cache_miss_tokens": 240
+    },
+    "head": "{\"error\":\"AMBIGUOUS\",\"candidates\":[\"net_revenue\",\"order_count\",\"aov\",\"refund_amo"
+   },
+   {
+    "cls": "D",
+    "q": "这个月比上个月好还是差",
+    "ms": 870.7239627838135,
+    "how": "direct",
+    "ok": true,
+    "issues": [],
+    "usage": {
+     "prompt_tokens": 245,
+     "completion_tokens": 27,
+     "total_tokens": 272,
+     "prompt_tokens_details": {
+      "cached_tokens": 0
+     },
+     "prompt_cache_hit_tokens": 0,
+     "prompt_cache_miss_tokens": 245
+    },
+    "head": "{\"error\":\"AMBIGUOUS\",\"candidates\":[\"net_revenue\",\"order_count\",\"aov\",\"refund_amo"
+   },
+   {
+    "cls": "D",
+    "q": "看看销售情况",
+    "ms": 870.7661628723145,
+    "how": "direct",
+    "ok": true,
+    "issues": [],
+    "usage": {
+     "prompt_tokens": 240,
+     "completion_tokens": 23,
+     "total_tokens": 263,
+     "prompt_tokens_details": {
+      "cached_tokens": 0
+     },
+     "prompt_cache_hit_tokens": 0,
+     "prompt_cache_miss_tokens": 240
+    },
+    "head": "{\"error\":\"AMBIGUOUS\",\"candidates\":[\"net_revenue\",\"order_count\",\"aov\"]}"
+   },
+   {
+    "cls": "D",
+    "q": "帮我分析一下数据",
+    "ms": 798.9938259124756,
+    "how": "direct",
+    "ok": true,
+    "issues": [],
+    "usage": {
+     "prompt_tokens": 241,
+     "completion_tokens": 27,
+     "total_tokens": 268,
+     "prompt_tokens_details": {
+      "cached_tokens": 0
+     },
+     "prompt_cache_hit_tokens": 0,
+     "prompt_cache_miss_tokens": 241
+    },
+    "head": "{\"error\":\"AMBIGUOUS\",\"candidates\":[\"net_revenue\",\"order_count\",\"aov\",\"refund_amo"
+   },
+   {
+    "cls": "D",
+    "q": "哪个渠道最好",
+    "ms": 718.7995910644531,
+    "how": "direct",
+    "ok": true,
+    "issues": [],
+    "usage": {
+     "prompt_tokens": 240,
+     "completion_tokens": 27,
+     "total_tokens": 267,
+     "prompt_tokens_details": {
+      "cached_tokens": 0
+     },
+     "prompt_cache_hit_tokens": 0,
+     "prompt_cache_miss_tokens": 240
+    },
+    "head": "{\"error\":\"AMBIGUOUS\",\"candidates\":[\"net_revenue\",\"order_count\",\"aov\",\"refund_amo"
+   },
+   {
+    "cls": "D",
+    "q": "这几天怎么样",
+    "ms": 752.5348663330078,
+    "how": "direct",
+    "ok": true,
+    "issues": [],
+    "usage": {
+     "prompt_tokens": 239,
+     "completion_tokens": 27,
+     "total_tokens": 266,
+     "prompt_tokens_details": {
+      "cached_tokens": 0
+     },
+     "prompt_cache_hit_tokens": 0,
+     "prompt_cache_miss_tokens": 239
+    },
+    "head": "{\"error\":\"AMBIGUOUS\",\"candidates\":[\"net_revenue\",\"order_count\",\"aov\",\"refund_amo"
+   },
+   {
+    "cls": "D",
+    "q": "对比一下",
+    "ms": 658.6313247680664,
+    "how": "direct",
+    "ok": true,
+    "issues": [],
+    "usage": {
+     "prompt_tokens": 239,
+     "completion_tokens": 27,
+     "total_tokens": 266,
+     "prompt_tokens_details": {
+      "cached_tokens": 0
+     },
+     "prompt_cache_hit_tokens": 0,
+     "prompt_cache_miss_tokens": 239
+    },
+    "head": "{\"error\":\"AMBIGUOUS\",\"candidates\":[\"net_revenue\",\"order_count\",\"aov\",\"refund_amo"
+   },
+   {
+    "cls": "D",
+    "q": "趋势如何",
+    "ms": 672.609806060791,
+    "how": "direct",
+    "ok": true,
+    "issues": [],
+    "usage": {
+     "prompt_tokens": 239,
+     "completion_tokens": 27,
+     "total_tokens": 266,
+     "prompt_tokens_details": {
+      "cached_tokens": 0
+     },
+     "prompt_cache_hit_tokens": 0,
+     "prompt_cache_miss_tokens": 239
+    },
+    "head": "{\"error\":\"AMBIGUOUS\",\"candidates\":[\"net_revenue\",\"order_count\",\"aov\",\"refund_amo"
+   },
+   {
+    "cls": "D",
+    "q": "哪个区域表现最差",
+    "ms": 888.2009983062744,
+    "how": "direct",
+    "ok": true,
+    "issues": [],
+    "usage": {
+     "prompt_tokens": 242,
+     "completion_tokens": 24,
+     "total_tokens": 266,
+     "prompt_tokens_details": {
+      "cached_tokens": 0
+     },
+     "prompt_cache_hit_tokens": 0,
+     "prompt_cache_miss_tokens": 242
+    },
+    "head": "{\"error\":\"AMBIGUOUS\",\"candidates\":[\"net_revenue\",\"aov\",\"refund_amount\"]}"
+   },
+   {
+    "cls": "D",
+    "q": "有没有异常",
+    "ms": 792.8097248077393,
+    "how": "direct",
+    "ok": true,
+    "issues": [],
+    "usage": {
+     "prompt_tokens": 239,
+     "completion_tokens": 27,
+     "total_tokens": 266,
+     "prompt_tokens_details": {
+      "cached_tokens": 0
+     },
+     "prompt_cache_hit_tokens": 0,
+     "prompt_cache_miss_tokens": 239
+    },
+    "head": "{\"error\":\"AMBIGUOUS\",\"candidates\":[\"net_revenue\",\"order_count\",\"aov\",\"refund_amo"
+   }
+  ]
+ }
+}

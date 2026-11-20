@@ -1,0 +1,54 @@
+{
+ "run1": {
+  "ok": true,
+  "caps": {
+   "hasOPFS": true,
+   "persisted": false,
+   "quota": 164926744166,
+   "usage": 0
+  },
+  "before": 0,
+  "after": 1,
+  "rows": [
+   {
+    "id": 54123,
+    "tag": "run1",
+    "ts": "1792237354124"
+   }
+  ],
+  "log": [
+   "version: v1.5.4",
+   "caps: {\"hasOPFS\":true,\"persisted\":false,\"quota\":164926744166,\"usage\":0}",
+   "opened opfs_poc.db",
+   "rows before this session: 0",
+   "checkpoint: ok",
+   "rows after insert: 1"
+  ]
+ },
+ "run2": {
+  "ok": true,
+  "caps": {
+   "hasOPFS": true,
+   "persisted": false,
+   "quota": 164926744166,
+   "usage": 0
+  },
+  "before": 0,
+  "after": 1,
+  "rows": [
+   {
+    "id": 55241,
+    "tag": "run2",
+    "ts": "1792237355241"
+   }
+  ],
+  "log": [
+   "version: v1.5.4",
+   "caps: {\"hasOPFS\":true,\"persisted\":false,\"quota\":164926744166,\"usage\":0}",
+   "opened opfs_poc.db",
+   "rows before this session: 0",
+   "checkpoint: ok",
+   "rows after insert: 1"
+  ]
+ }
+}

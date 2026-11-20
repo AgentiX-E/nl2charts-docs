@@ -1,0 +1,60 @@
+{
+ "n": 500,
+ "baseline": {
+  "schemaMode": "names",
+  "ex": 0.402,
+  "cardCharsP50": 1152,
+  "cost_usd": 0.0648
+ },
+ "candidate": {
+  "schemaMode": "profile_lite",
+  "ex": 0.418,
+  "cardCharsP50": 1704,
+  "cost_usd": 0.0668
+ },
+ "delta_pp": 1.6,
+ "paired": {
+  "both_correct": 189,
+  "only_candidate": 20,
+  "only_baseline": 12,
+  "both_wrong": 279,
+  "mcnemar_p": 0.215327
+ },
+ "flips_up": [
+  99,
+  212,
+  226,
+  227,
+  228,
+  240,
+  243,
+  244,
+  253,
+  255,
+  327,
+  462,
+  745,
+  875,
+  954,
+  1003,
+  1141,
+  1387,
+  1390,
+  1509
+ ],
+ "flips_down": [
+  24,
+  118,
+  197,
+  678,
+  822,
+  892,
+  967,
+  1031,
+  1270,
+  1334,
+  1359,
+  1409
+ ],
+ "significant_at_0.05": false
+}

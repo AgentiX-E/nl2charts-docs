@@ -1,0 +1,98 @@
+{
+ "version": "1.1.0",
+ "milestone": "M-B (adds AI, additive only)",
+ "packages": {
+  "@agentix-e/nl2charts-spec": {
+   "subpaths": {
+    ".": {
+     "exports": {
+      "ChartSpec": {"kind": "type"},
+      "IntentState": {"kind": "type"},
+      "TierKeyDigest": {"kind": "type"},
+      "validateChart": {"kind": "function",
+        "params": [{"name": "rows", "required": true}, {"name": "spec", "required": true}],
+        "returns": "ChartValidation"}
+     }
+    }
+   }
+  },
+  "@agentix-e/nl2charts-core": {
+   "subpaths": {
+    ".": {
+     "exports": {
+      "createRunner": {"kind": "function",
+        "params": [{"name": "config", "required": true}],
+        "returns": "Runner"},
+      "createTier": {"kind": "function",
+        "params": [{"name": "config", "required": true}],
+        "returns": "Tier"},
+      "guardSql": {"kind": "function",
+        "params": [{"name": "sql", "required": true}],
+        "returns": "GuardResult"}
+     }
+    },
+    "./admin": {
+     "exports": {
+      "createAdminHandler": {"kind": "function",
+        "params": [{"name": "config", "required": true}],
+        "returns": "AdminHandler"}
+     }
+    }
+   }
+  },
+  "@agentix-e/nl2charts-node": {
+   "subpaths": {
+    ".": {
+     "exports": {
+      "createPgConnector": {"kind": "function", "params": [{"name": "config", "required": true}], "returns": "DataSourceConnector"},
+      "createDuckDbConnector": {"kind": "function", "params": [{"name": "config", "required": true}], "returns": "DataSourceConnector"}
+     }
+    }
+   }
+  },
+  "@agentix-e/nl2charts-chart": {
+   "subpaths": {
+    ".": {
+     "exports": {
+      "renderChart": {"kind": "function", "params": [{"name": "rows", "required": true}, {"name": "spec", "required": true}], "returns": "string"},
+      "recommend": {"kind": "function", "params": [{"name": "rows", "required": true}, {"name": "opts", "required": false}], "returns": "ChartSpec[]"}
+     }
+    }
+   }
+  },
+  "@agentix-e/nl2charts-mcp": {
+   "subpaths": {".": {"exports": {"createMcpServer": {"kind": "function", "params": [{"name": "cfg", "required": true}], "returns": "McpServer"}}}}
+  },
+  "@agentix-e/nl2charts-studio": {
+   "subpaths": {".": {"exports": {"auditMdl": {"kind": "function", "params": [{"name": "mdl", "required": true}], "returns": "MdlReport"}}}}
+  },
+  "@agentix-e/nl2charts-devkit": {
+   "subpaths": {".": {"exports": {"makeFixtures": {"kind": "function", "params": [{"name": "dir", "required": true}], "returns": "FixtureSet"}}}}
+  },
+  "@agentix-e/nl2charts-ai": {
+   "subpaths": {
+    ".": {
+     "exports": {
+      "createLlmProvider": {"kind": "function", "params": [{"name": "kind", "required": true}, {"name": "opts", "required": false}], "returns": "LlmProvider"},
+      "createEmbeddingProvider": {"kind": "function", "params": [{"name": "kind", "required": true}, {"name": "opts", "required": false}], "returns": "EmbeddingProvider"},
+      "ask": {"kind": "function", "params": [{"name": "runner", "required": true}, {"name": "question", "required": true}, {"name": "opts", "required": false}], "returns": "AskResult"}
+     }
+    }
+   }
+  }
+ },
+ "types": {
+  "RunnerConfig": {"fields": {
+    "engine": {"required": true, "type": "EngineConfig"},
+    "guards": {"required": false, "type": "GuardConfig"},
+    "tier": {"required": false, "type": "TierConfig"},
+    "metadata": {"required": false, "type": "MetadataConfig"}
+  }},
+  "ChartSpec": {"fields": {
+    "type": {"required": true, "type": "ChartType"},
+    "x": {"required": true, "type": "string"},
+    "y": {"required": true, "type": "string"},
+    "series": {"required": false, "type": "string"}
+  }}
+ }
+}
