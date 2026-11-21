@@ -37,7 +37,11 @@ rep['sections'] = {'count': len(secs), 'duplicates': dup_sec}
 # it, and this block then crashed on max([]) for ten revisions without anyone
 # noticing. A check whose subject can vanish is not a check, so the block now
 # reports absence and only fails if a D-number is *referenced* without a row.
-D = sorted({int(x) for x in re.findall(r'^\|\s*\*\*D(\d+)\*\*', w, re.M)})
+# The decision table has two row shapes: `| **D44** | ...` and `| | **D44** | ...`, where the
+# leading empty cell is how a row states that it belongs to the block above it. Both are
+# definitions, and the first pattern-only version of this line read the second shape as a
+# reference to a decision that did not exist — a gate reporting a defect in its own reader.
+D = sorted({int(x) for x in re.findall(r'^\|\s*(?:\|\s*)?\*\*D(\d+)\*\*', w, re.M)})
 refs = sorted({int(x) for x in re.findall(r'(?<![A-Za-z])D([1-9]\d?)(?![0-9])', w)})
 rep['decisions'] = {'count': len(D), 'max': max(D) if D else 0,
                     'absent': not D,
