@@ -42,19 +42,29 @@ matplotlib.rcParams.update({
 
 def bird_dev(path):
     """Text2SQL on BIRD dev: accuracy for everyone, cost for the one system that measured it."""
-    # (name, EX, kind). `trained` is drawn separately because this repository does not train a
-    # generator, so a system that does is a different kind of object rather than a better version.
+    # Every number is the **dev** column of the table in `docs/benchmarks.md`, which is the split
+    # published systems report.
+    #
+    # This figure used to plot five systems at their *test* scores under a dev heading — CHASE-SQL
+    # at 76.02 where dev is 74.9, XiYan-SQL at 75.63 where dev is 73.34, OpenSearch-SQL at 72.28
+    # where dev is 69.3 — and three systems (CSC-SQL, Reasoning-SQL, OmniSQL, Distillery, CHESS) that
+    # the table does not carry at all. The table itself had already been corrected for exactly this
+    # coordinate error; the chart drawn from it had not, which is the failure mode a figure invites:
+    # a number with no column heading looks like it came from one.
+    #
+    # The kinds are the table's `trained` column, not a guess about licensing: a system that
+    # fine-tunes its generator is a different kind of object from one that does not, and this
+    # repository competes in the second class.
     systems = [
         ('AskData (2025)', 78.49, 'closed'),
-        ('CHASE-SQL (2024)', 76.02, 'trained'),
-        ('XiYan-SQL (2025)', 75.63, 'trained'),
-        ('CSC-SQL (2025)', 73.67, 'trained'),
-        ('Reasoning-SQL (2025)', 72.78, 'trained'),
-        ('OpenSearch-SQL (2025)', 72.28, 'closed'),
-        ('OmniSQL (2025)', 72.06, 'trained'),
-        ('Distillery (2024)', 71.83, 'unstated'),
-        ('CHESS (2024)', 71.10, 'closed'),
+        ('CHASE-SQL (2024)', 74.90, 'trained'),
+        ('DeepEye-SQL (2025)', 74.49, 'trained'),
+        ('XiYan-SQL (2025)', 73.34, 'trained'),
+        ('Alpha-SQL (2025)', 69.70, 'trained'),
+        ('OpenSearch-SQL (2025)', 69.30, 'closed'),
+        ('MSL-SQL (2024)', 66.82, 'trained'),
         ('this repository — EX, shipped arm', 65.93, 'ours'),
+        ('RSL-SQL (2024)', 63.56, 'closed'),
         ('this repository — R-VES, same statements', 59.81, 'ours-lite'),
     ]
     colour = {'closed': CLOSED, 'trained': TRAINED, 'unstated': UNSTATED, 'ours': OURS, 'ours-lite': OURS_LIGHT}
@@ -76,7 +86,7 @@ def bird_dev(path):
     left.invert_yaxis()
     left.set_xlim(55, 86)
     left.set_xlabel('BIRD dev execution accuracy, as each system reports it (%)', fontsize=9.3)
-    left.set_title('Accuracy: 12.56pp behind the field top', fontsize=10.6, loc='left', pad=8)
+    left.set_title('Accuracy: 12.56pp behind the top, 3.37pp behind the nearest untrained rival', fontsize=10.2, loc='left', pad=8)
     left.axvline(65.93, color=OURS, linestyle=':', linewidth=0.9, zorder=1)
     left.grid(axis='x', color=GRID, linewidth=0.6, zorder=0)
 
@@ -84,7 +94,7 @@ def bird_dev(path):
     # drawing: no system in this field publishes a bill, so the ring band is where the nine others
     # would have to be plotted if they did.
     right.axhspan(1.62, 2.24, color='#f4f4f0', zorder=0)
-    right.text(56.7, 2.16, '9 systems,\nno published bill', fontsize=8.2, color=MUTED, va='top', linespacing=1.35)
+    right.text(56.7, 2.16, '8 systems,\nno published bill', fontsize=8.2, color=MUTED, va='top', linespacing=1.35)
     for index, (_, score, kind) in enumerate(systems):
         if kind in ('closed', 'trained', 'unstated'):
             right.scatter(score, 1.93, s=26, facecolor='white', edgecolor='#999999', linewidth=1.0, zorder=3)
@@ -113,8 +123,9 @@ def bird_dev(path):
     )
     fig.text(
         0.007, 0.012,
-        'Blue: closed cloud service.   Gold: trains its own generator (out of scope by policy, drawn for scale).   '
-        'Grey: licence unstated.   Green: this repository.   R-VES is the reward-validated reading of the same statements.',
+        'Blue: no training — the class this repository competes in.   Gold: trains or fine-tunes its generator (out of scope '
+        'by policy, drawn for scale).   Green: this repository.   Every number is the dev column of the table in '
+        '`docs/benchmarks.md`; R-VES is the reward-validated reading of the same statements.',
         fontsize=8.2, color=MUTED,
     )
     fig.savefig(path, bbox_inches='tight', facecolor='#fbfbf8')
